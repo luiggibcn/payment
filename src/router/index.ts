@@ -8,29 +8,35 @@ import Example from "@/components/Example.vue";
 import QR from "@/components/QR.vue";
 import SignUp from "@/views/sign-up.vue";
 import SignIn from "@/views/sign-in.vue";
+import { authGuard, guestGuard } from "@/middlewares";
+import ShopLayout from "@/views/shop.layout.vue";
+import ProductsPageDev from "@/pages/products.page.dev.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/register",
     component: SignUp,
     name: AppRoute.SIGNUP,
+    beforeEnter: guestGuard
   },
   {
     path: "/login",
     component: SignIn,
     name: AppRoute.SIGNIN,
+    beforeEnter: guestGuard
   },
-  // {
-  //   path: "/shop",
-  //   component: ShopLayout,
-  //   name: AppRoute.SHOP,
-  //   children: [
-  //      {
-  //        path: "products",
-  //        name: AppRoute.PRODUCTS,
-  //        component: ProductsPage,
-  //      },
-  //   ],
-  // },
+  {
+    path: "/shop",
+    component: ShopLayout,
+    name: AppRoute.SHOP,
+    beforeEnter: authGuard,
+    children: [
+       {
+         path: "products",
+         name: AppRoute.PRODUCTS,
+         component: ProductsPageDev,
+       },
+    ],
+  },
   {
     path: "/test",
     component: Example,

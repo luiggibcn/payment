@@ -99,7 +99,7 @@
                 id="user-menu-item-0">Your Profile</a>
               <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                 id="user-menu-item-1">Settings</a>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+              <a @click="handleAppleSignOut" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1"
                 id="user-menu-item-2">Sign out</a>
             </div>
           </div>
@@ -123,9 +123,6 @@
     </div>
   </nav>
   <router-view />
-  <p class="tete">
-    isShowModal:{{ isShowModal }}
-  </p>
   <div 
     class="antialiased inset-0 bg-stone-800 bg-opacity-75 flex justify-center items-center transition-opacity duration-300 ease-out z-[9999]"
     :class="{
@@ -184,74 +181,16 @@
       </div>
     </div>
   </div>
-  <!-- <TheAppMessages :location="AppMessageLocation.TOAST" class="cart-view__app-messages" />
-  <div v-if="isLoading" class="loading-spinner">
-    <BaseLoadingSpinner />
-  </div>
-  <div v-else-if="!isCartEmpty" class="cart-view">
-
-    <div class="cart-view__left">
-      <TheAppMessages :location="AppMessageLocation.PAGE" class="cart-view__app-messages" />
-
-      <div class="cart-view__title">
-        <h1 class="title-headline">{{ t('pages.cartView.shoppingCart.headline.label') }}</h1>
-        <h2 class="title-subheadline">
-          {{ cartItemHeaders }}
-        </h2>
-      </div>
-
-      <ThePriceSummary class="cart-view__mobile" />
-
-      <CartItemList v-if="cartStore.cart?.cartItems" />
-    </div>
-
-    <div class="cart-view__right">
-      <div class="right-order-summary">
-        <ThePriceSummary v-if="!isMobile" class="cart-view__desktop" />
-
-        <ThePriceSummary v-else class="cart-view__mobile" />
-
-        <div
-          id="pca-reco-container"
-          class="layout-cart m-t-32"
-          :class="{ 'dont-paint': !isCartEmpty }"
-        >
-          <div
-            data-recommendations
-            :data-heading="$t('pages.cartView.recommendations.title')"
-            data-type="last_seen"
-          />
-        </div>
-
-        <CartSubmitSection
-          v-if="cartStore.cart"
-          :is-button-disabled="isCheckoutButtonDisabled"
-          :ab-test-tag="AbTestTag.basketToCheckout"
-          @submit="onStartCheckout"
-        />
-
-        <OneClick
-          v-if="isOneClickAvailable"
-          :cart="cartStore.cart"
-          :allowed-payment-methods="oneClickStore.allowedPaymentMethods"
-          @cancel="handleOneClickCancel"
-          @panic="handleOneClickPanic"
-          @error="handleOneClickError"
-          @success="handleOneClickSuccess"
-        />
-      </div>
-    </div>
-  </div>
-  <TheEmptyCart v-else /> -->
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
-import CartIcon from '../components/cart-icon.vue';
-import { useCartStore } from '../stores/cart.store';
-import LogoIcon from '../components/logo-icon.vue';
+import CartIcon from '@/components/cart-icon.vue';
+import { useCartStore } from '@/stores/cart.store';
+import LogoIcon from '@/components/logo-icon.vue';
+import { useAuth } from '@/composables/useAuth';
 const useCart = useCartStore()
-
+const { signOut } = useAuth()
 const isScrolled = ref(false);
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
@@ -278,13 +217,18 @@ const showSubMenu = () => {
 const showModal = () => {
   isShowModal.value = !isShowModal.value
 }
+
+const handleAppleSignOut = async (): Promise<void> => {
+  await signOut()
+}
 </script>
-<style lang="scss" >
-// @import "@/assets/scss/_variables.scss";
-@use '../scss/base.scss';
+<style lang="scss" s>
+ @use "../scss/variables" as variables;
+ @use "../scss/mixins" as mixins;
+
+
 .box {
   background-color: hsl(214,8.1%,61.2%);
-  // margin: 0;
   width: 30px;
 }
 
@@ -295,7 +239,6 @@ const showModal = () => {
   input {
     background-color: hsl(225,6.3%,12.5%);
     color: hsl(210,9.1%,87%);
-    // color: hsl(200,100%,50%);
     border: none;
     outline: none;
     width: 9em;
@@ -318,20 +261,9 @@ const showModal = () => {
     }
   }
 }
-.tete {
-  height: 3000px;
-}
 
 .fix {
   position: fixed;
   bottom: 0;
-}
-
-.tete {
-  padding: 10px;
-  @include for-desktop-up {
-    background-color: red;
-  }
-
 }
 </style>

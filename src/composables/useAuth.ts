@@ -14,7 +14,21 @@ export const useAuth = () => {
       password
     })
     
-    if (error) throw error
+    if (error) {
+      if (error.message.includes('already registered') || 
+          error.message.includes('User already registered')) {
+        throw new Error('This email is already registered. Please sign in instead.')
+      }
+      throw error
+    }
+    
+    if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
+      throw new Error('This email is already registered. Please sign in instead.')
+    }
+    
+    if (data.user && data.session) {
+      throw new Error('This email is already registered. Please sign in instead.')
+    }
     
     return data
   }
@@ -31,6 +45,32 @@ export const useAuth = () => {
       session.value = data.session
       user.value = data.user
     }
+    
+    return data
+  }
+
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/login`
+      }
+    })
+    
+    if (error) throw error
+    
+    return data
+  }
+
+  const signInWithApple = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'apple',
+      options: {
+        redirectTo: `${window.location.origin}/login`
+      }
+    })
+    
+    if (error) throw error
     
     return data
   }
@@ -65,15 +105,32 @@ export const useAuth = () => {
     if (error) throw error
   }
 
+  const updateUserRole = async (role: 'admin' | 'user' | 'moderator') => {
+    const { data, error } = await supabase.auth.updateUser({
+      data: { role }
+    })
+    
+    if (error) throw error
+    
+    if (data.user) {
+      user.value = data.user
+    }
+    
+    return data
+  }
+
   return {
     user,
     session,
     isAuthenticated,
     signUp,
     signIn,
+    signInWithGoogle,
+    signInWithApple,
     signOut,
     getCurrentUser,
     getCurrentSession,
-    resetPassword
+    resetPassword,
+    updateUserRole
   }
 }

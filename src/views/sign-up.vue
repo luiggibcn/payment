@@ -1,20 +1,33 @@
 <template>
   <div class="min-h-screen bg-black flex items-center justify-center px-4 py-8">
-    <div class="grid grid-cols-1 sm:grid-cols-1 gap-3 mb-6">
+    <div class="w-full max-w-lg">
       <!-- Logo y título -->
       <div class="text-center mb-8">
         <div class="flex items-center justify-center gap-2 mb-4">
-          <div class="text-pink-500 text-2xl">✨</div>
+          <div class="text-pink-500 text-2xl">
+            <img alt="Payment4You logo" src="../assets/logo.svg" class="h-16 w-16">
+          </div>
           <h1 class="text-white text-2xl font-semibold">Payment4You</h1>
         </div>
         <h2 class="text-white text-xl font-medium mb-2">Welcome to Payment4You</h2>
         <p class="text-gray-400 text-sm">Sign in to unlock your creative potential.</p>
       </div>
 
+      <!-- Mensaje de error/éxito -->
+      <div v-if="errorMessage" class="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
+        <p class="text-red-200 text-sm">{{ errorMessage }}</p>
+      </div>
+
+      <div v-if="successMessage" class="mb-4 p-3 bg-green-900/50 border border-green-500 rounded-lg">
+        <p class="text-green-200 text-sm">{{ successMessage }}</p>
+      </div>
+
       <!-- Botones de OAuth -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
         <button
-          class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer"
+          @click="handleGoogleSignUp"
+          :disabled="loading"
+          class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -38,7 +51,9 @@
         </button>
 
         <button
-          class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer"
+          @click="handleAppleSignUp"
+          :disabled="loading"
+          class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
             <path
@@ -60,7 +75,7 @@
       </div>
 
       <!-- Form -->
-      <form @submit.prevent class="space-y-4">
+      <form @submit.prevent="handleEmailSignUp" class="space-y-4">
         <div>
           <label for="email" class="block text-white text-sm font-medium mb-2">
             Your email
@@ -83,19 +98,95 @@
             </div>
             <input
               id="email"
+              v-model="email"
               type="email"
+              required
               placeholder="Enter your email"
               class="w-full pl-10 pr-4 py-3 bg-zinc-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
             />
           </div>
         </div>
 
+        <div>
+          <label for="password" class="block text-white text-sm font-medium mb-2">
+            Your password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+            </div>
+            <input
+              id="password"
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              required
+              minlength="6"
+              placeholder="Enter your password (min 6 characters)"
+              class="w-full pl-10 pr-12 py-3 bg-zinc-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
+            />
+            <button
+              type="button"
+              @click="togglePasswordVisibility"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+            >
+              <svg
+                v-if="!showPassword"
+                class="w-5 h-5 text-gray-400 hover:text-white transition-colors"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              <svg
+                v-else
+                class="w-5 h-5 text-gray-400 hover:text-white transition-colors"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
         <button
           type="submit"
-          class="w-full py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+          :disabled="loading"
+          class="w-full py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <span>Continue</span>
+          <span>{{ loading ? 'Creating account...' : 'Sign Up' }}</span>
           <svg
+            v-if="!loading"
             class="w-5 h-5"
             fill="none"
             stroke="currentColor"
@@ -111,20 +202,23 @@
         </button>
       </form>
 
-      <!-- Forget Password -->
+      <!-- Already have account -->
       <div class="text-center mt-4">
-        <a
-          href="#"
-          class="text-gray-400 hover:text-white text-sm transition-colors cursor-pointer"
-        >
-          Forget Password?
-        </a>
+        <p class="text-gray-400 text-sm">
+          Already have an account?
+          <router-link
+            to="/login"
+            class="text-white hover:underline cursor-pointer font-medium"
+          >
+            Sign In
+          </router-link>
+        </p>
       </div>
 
       <!-- Terms -->
       <div class="text-center mt-8">
         <p class="text-gray-500 text-xs">
-          By continuing, you agree to inspiro's
+          By continuing, you agree to Payment4You's
           <a href="#" class="text-white hover:underline cursor-pointer">Terms and Conditions</a>
           and
           <a href="#" class="text-white hover:underline cursor-pointer">Privacy Policy</a>
@@ -135,7 +229,57 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
+const router = useRouter()
+const { signUp, signOut } = useAuth()
+
+const email = ref('luiggi.bcn@gmail.com')
+const password = ref('123456789')
+const showPassword = ref(false)
+const loading = ref(false)
+const errorMessage = ref('')
+const successMessage = ref('')
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
+
+const handleEmailSignUp = async () => {
+  loading.value = true
+  errorMessage.value = ''
+  successMessage.value = ''
+
+  try {
+    const data = await signUp(email.value, password.value)
+    
+    if (data.user) {
+      successMessage.value = 'Account created! Please check your email to confirm your account.'
+      email.value = ''
+      password.value = ''
+      
+      setTimeout(() => {
+        router.push('/login')
+      }, 3000)
+    }
+  } catch (error: any) {
+    errorMessage.value = error.message || 'An error occurred during sign up'
+    console.error('Sign up error:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleGoogleSignUp = async () => {
+  return
+}
+
+const handleAppleSignUp = async () => {
+  const response = await signOut()
+  return response
+}
 </script>
 
 <style scoped>

@@ -5,7 +5,7 @@
       <div class="text-center mb-8">
         <div class="flex items-center justify-center gap-2 mb-4">
           <div class="text-pink-500 text-2xl">
-            <img alt="metamask" src="../assets/logo.svg" class="h-16 w-16">
+            <img alt="Payment4You logo" src="../assets/logo.svg" class="h-16 w-16">
           </div>
           <h1 class="text-white text-2xl font-semibold">Payment4You</h1>
         </div>
@@ -13,12 +13,19 @@
         <p class="text-gray-400 text-sm">Sign in to unlock your creative potential.</p>
       </div>
 
+      <!-- Mensaje de error -->
+      <div v-if="errorMessage" class="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
+        <p class="text-red-200 text-sm">{{ errorMessage }}</p>
+      </div>
+
       <!-- Step 1: Email (solo si currentStep === 1) -->
       <div v-if="currentStep === 1">
         <!-- Botones de OAuth -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
           <button
-            class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer"
+            @click="handleGoogleSignIn"
+            :disabled="loading"
+            class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg class="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -42,7 +49,9 @@
           </button>
 
           <button
-            class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer"
+            @click="handleAppleSignIn"
+            :disabled="loading"
+            class="flex items-center justify-center gap-2 px-4 py-3 bg-white hover:bg-gray-100 text-black rounded-lg font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path
@@ -89,6 +98,7 @@
                 id="email"
                 v-model="email"
                 type="email"
+                required
                 placeholder="Enter your email"
                 class="w-full pl-10 pr-4 py-3 bg-zinc-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
               />
@@ -97,7 +107,8 @@
 
           <button
             type="submit"
-            class="w-full py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+            :disabled="loading"
+            class="w-full py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span>Continue</span>
             <svg
@@ -145,6 +156,7 @@
                 id="password"
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
+                required
                 placeholder="Enter your password"
                 class="w-full pl-10 pr-12 py-3 bg-zinc-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
               />
@@ -196,17 +208,20 @@
             <button
               type="button"
               @click="goBackToEmail"
-              class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-gray-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
+              :disabled="loading"
+              class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-gray-700 text-white font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Back
             </button>
 
             <button
               type="submit"
-              class="py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2"
+              :disabled="loading"
+              class="py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span>Login</span>
+              <span>{{ loading ? 'Logging in...' : 'Login' }}</span>
               <svg
+                v-if="!loading"
                 class="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
@@ -227,11 +242,25 @@
         <div class="text-center mt-4">
           <a
             href="#"
+            @click.prevent="handleForgotPassword"
             class="text-gray-400 hover:text-white text-sm transition-colors cursor-pointer"
           >
             Forget Password?
           </a>
         </div>
+      </div>
+
+      <!-- Don't have account (solo en step 1) -->
+      <div v-if="currentStep === 1" class="text-center mt-4">
+        <p class="text-gray-400 text-sm">
+          Don't have an account?
+          <router-link
+            to="/register"
+            class="text-white hover:underline cursor-pointer font-medium"
+          >
+            Sign Up
+          </router-link>
+        </p>
       </div>
 
       <!-- Terms (siempre visible) -->
@@ -249,31 +278,87 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
+
+const router = useRouter()
+const { signIn, resetPassword } = useAuth()
 
 const currentStep = ref<1 | 2>(1)
-const email = ref('dev@dev.com')
+const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
+const loading = ref(false)
+const errorMessage = ref('')
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
 
 const handleEmailSubmit = () => {
-  // Aquí validarás el email con Supabase
   if (email.value) {
+    errorMessage.value = ''
     currentStep.value = 2
   }
 }
 
-const handleLogin = () => {
-  // Aquí harás el login con Supabase
-  console.log('Login with:', email.value, password.value)
+const handleLogin = async () => {
+  loading.value = true
+  errorMessage.value = ''
+
+  try {
+    const data = await signIn(email.value, password.value)
+    
+    if (data.session) {
+      router.push('/shop/products') // Cambia esto a tu ruta de dashboard
+    }
+  } catch (error: any) {
+    if (error.message.includes('Invalid login credentials')) {
+      errorMessage.value = 'Invalid email or password. Please try again.'
+    } else if (error.message.includes('Email not confirmed')) {
+      errorMessage.value = 'Please confirm your email before signing in.'
+    } else {
+      errorMessage.value = error.message || 'An error occurred during login'
+    }
+    console.error('Login error:', error)
+  } finally {
+    loading.value = false
+  }
 }
 
 const goBackToEmail = () => {
   currentStep.value = 1
-  password.value = '' // Limpia el password al volver
+  password.value = ''
+  errorMessage.value = ''
 }
 
-const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value
+const handleForgotPassword = async () => {
+  if (!email.value) {
+    errorMessage.value = 'Please enter your email first'
+    currentStep.value = 1
+    return
+  }
+
+  loading.value = true
+  errorMessage.value = ''
+
+  try {
+    await resetPassword(email.value)
+    alert('Password reset email sent! Check your inbox.')
+  } catch (error: any) {
+    errorMessage.value = error.message || 'An error occurred'
+    console.error('Reset password error:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleGoogleSignIn = async () => {
+  console.log('Google sign in - Coming soon')
+}
+
+const handleAppleSignIn = async () => {
+  console.log('Apple sign in - Coming soon')
 }
 </script>
 
