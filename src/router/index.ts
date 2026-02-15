@@ -13,6 +13,10 @@ import ShopLayout from "@/views/shop.layout.vue";
 import ProductsPageDev from "@/pages/products.page.dev.vue";
 const routes: RouteRecordRaw[] = [
   {
+    path: "/",
+    redirect: '/login'
+  },
+  {
     path: "/register",
     component: SignUp,
     name: AppRoute.SIGNUP,
