@@ -1,0 +1,50 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "or": "o",
+    "language": "Selecciona tu idioma"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar Sesión",
+    "login": "Entrar",
+    "loggingIn": "Iniciando sesión...",
+    "register": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "yourEmail": "Tu correo electrónico",
+    "yourPassword": "Tu contraseña",
+    "enterEmail": "Introduce tu correo electrónico",
+    "enterPassword": "Introduce tu contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer Contraseña",
+    "welcomeTitle": "Bienvenido a Payment4You",
+    "welcomeSubtitle": "Inicia sesión para desbloquear tu potencial creativo.",
+    "continueWithEmail": "Continuar con Correo",
+    "continueWithGoogle": "Continuar con Google",
+    "continueWithApple": "Continuar con Apple",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "byAgreeing": "Al continuar, aceptas los",
+    "termsAndConditions": "Términos y Condiciones",
+    "privacyPolicy": "Política de Privacidad",
+    "and": "y"
+  },
+  "errors": {
+    "invalidEmail": "Formato de correo inválido",
+    "invalidPassword": "La contraseña debe tener al menos 6 caracteres",
+    "invalidCredentials": "Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.",
+    "emailNotConfirmed": "Por favor, confirma tu correo antes de iniciar sesión.",
+    "emailAlreadyRegistered": "Este correo ya está registrado. Por favor, inicia sesión.",
+    "genericError": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+    "enterEmailFirst": "Por favor, introduce tu correo primero",
+    "passwordResetSent": "¡Correo de restablecimiento enviado! Revisa tu bandeja de entrada."
+  }
+}

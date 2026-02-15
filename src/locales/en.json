@@ -1,0 +1,50 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "continue": "Continue",
+    "or": "or",
+    "language": "Select your language"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "yourEmail": "Your email",
+    "yourPassword": "Your password",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "forgotPassword": "Forget Password?",
+    "resetPassword": "Reset Password",
+    "welcomeTitle": "Welcome to Payment4You",
+    "welcomeSubtitle": "Sign in to unlock your creative potential.",
+    "continueWithEmail": "Continue with Email",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "byAgreeing": "By continuing, you agree to Payment4You's",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "and": "and"
+  },
+  "errors": {
+    "invalidEmail": "Invalid email format",
+    "invalidPassword": "Password must be at least 6 characters",
+    "invalidCredentials": "Invalid email or password. Please try again.",
+    "emailNotConfirmed": "Please confirm your email before signing in.",
+    "emailAlreadyRegistered": "This email is already registered. Please sign in instead.",
+    "genericError": "An error occurred. Please try again.",
+    "enterEmailFirst": "Please enter your email first",
+    "passwordResetSent": "Password reset email sent! Check your inbox."
+  }
+}

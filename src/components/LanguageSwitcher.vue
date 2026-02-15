@@ -1,0 +1,58 @@
+<template>
+  <div class="fixed top-4 right-4 z-50">
+    <div class="bg-zinc-900 border border-gray-700 rounded-lg p-4 shadow-lg">
+      <p class="text-white text-sm mb-2">{{  t('common.language') }}</p>
+      
+      <div class="flex gap-2">
+        <button
+          @click="changeLanguage('en')"
+          :class="[
+            'px-4 py-2 rounded-lg font-medium transition-colors',
+            locale === 'en'
+              ? 'bg-pink-500 text-white'
+              : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+          ]"
+        >
+          🇬🇧 English
+        </button>
+        
+        <button
+          @click="changeLanguage('es')"
+          :class="[
+            'px-4 py-2 rounded-lg font-medium transition-colors',
+            locale === 'es'
+              ? 'bg-pink-500 text-white'
+              : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
+          ]"
+        >
+          🇪🇸 Español
+        </button>
+      </div>
+
+      <!-- Test de traducciones -->
+      <div class="mt-4 pt-4 border-t border-gray-700 hidden">
+        <p class="text-gray-400 text-xs mb-2">Translation Tests:</p>
+        <ul class="text-white text-xs space-y-1">
+          <li>{{ t('auth.welcomeTitle') }}</li>
+          <li>{{ t('common.loading') }}</li>
+          <li>{{ t('auth.signIn') }}</li>
+          <li>{{ t('errors.invalidCredentials') }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { setLocale } from '@/plugins/i18n'
+import type { Locale } from '@/locales'
+
+const { t, locale } = useI18n()
+
+
+const changeLanguage = (newLocale: Locale) => {
+  setLocale(newLocale)
+  console.log('Language changed to:', newLocale)
+}
+</script>

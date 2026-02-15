@@ -5,6 +5,7 @@ import type { IWindow } from './mocks/types/others.types'
 import type { IStateWindow } from './mocks/types/window.types'
 import { createPinia } from 'pinia'
 import router from './router'
+import { i18n } from './plugins/i18n'
 
 declare const window: IWindow & IStateWindow
 ;(async () => {
@@ -13,5 +14,5 @@ declare const window: IWindow & IStateWindow
   }
   const pinia = createPinia()
   
-  createApp(App).use(router).use(pinia).mount('#app')
+  createApp(App).use(router).use(pinia).use(i18n).mount('#app')
 })()
