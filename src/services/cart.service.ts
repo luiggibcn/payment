@@ -1,8 +1,8 @@
-import { Client } from "../clients/client"
-import type { CartServiceClientException, ClientException, ClientOptions  } from "../types/src/client"
-import { ClientMiddleware } from "../middlewares/middlewares"
+import { Client } from "@/clients/client"
+import type { CartServiceClientException, ClientException, ClientOptions  } from "@/types/src/client"
+import { ClientMiddleware } from "@/middlewares"
 
-import type { LuiggiService } from "../types/src/api"
+import type { LuiggiService } from "@/types/src/api"
 
 
 class CartServiceExceptionMiddleware extends ClientMiddleware {
@@ -43,12 +43,12 @@ export class CartService extends Client {
     })
   }
 
-//   public async updateCartItem(body: CartServiceType.CartRequestDto) {
-//     return await this.patch<CartServiceType.CartResponseDto>({
-//       path: '/cart',
-//       body
-//     })
-//   }
+  public async updateCartItem(body: Partial<LuiggiService.CartItemDTO>) {
+    return await this.patch<LuiggiService.CartDTO>({
+      path: '/message',
+      body
+    })
+  }
 
 //   public async addCartItem(
 //     body: CartServiceType.CartRequestDto,

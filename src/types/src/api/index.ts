@@ -1,5 +1,6 @@
 export namespace LuiggiService {
     export type CartItemDTO = {
+        sku: string
         quantity: number
         price: number
         productName: string
@@ -10,4 +11,7 @@ export namespace LuiggiService {
         items: CartItemDTO[]
         totalPrice: number
     }
+
+    export type UpdateCartItemDTO = Pick<CartItemDTO, 'sku' | 'quantity'>
+
 }

@@ -5,11 +5,18 @@
 
     /* Linting */
     "strict": true,
-    "types": ["@types/lodash", "@types/node", "@types/jsdom", "vite/client"],
+    "types": ["@types/lodash-es", "@types/node", "@types/jsdom", "vite/client"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "baseUrl": ".",
+      "paths": {
+      "@/*": ["./src/*"]
+    }
 }

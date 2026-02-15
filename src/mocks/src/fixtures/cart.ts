@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import type { LuiggiService } from '../../../types/src/api'
+import type { LuiggiService } from '@/types/src/api'
 
 export function cartItemMock({
     quantity,
@@ -8,6 +8,7 @@ export function cartItemMock({
 }): LuiggiService.CartItemDTO {
     return {
       quantity: quantity,
+      sku: faker.commerce.isbn({ variant: 10, separator: '-' }),
       price: Number(faker.commerce.price({ min: 8, max: 179, dec: 0 })),
       productName: faker.commerce.productName()
     }

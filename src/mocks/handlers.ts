@@ -1,5 +1,6 @@
 // import { http, HttpResponse, } from 'msw'
 
+import { http, HttpResponse } from "msw"
 import { CartApiHandler, type MockOptions } from "./src/handlers"
 
 // export default [
@@ -19,7 +20,7 @@ export const handlerOptions: MockOptions = {
   }
   
   export const handlers = [
-    ...CartApiHandler(handlerOptions)
+    ...CartApiHandler(handlerOptions),
     // ...CheckoutApiHandler(handlerOptions),
     // ...AddressProvisioningApiHandler(handlerOptions),
     // ...DisclaimerApiHandler(handlerOptions),
@@ -29,8 +30,12 @@ export const handlerOptions: MockOptions = {
     // http.get('https://h.online-metrix.net/*', () => {
     //   return new HttpResponse()
     // }),
-    // http.get('https://via.placeholder.com/*', () => {
-    //   return new HttpResponse()
-    // })
+    // https://placehold.co/400
+    http.get('https://placehold.co/*', () => {
+      return new HttpResponse()
+    }),
+    http.get('https://placehold.net/*', () => {
+      return new HttpResponse()
+    })
   ]
   

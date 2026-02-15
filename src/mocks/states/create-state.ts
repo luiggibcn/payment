@@ -1,10 +1,7 @@
 
-import { deepClone } from '../../utils/utils'
-import type { MockOptions } from '../src/handlers/options'
-import type { IWindow } from '../types/others.types'
-import type { IStateWindow } from '../types/window.types'
-
-
+import { deepClone } from '@/utils'
+import type { MockOptions } from '@/mocks/src/handlers/options'
+import type { IWindow, IStateWindow } from '@/mocks/types'
 
 const LOCAL_STORAGE_KEY = 'mockState'
 

@@ -1,4 +1,4 @@
-import type { IStateWindow } from "../../types/window.types"
+import type { IStateWindow } from "@/mocks/types/window.types"
 
 declare const window: IStateWindow
 

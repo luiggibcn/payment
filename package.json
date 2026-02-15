@@ -10,29 +10,38 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
-    "@types/jsdom": "^21.1.7",
-    "@types/lodash": "^4.17.16",
-    "@types/node": "^22.13.11",
+    "@tailwindcss/vite": "^4.0.15",
+    "@vueuse/core": "^14.2.1",
+    "@vueuse/integrations": "^14.2.1",
     "axios": "^1.8.4",
     "dayjs": "^1.11.13",
     "deepmerge": "^4.3.1",
-    "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "4.17.23",
     "lodash.clonedeep": "^4.5.0",
     "lodash.isempty": "^4.4.0",
-    "lodash.isequal": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
     "lodash.throttle": "^4.1.1",
     "msw": "^2.7.3",
     "pinia": "^3.0.1",
-    "vue": "^3.5.13"
+    "qrcode": "^1.5.4",
+    "tailwindcss": "^4.0.15",
+    "vue": "^3.5.28",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@types/lodash-es": "4.17.12",
+    "@types/node": "^22.13.11",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "sass": "^1.86.0",
+    "sass-embedded": "^1.86.0",
+    "sass-migrator": "^2.3.1",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
-    "vue-tsc": "^2.2.4"
+    "vue-tsc": "^2.2.4",
+    "ws": "^8.19.0"
   },
   "msw": {
     "workerDirectory": [

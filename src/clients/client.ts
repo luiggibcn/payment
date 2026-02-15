@@ -1,6 +1,6 @@
 import axios, { Axios, type CancelToken, AxiosHeaders, type AxiosRequestConfig, AxiosError } from "axios"
-import { deepMerge } from "../utils/utils"
-import type { ClientMiddleware } from "../middlewares/middlewares"
+import { deepMerge } from "@/utils"
+import type { ClientMiddleware } from "@/middlewares"
 import { type ClientRequestOptions, type ClientBody, type ClientResponse, ClientStatus, type ClientException, type ClientGetRequestOptions, type ClientPostRequestOptions, type ClientPutRequestOptions, type ClientPatchRequestOptions, type ClientDeleteRequestOptions } from "../types/src/client"
 
 
