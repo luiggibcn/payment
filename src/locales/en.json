@@ -7,8 +7,12 @@
     "save": "Save",
     "back": "Back",
     "continue": "Continue",
-    "or": "or",
-    "language": "Select your language"
+    "or": "or"
+  },
+  "languages": {
+    "select": "Select your language",
+    "en": "English",
+    "es": "Spanish"
   },
   "auth": {
     "signIn": "Sign In",

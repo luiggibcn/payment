@@ -7,8 +7,12 @@
     "save": "Guardar",
     "back": "Atrás",
     "continue": "Continuar",
-    "or": "o",
-    "language": "Selecciona tu idioma"
+    "or": "o"
+  },
+  "languages": {
+    "select": "Selecciona tu idioma",
+    "en": "Inglés",
+    "es": "Español"
   },
   "auth": {
     "signIn": "Iniciar Sesión",
@@ -27,9 +31,9 @@
     "resetPassword": "Restablecer Contraseña",
     "welcomeTitle": "Bienvenido a Payment4You",
     "welcomeSubtitle": "Inicia sesión para desbloquear tu potencial creativo.",
-    "continueWithEmail": "Continuar con Correo",
-    "continueWithGoogle": "Continuar con Google",
-    "continueWithApple": "Continuar con Apple",
+    "continueWithEmail": "Continuar con correo",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
     "dontHaveAccount": "¿No tienes una cuenta?",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "byAgreeing": "Al continuar, aceptas los",

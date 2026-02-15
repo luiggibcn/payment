@@ -10,8 +10,8 @@
           </div>
           <h1 class="text-white text-2xl font-semibold">Payment4You</h1>
         </div>
-        <h2 class="text-white text-xl font-medium mb-2">Welcome to Payment4You</h2>
-        <p class="text-gray-400 text-sm">Sign in to unlock your creative potential.</p>
+        <h2 class="text-white text-xl font-medium mb-2">{{ t('auth.welcomeTitle') }}</h2>
+        <p class="text-gray-400 text-sm">{{ t('auth.welcomeSubtitle') }}</p>
       </div>
 
       <!-- Mensaje de error -->
@@ -46,7 +46,7 @@
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span>Continue with Google</span>
+            <span>{{ t('auth.continueWithGoogle') }}</span>
           </button>
 
           <button
@@ -59,7 +59,7 @@
                 d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
               />
             </svg>
-            <span>Continue with Apple</span>
+            <span>{{ t('auth.continueWithApple') }}</span>
           </button>
         </div>
 
@@ -69,7 +69,7 @@
             <div class="w-full border-t border-gray-700"></div>
           </div>
           <div class="relative flex justify-center text-sm">
-            <span class="px-4 bg-black text-gray-400">Continue with Email</span>
+            <span class="px-4 bg-black text-gray-400">{{ t('auth.continueWithEmail') }}</span>
           </div>
         </div>
 
@@ -77,7 +77,7 @@
         <form @submit.prevent="handleEmailSubmit" class="space-y-4">
           <div>
             <label for="email" class="block text-white text-sm font-medium mb-2">
-              Your email
+              {{ t('auth.yourEmail') }}
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -100,7 +100,7 @@
                 v-model="email"
                 type="email"
                 required
-                placeholder="Enter your email"
+                :placeholder="t('auth.enterEmail')"
                 class="w-full pl-10 pr-4 py-3 bg-zinc-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
               />
             </div>
@@ -111,7 +111,7 @@
             :disabled="loading"
             class="w-full py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span>Continue</span>
+            <span>{{ t('common.continue') }}</span>
             <svg
               class="w-5 h-5"
               fill="none"
@@ -135,7 +135,7 @@
         <form @submit.prevent="handleLogin" class="space-y-4">
           <div>
             <label for="password" class="block text-white text-sm font-medium mb-2">
-              Your password
+              {{ t('auth.yourPassword') }}
             </label>
             <div class="relative">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -159,7 +159,7 @@
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
                 required
-                placeholder="Enter your password"
+                :placeholder="t('auth.enterPassword')"
                 class="w-full pl-10 pr-12 py-3 bg-zinc-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"
               />
               <button
@@ -213,7 +213,7 @@
               :disabled="loading"
               class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-gray-700 text-white font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Back
+              {{ t('common.back') }}
             </button>
 
             <button
@@ -221,7 +221,7 @@
               :disabled="loading"
               class="py-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:from-orange-600 hover:via-pink-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span>{{ loading ? 'Logging in...' : 'Login' }}</span>
+              <span>{{ loading ? t('auth.loggingIn') : t('auth.login') }}</span>
               <svg
                 v-if="!loading"
                 class="w-5 h-5"
@@ -247,7 +247,7 @@
             @click.prevent="handleForgotPassword"
             class="text-gray-400 hover:text-white text-sm transition-colors cursor-pointer"
           >
-            Forget Password?
+            {{ t('auth.forgotPassword') }}
           </a>
         </div>
       </div>
@@ -255,12 +255,12 @@
       <!-- Don't have account (solo en step 1) -->
       <div v-if="currentStep === 1" class="text-center mt-4">
         <p class="text-gray-400 text-sm">
-          Don't have an account?
+          {{ t('auth.dontHaveAccount') }}
           <router-link
             to="/register"
             class="text-white hover:underline cursor-pointer font-medium"
           >
-            Sign Up
+            {{ t('auth.signUp') }}
           </router-link>
         </p>
       </div>
@@ -268,10 +268,10 @@
       <!-- Terms (siempre visible) -->
       <div class="text-center mt-8">
         <p class="text-gray-500 text-xs">
-          By continuing, you agree to Payment4You's
-          <a href="#" class="text-white hover:underline cursor-pointer">Terms and Conditions</a>
-          and
-          <a href="#" class="text-white hover:underline cursor-pointer">Privacy Policy</a>
+          {{ t('auth.byAgreeing') }}
+          <a href="#" class="text-white hover:underline cursor-pointer">{{ t('auth.termsAndConditions') }}</a>
+          {{ t('auth.and') }}
+          <a href="#" class="text-white hover:underline cursor-pointer">{{ t('auth.privacyPolicy') }}</a>
         </p>
       </div>
     </div>
@@ -283,10 +283,11 @@ import { ref, computed, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const authStore = useAuthStore()
-
+const { t } = useI18n()
 // Estado local del componente (formulario y UI)
 const currentStep = ref<1 | 2>(1)
 const email = ref('')
@@ -334,11 +335,11 @@ const handleLogin = async () => {
     }
   } catch (error: any) {
     if (error.message.includes('Invalid login credentials')) {
-      errorMessage.value = 'Invalid email or password. Please try again.'
+      errorMessage.value = t('errors.invalidCredentials')
     } else if (error.message.includes('Email not confirmed')) {
-      errorMessage.value = 'Please confirm your email before signing in.'
+      errorMessage.value = t('errors.emailNotConfirmed')
     } else {
-      errorMessage.value = error.message || 'An error occurred during login'
+      errorMessage.value = error.message || t('errors.genericError')
     }
     console.error('Login error:', error)
   }
@@ -352,7 +353,7 @@ const goBackToEmail = () => {
 
 const handleForgotPassword = async () => {
   if (!email.value) {
-    errorMessage.value = 'Please enter your email first'
+    errorMessage.value = t('errors.enterEmailFirst')
     currentStep.value = 1
     return
   }
@@ -361,9 +362,9 @@ const handleForgotPassword = async () => {
 
   try {
     await authStore.resetPassword(email.value)
-    alert('Password reset email sent! Check your inbox.')
+    alert(t('errors.passwordResetSent'))
   } catch (error: any) {
-    errorMessage.value = error.message || 'An error occurred'
+    errorMessage.value = error.message || t('errors.genericError')
     console.error('Reset password error:', error)
   }
 }

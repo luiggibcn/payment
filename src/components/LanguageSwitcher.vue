@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed top-4 right-4 z-50">
+  <div class="fixed top-4 right-4 z-50 w-[260px]">
     <div class="bg-zinc-900 border border-gray-700 rounded-lg p-4 shadow-lg">
-      <p class="text-white text-sm mb-2">{{  t('common.language') }}</p>
+      <p class="text-white text-sm mb-2">{{  t('languages.select') }}</p>
       
       <div class="flex gap-2">
         <button
@@ -13,7 +13,7 @@
               : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
           ]"
         >
-          🇬🇧 English
+          🇬🇧 {{ t('languages.en') }}
         </button>
         
         <button
@@ -25,7 +25,7 @@
               : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
           ]"
         >
-          🇪🇸 Español
+          🇪🇸 {{ t('languages.es') }}
         </button>
       </div>
 
