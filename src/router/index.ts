@@ -3,7 +3,6 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import ShopLayout from "@/views/shop.layout.vue";
 import { AppRoute } from "@/interfaces/routes.interfaces";
 import Example from "@/components/Example.vue";
 import QR from "@/components/QR.vue";
@@ -20,18 +19,18 @@ const routes: RouteRecordRaw[] = [
     component: SignIn,
     name: AppRoute.SIGNIN,
   },
-  {
-    path: "/shop",
-    component: ShopLayout,
-    name: AppRoute.SHOP,
-    children: [
-      // {
-      //   path: "products",
-      //   name: AppRoute.PRODUCTS,
-      //   component: ProductsPage,
-      // },
-    ],
-  },
+  // {
+  //   path: "/shop",
+  //   component: ShopLayout,
+  //   name: AppRoute.SHOP,
+  //   children: [
+  //      {
+  //        path: "products",
+  //        name: AppRoute.PRODUCTS,
+  //        component: ProductsPage,
+  //      },
+  //   ],
+  // },
   {
     path: "/test",
     component: Example,
