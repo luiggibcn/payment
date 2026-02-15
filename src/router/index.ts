@@ -10,7 +10,6 @@ import SignUp from "@/views/sign-up.vue";
 import SignIn from "@/views/sign-in.vue";
 import { authGuard, guestGuard } from "@/middlewares";
 import ShopLayout from "@/views/shop.layout.vue";
-import ProductsPageDev from "@/pages/products.page.dev.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
