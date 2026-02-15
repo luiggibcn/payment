@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
+    "@supabase/supabase-js": "^2.95.3",
     "@tailwindcss/vite": "^4.0.15",
     "@vueuse/core": "^14.2.1",
     "@vueuse/integrations": "^14.2.1",
