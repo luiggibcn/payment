@@ -52,5 +52,10 @@
     "genericError": "Ocurrió un error. Por favor, inténtalo de nuevo.",
     "enterEmailFirst": "Por favor, introduce tu correo primero",
     "passwordResetSent": "¡Correo de restablecimiento enviado! Revisa tu bandeja de entrada."
+  },
+  "messages": {
+    "success": {
+      "register": "¡Cuenta creada! Por favor, revisa tu correo electrónico para confirmar tu cuenta."
+    }
   }
 }

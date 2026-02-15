@@ -258,7 +258,7 @@ const handleEmailSignUp = async (): Promise<void> => {
     const data = await authStore.signUp(email.value, password.value)
     
     if (data.user) {
-      successMessage.value = 'Account created! Please check your email to confirm your account.'
+      successMessage.value = t('messages.success.register')
       email.value = ''
       password.value = ''
       
@@ -267,7 +267,7 @@ const handleEmailSignUp = async (): Promise<void> => {
       }, 3000)
     }
   } catch (error: any) {
-    errorMessage.value = error.message || 'An error occurred during sign up'
+    errorMessage.value = error.message || t('errors.genericError')
     console.error('Sign up error:', error)
   }
 }
