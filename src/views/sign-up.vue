@@ -230,14 +230,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { redirectTo } from '@/utils'
 
-const router = useRouter()
 const { signUp, signOut } = useAuth()
 
-const email = ref('luiggi.bcn@gmail.com')
-const password = ref('123456789')
+const email = ref('')
+const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
 const errorMessage = ref('')
@@ -261,7 +260,7 @@ const handleEmailSignUp = async () => {
       password.value = ''
       
       setTimeout(() => {
-        router.push('/login')
+        redirectTo('/shop/login')
       }, 3000)
     }
   } catch (error: any) {

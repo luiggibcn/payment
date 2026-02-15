@@ -278,10 +278,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { redirectTo } from '@/utils'
 
-const router = useRouter()
 const { signIn, resetPassword } = useAuth()
 
 const currentStep = ref<1 | 2>(1)
@@ -310,7 +309,7 @@ const handleLogin = async () => {
     const data = await signIn(email.value, password.value)
     
     if (data.session) {
-      router.push('/shop/products') // Cambia esto a tu ruta de dashboard
+      redirectTo('/shop/products')
     }
   } catch (error: any) {
     if (error.message.includes('Invalid login credentials')) {
