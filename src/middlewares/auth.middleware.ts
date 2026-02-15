@@ -1,14 +1,18 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
-import { supabase } from '@/clients/supabase'
+import { useAuthStore } from '@/stores/auth.store'
 
 export const authGuard = async (
   to: RouteLocationNormalized,
   _from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const { data: { session } } = await supabase.auth.getSession()
+  const authStore = useAuthStore()
 
-  if (!session) {
+  if (!authStore.initialized) {
+    await authStore.initialize()
+  }
+
+  if (!authStore.isAuthenticated) {
     next({ 
       path: '/login', 
       query: { redirect: to.fullPath } 
@@ -23,18 +27,18 @@ export const adminGuard = async (
   _from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const { data: { session } } = await supabase.auth.getSession()
-    console.log({session})
-  if (!session) {
+  const authStore = useAuthStore()
+  
+  if (!authStore.initialized) {
+    await authStore.initialize()
+  }
+
+  if (!authStore.isAuthenticated) {
     next({ path: '/login', query: { redirect: to.fullPath } })
     return
   }
 
-  const { data: { user } } = await supabase.auth.getUser()
-  const role = user?.user_metadata?.role
-
-  if (role !== 'admin') {
-    // Not admin, redirect to homepage
+  if (!authStore.isAdmin) {
     next({ path: '/shop/products' })
   } else {
     next()
@@ -46,10 +50,13 @@ export const guestGuard = async (
   _from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const { data: { session } } = await supabase.auth.getSession()
+  const authStore = useAuthStore()
+  
+  if (!authStore.initialized) {
+    await authStore.initialize()
+  }
 
-  if (session) {
-    // Already authenticated
+  if (authStore.isAuthenticated) {
     next({ path: '/shop/products' })
   } else {
     next()

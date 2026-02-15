@@ -229,30 +229,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.store'
 import { useAuth } from '@/composables/useAuth'
-import { redirectTo } from '@/utils'
 
-const { signUp, signOut } = useAuth()
+const router = useRouter()
+const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
-const loading = ref(false)
 const errorMessage = ref('')
 const successMessage = ref('')
 
-const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value
-}
 
-const handleEmailSignUp = async () => {
-  loading.value = true
+const { signOut } = useAuth()
+const loading = computed(() => authStore.loading)
+
+const handleEmailSignUp = async (): Promise<void> => {
   errorMessage.value = ''
   successMessage.value = ''
 
   try {
-    const data = await signUp(email.value, password.value)
+    const data = await authStore.signUp(email.value, password.value)
     
     if (data.user) {
       successMessage.value = 'Account created! Please check your email to confirm your account.'
@@ -260,24 +260,28 @@ const handleEmailSignUp = async () => {
       password.value = ''
       
       setTimeout(() => {
-        redirectTo('/shop/login')
+        router.push('/login')
       }, 3000)
     }
   } catch (error: any) {
     errorMessage.value = error.message || 'An error occurred during sign up'
     console.error('Sign up error:', error)
-  } finally {
-    loading.value = false
   }
 }
 
-const handleGoogleSignUp = async () => {
-  return
+const togglePasswordVisibility = (): boolean => {
+  return showPassword.value = !showPassword.value
 }
 
-const handleAppleSignUp = async () => {
+const handleSignOut = async (): Promise<void> => {
   const response = await signOut()
   return response
+}
+const handleGoogleSignUp = async (): Promise<void> => {
+  await handleSignOut()
+}
+const handleAppleSignUp = async (): Promise<void> => {
+  await handleSignOut()
 }
 </script>
 

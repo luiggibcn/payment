@@ -277,18 +277,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAuth } from '@/composables/useAuth'
-import { redirectTo } from '@/utils'
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.store'
 
-const { signIn, resetPassword } = useAuth()
+const router = useRouter()
+const authStore = useAuthStore()
 
+// Estado local del componente (formulario y UI)
 const currentStep = ref<1 | 2>(1)
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
-const loading = ref(false)
 const errorMessage = ref('')
+
+// Loading viene de la store (se comparte entre componentes)
+const loading = computed(() => authStore.loading)
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
@@ -302,14 +306,19 @@ const handleEmailSubmit = () => {
 }
 
 const handleLogin = async () => {
-  loading.value = true
   errorMessage.value = ''
 
   try {
-    const data = await signIn(email.value, password.value)
+    const data = await authStore.signIn(email.value, password.value)
     
     if (data.session) {
-      redirectTo('/shop/products')
+      const redirect = router.currentRoute.value.query.redirect as string
+      
+      if (redirect) {
+        router.push(redirect)
+      } else {
+        router.push('/shop/products')
+      }
     }
   } catch (error: any) {
     if (error.message.includes('Invalid login credentials')) {
@@ -320,8 +329,6 @@ const handleLogin = async () => {
       errorMessage.value = error.message || 'An error occurred during login'
     }
     console.error('Login error:', error)
-  } finally {
-    loading.value = false
   }
 }
 
@@ -338,28 +345,34 @@ const handleForgotPassword = async () => {
     return
   }
 
-  loading.value = true
   errorMessage.value = ''
 
   try {
-    await resetPassword(email.value)
+    await authStore.resetPassword(email.value)
     alert('Password reset email sent! Check your inbox.')
   } catch (error: any) {
     errorMessage.value = error.message || 'An error occurred'
     console.error('Reset password error:', error)
-  } finally {
-    loading.value = false
   }
 }
 
 const handleGoogleSignIn = async () => {
-  console.log('Google sign in - Coming soon')
+  try {
+    await authStore.signInWithGoogle()
+  } catch (error: any) {
+    errorMessage.value = error.message || 'An error occurred with Google sign in'
+  }
 }
 
 const handleAppleSignIn = async () => {
-  console.log('Apple sign in - Coming soon')
+  try {
+    await authStore.signInWithApple()
+  } catch (error: any) {
+    errorMessage.value = error.message || 'An error occurred with Apple sign in'
+  }
 }
 </script>
+
 
 <style scoped>
 </style>

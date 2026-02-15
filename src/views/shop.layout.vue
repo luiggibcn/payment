@@ -9,7 +9,7 @@
             class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset"
             aria-controls="mobile-menu" aria-expanded="false">
             <span class="absolute -inset-0.5"></span>
-            <span class="sr-only">Open main menuss</span>
+            <span class="sr-only">Open main menus</span>
             <!--
             Icon when menu is closed.
 
@@ -95,11 +95,11 @@
               }"
               role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
               <!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+              <a class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                 id="user-menu-item-0">Your Profile</a>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+              <a class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                 id="user-menu-item-1">Settings</a>
-              <a @click="handleAppleSignOut" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1"
+              <a class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1"
                 id="user-menu-item-2">Sign out</a>
             </div>
           </div>
@@ -188,38 +188,40 @@ import { computed, onMounted, onUnmounted, ref } from 'vue';
 import CartIcon from '@/components/cart-icon.vue';
 import { useCartStore } from '@/stores/cart.store';
 import LogoIcon from '@/components/logo-icon.vue';
-import { useAuth } from '@/composables/useAuth';
+
 const useCart = useCartStore()
-const { signOut } = useAuth()
+
 const isScrolled = ref(false);
+
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20;
 };
+
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
 });
 
-const total = computed(()=> {
+const total = computed(() => {
   const resp = useCart.cart?.items.reduce((total, item, _, _arr) => 
         total + item.quantity, 
         0
       ) ?? 0;
-      return resp > 99 ? '+99' : String(resp);
+  return resp > 99 ? '+99' : String(resp);
 })
+
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
+
 const isShowSubMenu = ref(false)
 const isShowModal = ref(false)
+
 const showSubMenu = () => {
   isShowSubMenu.value = !isShowSubMenu.value
 }
+
 const showModal = () => {
   isShowModal.value = !isShowModal.value
-}
-
-const handleAppleSignOut = async (): Promise<void> => {
-  await signOut()
 }
 </script>
 <style lang="scss" s>

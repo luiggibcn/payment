@@ -1,44 +1,29 @@
-<script setup lang="ts">
-import { onMounted } from 'vue';
-import { supabase } from './clients/supabase';
-import { useAuth } from './composables/useAuth';
+<template>
+  <router-view />
+</template>
 
-const { getCurrentUser, getCurrentSession } = useAuth()
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth.store'
+
+const authStore = useAuthStore()
 
 onMounted(async () => {
-  // Obtener sesión inicial
-  await getCurrentSession()
-  await getCurrentUser()
-  
-  // Escuchar cambios de autenticación
-  supabase.auth.onAuthStateChange((event, session) => {
-    console.log('Auth state changed:', event, session)
-    if (session) {
-      getCurrentUser()
-    }
-  })
+  await authStore.initialize()
 })
-
 </script>
 
-<template>
-  <RouterView />
-</template>
-<style lang="scss" scoped>
-button {
-  &:enabled {
-    border-color: greenyellow;
-    background-color: green;
-    color: white;
-  }
-  &:disabled {
-    cursor: not-allowed;
-    border-color: transparent
-  }
+<style>
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-hr {
-  margin-top: 1rem;
+body {
+  overflow-x: hidden;
 }
-
 </style>
