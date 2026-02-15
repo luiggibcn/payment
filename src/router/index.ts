@@ -33,13 +33,13 @@ const routes: RouteRecordRaw[] = [
     component: ShopLayout,
     name: AppRoute.SHOP,
     beforeEnter: authGuard,
-    children: [
-       {
-         path: "products",
-         name: AppRoute.PRODUCTS,
-         component: ProductsPageDev,
-       },
-    ],
+    // children: [
+    //    {
+    //      path: "products",
+    //      name: AppRoute.PRODUCTS,
+    //      component: ProductsPageDev,
+    //    },
+    // ],
   },
   {
     path: "/test",

@@ -330,7 +330,7 @@ const handleLogin = async () => {
       if (redirect) {
         router.push(redirect)
       } else {
-        router.push('/shop/products')
+        router.push('/shop')
       }
     }
   } catch (error: any) {

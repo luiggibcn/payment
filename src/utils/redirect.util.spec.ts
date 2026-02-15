@@ -23,7 +23,7 @@ describe('redirect.util', () => {
     })
 
     it('should redirect using href by default', () => {
-      const path = '/shop/products'
+      const path = '/shop'
       
       redirectTo(path)
       

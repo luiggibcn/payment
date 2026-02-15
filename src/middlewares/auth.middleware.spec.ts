@@ -175,7 +175,7 @@ describe('auth.middleware', () => {
       await adminGuard(mockTo, mockFrom, mockNext)
 
       expect(mockNext).toHaveBeenCalledWith({
-        path: '/shop/products'
+        path: '/shop'
       })
       expect(mockNext).toHaveBeenCalledTimes(1)
     })
@@ -222,7 +222,7 @@ describe('auth.middleware', () => {
       await guestGuard(mockTo, mockFrom, mockNext)
 
       expect(mockNext).toHaveBeenCalledWith({
-        path: '/shop/products'
+        path: '/shop'
       })
     })
 
@@ -245,7 +245,7 @@ describe('auth.middleware', () => {
       await guestGuard(mockTo, mockFrom, mockNext)
 
       expect(mockNext).toHaveBeenCalledWith({
-        path: '/shop/products'
+        path: '/shop'
       })
     })
   })
