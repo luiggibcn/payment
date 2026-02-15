@@ -154,6 +154,7 @@
               </div>
               <input
                 id="password"
+                ref="passwordInput"
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
                 required
@@ -277,7 +278,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -291,8 +292,17 @@ const password = ref('')
 const showPassword = ref(false)
 const errorMessage = ref('')
 
+const passwordInput = ref<HTMLInputElement | null>(null)
+
 // Loading viene de la store (se comparte entre componentes)
 const loading = computed(() => authStore.loading)
+
+watch(currentStep, async (newStep) => {
+  if (newStep === 2) {
+    await nextTick()
+    passwordInput.value?.focus()
+  }
+})
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
