@@ -7,9 +7,11 @@ import { createPinia } from 'pinia'
 import router from './router'
 
 declare const window: IWindow & IStateWindow
-if (import.meta.env.VITE_APP_NODE_ENV === 'development' && window._isMockingEnabledPromise) {
-  await window._isMockingEnabledPromise
+;(async () => {
+  if (import.meta.env.VITE_APP_NODE_ENV === 'development' && window._isMockingEnabledPromise) {
+    await window._isMockingEnabledPromise
   }
-const pinia = createPinia()
-
-createApp(App).use(router).use(pinia).mount('#app')
+  const pinia = createPinia()
+  
+  createApp(App).use(router).use(pinia).mount('#app')
+})()
