@@ -9,19 +9,14 @@ export const useAuth = () => {
   const authStore = useAuthStore()
   
   return {
-    // State
     user: authStore.user,
     session: authStore.session,
     loading: authStore.loading,
     
-    // Getters
     isAuthenticated: authStore.isAuthenticated,
     
-    // Actions
     signUp: authStore.signUp,
     signIn: authStore.signIn,
-    signInWithGoogle: authStore.signInWithGoogle,
-    signInWithApple: authStore.signInWithApple,
     signOut: authStore.signOut,
     getCurrentUser: authStore.fetchUser,
     getCurrentSession: authStore.fetchSession,

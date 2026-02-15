@@ -1,19 +1,17 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { supabase } from '@/clients/supabase'
-import type { User, Session, AuthError } from '@supabase/supabase-js'
+import type { User, Session } from '@supabase/supabase-js'
 import { redirectTo } from '@/utils'
 
 export type UserRole = 'admin' | 'user' | 'moderator'
 
 export const useAuthStore = defineStore('auth', () => {
-  // State
   const user = ref<User | null>(null)
   const session = ref<Session | null>(null)
   const loading = ref(false)
   const initialized = ref(false)
 
-  // Getters
   const isAuthenticated = computed(() => !!session.value && !!user.value)
   
   const userRole = computed<UserRole>(() => {
@@ -27,7 +25,6 @@ export const useAuthStore = defineStore('auth', () => {
   const userEmail = computed(() => user.value?.email || '')
   const userId = computed(() => user.value?.id || '')
 
-  // Actions
   const setUser = (newUser: User | null) => {
     user.value = newUser
   }
@@ -52,7 +49,6 @@ export const useAuthStore = defineStore('auth', () => {
         throw error
       }
       
-      // Detectar usuario existente
       if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
         throw new Error('This email is already registered. Please sign in instead.')
       }
@@ -81,42 +77,6 @@ export const useAuthStore = defineStore('auth', () => {
         setSession(data.session)
         setUser(data.user)
       }
-      
-      return data
-    } finally {
-      loading.value = false
-    }
-  }
-
-  const signInWithGoogle = async () => {
-    loading.value = true
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/login`
-        }
-      })
-      
-      if (error) throw error
-      
-      return data
-    } finally {
-      loading.value = false
-    }
-  }
-
-  const signInWithApple = async () => {
-    loading.value = true
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'apple',
-        options: {
-          redirectTo: `${window.location.origin}/login`
-        }
-      })
-      
-      if (error) throw error
       
       return data
     } finally {
@@ -218,7 +178,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // Inicializar auth state y escuchar cambios
   const initialize = async () => {
     if (initialized.value) return
 
@@ -243,13 +202,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return {
-    // State
     user,
     session,
     loading,
     initialized,
     
-    // Getters
     isAuthenticated,
     userRole,
     isAdmin,
@@ -258,11 +215,8 @@ export const useAuthStore = defineStore('auth', () => {
     userEmail,
     userId,
     
-    // Actions
     signUp,
     signIn,
-    signInWithGoogle,
-    signInWithApple,
     signOut,
     fetchUser,
     fetchSession,

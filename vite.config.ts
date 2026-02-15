@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
@@ -107,7 +107,9 @@ export default defineConfig({
   },
   plugins: [vue(), tailwindcss(), webSocketPlugin()],
   define: {
-    'process.env': process.env
+    'process.env.VITE_APP_NODE_ENV': JSON.stringify(process.env.VITE_APP_NODE_ENV),
+    'process.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL),
+    'process.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY)
   },
   resolve: {
     alias: {
@@ -118,10 +120,31 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
+        silenceDeprecations: ['legacy-js-api'],
         additionalData: `
-      @forward "@/scss/base.scss";
-    `
+          @forward "@/scss/base.scss";
+        `
       }
+    }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/main.ts',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/mockData',
+        'tests',
+        'dist',
+        'public',
+        'test-reports',
+        'test-results'
+      ]
     }
   }
 })

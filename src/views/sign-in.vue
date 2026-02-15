@@ -357,19 +357,11 @@ const handleForgotPassword = async () => {
 }
 
 const handleGoogleSignIn = async () => {
-  try {
-    await authStore.signInWithGoogle()
-  } catch (error: any) {
-    errorMessage.value = error.message || 'An error occurred with Google sign in'
-  }
+  return
 }
 
 const handleAppleSignIn = async () => {
-  try {
-    await authStore.signInWithApple()
-  } catch (error: any) {
-    errorMessage.value = error.message || 'An error occurred with Apple sign in'
-  }
+  return
 }
 </script>
 
