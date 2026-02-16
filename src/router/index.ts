@@ -8,7 +8,6 @@ import QR from "@/components/QR.vue";
 import SignUp from "@/views/sign-up.vue";
 import SignIn from "@/views/sign-in.vue";
 import { authGuard, guestGuard } from "@/middlewares";
-import ShopLayout from "@/views/shop.layout.vue";
 import ProductsPage from "@/pages/products.page.vue";
 const routes: RouteRecordRaw[] = [
   {
