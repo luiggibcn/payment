@@ -3,10 +3,12 @@ import { defineStore } from 'pinia'
 import { supabase } from '@/clients/supabase'
 import type { User, Session } from '@supabase/supabase-js'
 import { redirectTo } from '@/utils'
+import { useCartStore } from './cart.store'
 
 export type UserRole = 'admin' | 'user' | 'moderator'
 
 export const useAuthStore = defineStore('auth', () => {
+  const cart = useCartStore()
   const user = ref<User | null>(null)
   const session = ref<Session | null>(null)
   const loading = ref(false)
@@ -106,6 +108,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (error) throw error
       
       setUser(currentUser)
+      cart.userCart = currentUser
       return currentUser
     } catch (error) {
       setUser(null)

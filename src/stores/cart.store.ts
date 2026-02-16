@@ -1,3 +1,4 @@
+import type { User } from '@supabase/supabase-js'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -16,6 +17,7 @@ export interface CartItem extends CartProduct {
 
 export const useCartStore = defineStore('cart', () => {
   // STATE
+  const userCart = ref<User | null>(null)
   const items = ref<CartItem[]>([])
   const taxRate = ref(5) // %
 
@@ -109,6 +111,8 @@ export const useCartStore = defineStore('cart', () => {
     // state
     items,
     taxRate,
+    userCart,
+
     // getters
     itemCount,
     subtotal,

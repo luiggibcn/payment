@@ -4,7 +4,6 @@ import {
   type RouteRecordRaw,
 } from "vue-router";
 import { AppRoute } from "@/interfaces/routes.interfaces";
-import Example from "@/components/Example.vue";
 import QR from "@/components/QR.vue";
 import SignUp from "@/views/sign-up.vue";
 import SignIn from "@/views/sign-in.vue";
@@ -29,9 +28,9 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: guestGuard
   },
   {
-    path: "/shop",
-    component: ShopLayout,
-    name: AppRoute.SHOP,
+    path: "/products",
+    name: AppRoute.PRODUCTS,
+    component: ProductsPage,
     beforeEnter: authGuard,
     // children: [
     //    {
@@ -40,17 +39,6 @@ const routes: RouteRecordRaw[] = [
     //      component: ProductsPage,
     //    },
     // ],
-  },
-  {
-    path: "/products",
-    name: AppRoute.PRODUCTS,
-    component: ProductsPage,
-    beforeEnter: guestGuard
-  },
-  {
-    path: "/test",
-    component: Example,
-    name: AppRoute.TEST,
   },
   {
     path: "/qr",

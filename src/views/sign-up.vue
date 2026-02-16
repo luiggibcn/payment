@@ -1,27 +1,10 @@
 <template>
-  <language-switcher />
+  <LanguageSwitcher />
   <div class="min-h-screen bg-black flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-lg">
-      <!-- Logo y título -->
-      <div class="text-center mb-8">
-        <div class="flex items-center justify-center gap-2 mb-4">
-          <div class="text-pink-500 text-2xl">
-            <img alt="Payment4You logo" src="../assets/logo.svg" class="h-16 w-16">
-          </div>
-          <h1 class="text-white text-2xl font-semibold">Payment4You</h1>
-        </div>
-        <h2 class="text-white text-xl font-medium mb-2">{{ t('auth.welcomeTitle') }}</h2>
-        <p class="text-gray-400 text-sm">{{ t('auth.welcomeSubtitle') }}</p>
-      </div>
+      <HeaderAuth :welcome-title="t('auth.welcomeTitle')" :welcome-subtitle="t('auth.welcomeSubtitle')" />
 
-      <!-- Mensaje de error/éxito -->
-      <div v-if="errorMessage" class="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
-        <p class="text-red-200 text-sm">{{ errorMessage }}</p>
-      </div>
-
-      <div v-if="successMessage" class="mb-4 p-3 bg-green-900/50 border border-green-500 rounded-lg">
-        <p class="text-green-200 text-sm">{{ successMessage }}</p>
-      </div>
+      <ErrorSuccessMessage :error-message="errorMessage" :success-message="successMessage"/>
 
       <!-- Botones de OAuth -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
@@ -65,15 +48,7 @@
         </button>
       </div>
 
-      <!-- Divider -->
-      <div class="relative mb-6">
-        <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-gray-700"></div>
-        </div>
-        <div class="relative flex justify-center text-sm">
-          <span class="px-4 bg-black text-gray-400">{{ t('auth.continueWithEmail') }}</span>
-        </div>
-      </div>
+      <Divider :continue-mail-text="t('auth.continueWithEmail')" />
 
       <!-- Form -->
       <form @submit.prevent="handleEmailSignUp" class="space-y-4">
@@ -218,12 +193,12 @@
 
       <!-- Terms -->
       <div class="text-center mt-8">
-        <p class="text-gray-500 text-xs">
-          {{ t('auth.byAgreeing') }}
-          <a href="#" class="text-white hover:underline cursor-pointer">{{ t('auth.termsAndConditions') }}</a>
-          {{ t('auth.and') }}
-          <a href="#" class="text-white hover:underline cursor-pointer">{{ t('auth.privacyPolicy') }}</a>
-        </p>
+        <TC
+          :by-agreeing="t('auth.byAgreeing')"
+          :terms-conditions="t('auth.termsAndConditions')"
+          :and-text="t('auth.and')"
+          :privacy-policy="t('auth.privacyPolicy')"
+        />
       </div>
     </div>
   </div>
@@ -236,6 +211,10 @@ import { useAuthStore } from '@/stores/auth.store'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import HeaderAuth from '@/components/auth/HeaderAuth.vue'
+import ErrorSuccessMessage from '@/components/auth/ErrorSuccessMessage.vue'
+import Divider from '@/components/auth/Divider.vue'
+import TC from '@/components/auth/TC.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
