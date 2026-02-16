@@ -72,6 +72,14 @@
               Settings
             </span>
           </button>
+          <button class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer" @click="userSignOut">
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m6 3c-.79565 0-1.55871.31607-2.12132.87868s-.87868 1.32567-.87868 2.12132v12c0 .7956.31607 1.5587.87868 2.1213s1.32567.8787 2.12132.8787h11c.2652 0 .5196-.1054.7071-.2929s.2929-.4419.2929-.7071-.1054-.5196-.2929-.7071-.4419-.2929-.7071-.2929h-11c-.26522 0-.51957-.1054-.70711-.2929-.18753-.1875-.29289-.4419-.29289-.7071v-12c0-.26522.10536-.51957.29289-.70711.18754-.18753.44189-.29289.70711-.29289h11c.2652 0 .5196-.10536.7071-.29289.1875-.18754.2929-.44189.2929-.70711s-.1054-.51957-.2929-.70711c-.1875-.18753-.4419-.29289-.7071-.29289zm9.707 4.293c-.0922-.09551-.2026-.17169-.3246-.2241s-.2532-.08-.386-.08115-.2645.02415-.3874.07443-.2345.12453-.3284.21842c-.0939.0939-.1681.20555-.2184.32845-.0503.12289-.0756.25457-.0745.38735.0012.13278.0288.264.0812.386.0524.12201.1286.23235.2241.3246l2.293 2.293h-8.586c-.26522 0-.51957.1054-.70711.2929-.18753.1875-.29289.4419-.29289.7071s.10536.5196.29289.7071c.18754.1875.44189.2929.70711.2929h8.586l-2.293 2.293c-.1822.1886-.283.4412-.2807.7034s.1075.513.2929.6984.4362.2906.6984.2929.5148-.0985.7034-.2807l4-4c.1875-.1875.2928-.4418.2928-.707s-.1053-.5195-.2928-.707z" fill="rgb(0,0,0)" fill-rule="evenodd"/>
+              </svg>
+              Sign out
+            </span>
+          </button>
         </nav>
 
         <!-- Right Section: Language Selector + User Profile -->
@@ -287,10 +295,11 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Customer name</label>
               <input 
-                type="text" 
+                type="text"
+                :disabled="true" 
                 v-model="customerName"
                 placeholder="Enter name" 
-                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700 cursor-not-allowed"
               />
             </div>
             <div>
@@ -391,9 +400,11 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useCartStore, type CartProduct } from '@/stores/cart.store'
 import FeaturedGrid from '@/components/products/FeaturedGrid.vue'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
+import { useAuthStore } from '@/stores/auth.store'
 
 // Cart store
 const cart = useCartStore()
+const authStore = useAuthStore()
 
 // Scroll state
 const isScrolled = ref(false)
@@ -442,7 +453,7 @@ const handleClickOutside = (event: MouseEvent) => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   document.addEventListener('click', handleClickOutside)
-  customerName.value = cart.userCart?.email ?? 'Domeniko'
+  customerName.value = authStore.user?.user_metadata?.full_name ?? 'Domeniko'
 })
 
 onUnmounted(() => {
@@ -482,4 +493,10 @@ const getItemQuantity = (productId: CartProduct['id']): number => {
 const orderType = ref('dine-in')
 const customerName = ref('Darius Sinarmulla')
 const tableNumber = ref('04')
+
+const userSignOut = async (): Promise<void> => {
+  try {
+    await authStore.signOut()
+  } catch (_) {}
+}
 </script>

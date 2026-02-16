@@ -7,7 +7,7 @@
 			<h1 class="text-white text-2xl font-semibold">Payment4You</h1>
 		</div>
 		<h2 class="text-white text-xl font-medium mb-2">{{ props.welcomeTitle }}</h2>
-		<p class="text-gray-400 text-sm">{{ props.welcomeTitle }}</p>
+		<p class="text-gray-400 text-sm">{{ props.welcomeSubtitle }}</p>
 	</div>
 </template>
 

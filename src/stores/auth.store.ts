@@ -35,35 +35,46 @@ export const useAuthStore = defineStore('auth', () => {
     session.value = newSession
   }
 
-  const signUp = async (email: string, password: string) => {
-    loading.value = true
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      })
-      
-      if (error) {
-        if (error.message.includes('already registered') || 
-            error.message.includes('User already registered')) {
-          throw new Error('This email is already registered. Please sign in instead.')
-        }
-        throw error
-      }
-      
-      if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
+const signUp = async (email: string, password: string, fullName?: string) => {
+  loading.value = true
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    })
+
+    if (error) {
+      // Detectar usuario existente por mensaje de error
+      if (
+        error.message.includes('already registered') ||
+        error.message.includes('User already registered')
+      ) {
         throw new Error('This email is already registered. Please sign in instead.')
       }
-      
-      if (data.user && data.session) {
-        throw new Error('This email is already registered. Please sign in instead.')
-      }
-      
-      return data
-    } finally {
-      loading.value = false
+      throw error
     }
+
+    // Detectar usuario existente: Si devuelve sesión, el usuario ya existe y se auto-logueó
+    if (data.session) {
+      throw new Error('This email is already registered. Please sign in instead.')
+    }
+
+    // Detectar usuario existente: Si el user existe pero sin identities
+    if (data.user && (!data.user.identities || data.user.identities.length === 0)) {
+      throw new Error('This email is already registered. Please sign in instead.')
+    }
+
+    return data
+  } finally {
+    loading.value = false
   }
+}
+
 
   const signIn = async (email: string, password: string) => {
     loading.value = true

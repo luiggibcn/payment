@@ -144,6 +144,11 @@ describe("useAuth", () => {
       expect(supabase.auth.signUp).toHaveBeenCalledWith({
         email: "test@example.com",
         password: "password123",
+        options: {
+          data: {
+            full_name: undefined
+          }
+        }
       });
     });
 

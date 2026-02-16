@@ -103,33 +103,40 @@ describe("auth.store", () => {
       expect(supabase.auth.signUp).toHaveBeenCalledWith({
         email: "test@example.com",
         password: "password123",
+        options: {
+          data: {
+            full_name: undefined,
+          },
+        },
       });
       expect(result.user).toEqual(newUser);
       expect(result.session).toBeNull();
       expect(store.loading).toBe(false);
     });
 
-    it('should throw error when user already exists (has session)', async () => {
-  // Usuario con identities pero también con sesión (usuario existente auto-logueado)
-  const existingUser = {
-    ...mockUser,
-    identities: [{ provider: 'email', id: 'identity-123' }] // ✅ Tiene identities
-  } as User
+    it("should throw error when user already exists (has session)", async () => {
+      // Usuario con identities pero también con sesión (usuario existente auto-logueado)
+      const existingUser = {
+        ...mockUser,
+        identities: [{ provider: "email", id: "identity-123" }], // ✅ Tiene identities
+      } as User;
 
-  vi.mocked(supabase.auth.signUp).mockResolvedValueOnce({
-    data: {
-      user: existingUser,
-      session: mockSession // ✅ Y también tiene sesión
-    },
-    error: null
-  } as any)
+      vi.mocked(supabase.auth.signUp).mockResolvedValueOnce({
+        data: {
+          user: existingUser,
+          session: mockSession, // ✅ Y también tiene sesión
+        },
+        error: null,
+      } as any);
 
-  await expect(
-    store.signUp('existing@example.com', 'password123')
-  ).rejects.toThrow('This email is already registered. Please sign in instead.')
+      await expect(
+        store.signUp("existing@example.com", "password123"),
+      ).rejects.toThrow(
+        "This email is already registered. Please sign in instead.",
+      );
 
-  expect(store.loading).toBe(false)
-})
+      expect(store.loading).toBe(false);
+    });
 
     it("should throw error when user already exists (identities empty)", async () => {
       const existingUser = {
@@ -257,19 +264,19 @@ describe("auth.store", () => {
       expect(store.isAuthenticated).toBe(true);
       expect(result.user).toEqual(mockUser);
     });
-      it('should handle sign in without setting user when data is incomplete', async () => {
-    vi.mocked(supabase.auth.signInWithPassword).mockResolvedValueOnce({
-      data: {
-        user: mockUser,
-        session: null // Sin sesión, no entra en el if
-      },
-      error: null
-    } as any)
+    it("should handle sign in without setting user when data is incomplete", async () => {
+      vi.mocked(supabase.auth.signInWithPassword).mockResolvedValueOnce({
+        data: {
+          user: mockUser,
+          session: null, // Sin sesión, no entra en el if
+        },
+        error: null,
+      } as any);
 
-    const result = await store.signIn('test@example.com', 'password123')
+      const result = await store.signIn("test@example.com", "password123");
 
-    expect(result.user).toEqual(mockUser)
-  })
+      expect(result.user).toEqual(mockUser);
+    });
 
     it("should handle invalid credentials", async () => {
       vi.mocked(supabase.auth.signInWithPassword).mockResolvedValueOnce({
@@ -385,24 +392,24 @@ describe("auth.store", () => {
       expect(store.session).toBeNull();
       expect(result).toBeNull();
     });
-      it('should handle getSession error and set session to null', async () => {
-    vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
-      data: { session: null },
-      error: {
-        message: 'Session expired',
-        name: 'AuthApiError',
-        status: 401,
-        code: 'session_expired',
-        __isAuthError: true
-      }
-    } as any)
+    it("should handle getSession error and set session to null", async () => {
+      vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
+        data: { session: null },
+        error: {
+          message: "Session expired",
+          name: "AuthApiError",
+          status: 401,
+          code: "session_expired",
+          __isAuthError: true,
+        },
+      } as any);
 
-    const result = await store.fetchSession()
+      const result = await store.fetchSession();
 
-    expect(supabase.auth.getSession).toHaveBeenCalled()
-    expect(store.session).toBeNull()
-    expect(result).toBeNull()
-  })
+      expect(supabase.auth.getSession).toHaveBeenCalled();
+      expect(store.session).toBeNull();
+      expect(result).toBeNull();
+    });
   });
 
   describe("resetPassword", () => {
@@ -459,38 +466,38 @@ describe("auth.store", () => {
       expect(store.userRole).toBe("admin");
       expect(store.isAdmin).toBe(true);
     });
-      it('should not update store when user is null in response', async () => {
-    const previousUser = mockUser
-    store.user = previousUser
+    it("should not update store when user is null in response", async () => {
+      const previousUser = mockUser;
+      store.user = previousUser;
 
-    vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
-      data: { user: null }, // Sin user, no entra en el if
-      error: null
-    } as any)
+      vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
+        data: { user: null }, // Sin user, no entra en el if
+        error: null,
+      } as any);
 
-    await store.updateUserRole('admin')
+      await store.updateUserRole("admin");
 
-    // No debería cambiar el user del store
-    expect(store.user).toEqual(previousUser)
-  })
-      it('should handle updateUserRole error', async () => {
-    vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
-      data: { user: null },
-      error: {
-        message: 'Unauthorized',
-        name: 'AuthApiError',
-        status: 403,
-        code: 'unauthorized',
-        __isAuthError: true
-      }
-    } as any)
+      // No debería cambiar el user del store
+      expect(store.user).toEqual(previousUser);
+    });
+    it("should handle updateUserRole error", async () => {
+      vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
+        data: { user: null },
+        error: {
+          message: "Unauthorized",
+          name: "AuthApiError",
+          status: 403,
+          code: "unauthorized",
+          __isAuthError: true,
+        },
+      } as any);
 
-    await expect(
-      store.updateUserRole('admin')
-    ).rejects.toThrow('Unauthorized')
+      await expect(store.updateUserRole("admin")).rejects.toThrow(
+        "Unauthorized",
+      );
 
-    expect(store.loading).toBe(false)
-  })
+      expect(store.loading).toBe(false);
+    });
   });
 
   describe("updateProfile", () => {
@@ -513,38 +520,38 @@ describe("auth.store", () => {
       });
       expect(store.user).toEqual(updatedUser);
     });
-      it('should not update store when user is null in response', async () => {
-    const previousUser = mockUser
-    store.user = previousUser
+    it("should not update store when user is null in response", async () => {
+      const previousUser = mockUser;
+      store.user = previousUser;
 
-    vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
-      data: { user: null }, // Sin user, no entra en el if
-      error: null
-    } as any)
+      vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
+        data: { user: null }, // Sin user, no entra en el if
+        error: null,
+      } as any);
 
-    await store.updateProfile({ name: 'Test' })
+      await store.updateProfile({ name: "Test" });
 
-    // No debería cambiar el user del store
-    expect(store.user).toEqual(previousUser)
-  })
-      it('should handle updateProfile error', async () => {
-    vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
-      data: { user: null },
-      error: {
-        message: 'Update failed',
-        name: 'AuthApiError',
-        status: 500,
-        code: 'update_failed',
-        __isAuthError: true
-      }
-    } as any)
+      // No debería cambiar el user del store
+      expect(store.user).toEqual(previousUser);
+    });
+    it("should handle updateProfile error", async () => {
+      vi.mocked(supabase.auth.updateUser).mockResolvedValueOnce({
+        data: { user: null },
+        error: {
+          message: "Update failed",
+          name: "AuthApiError",
+          status: 500,
+          code: "update_failed",
+          __isAuthError: true,
+        },
+      } as any);
 
-    await expect(
-      store.updateProfile({ name: 'Test' })
-    ).rejects.toThrow('Update failed')
+      await expect(store.updateProfile({ name: "Test" })).rejects.toThrow(
+        "Update failed",
+      );
 
-    expect(store.loading).toBe(false)
-  })
+      expect(store.loading).toBe(false);
+    });
   });
 
   describe("Computed Properties", () => {
@@ -627,69 +634,73 @@ describe("auth.store", () => {
 
       expect(supabase.auth.onAuthStateChange).toHaveBeenCalled();
     });
-    it('should handle auth state change with new session', async () => {
-    let authCallback: any
+    it("should handle auth state change with new session", async () => {
+      let authCallback: any;
 
-    vi.mocked(supabase.auth.getSession).mockResolvedValue({
-      data: { session: null },
-      error: null
-    } as any)
-    
-    vi.mocked(supabase.auth.getUser).mockResolvedValue({
-      data: { user: mockUser },
-      error: null
-    } as any)
+      vi.mocked(supabase.auth.getSession).mockResolvedValue({
+        data: { session: null },
+        error: null,
+      } as any);
 
-    // Capturar el callback
-    vi.mocked(supabase.auth.onAuthStateChange).mockImplementationOnce((callback) => {
-      authCallback = callback
-      return {
-        data: { subscription: { unsubscribe: vi.fn() } }
-      } as any
-    })
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as any);
 
-    await store.initialize()
+      // Capturar el callback
+      vi.mocked(supabase.auth.onAuthStateChange).mockImplementationOnce(
+        (callback) => {
+          authCallback = callback;
+          return {
+            data: { subscription: { unsubscribe: vi.fn() } },
+          } as any;
+        },
+      );
 
-    // Simular cambio de auth con nueva sesión
-    await authCallback('SIGNED_IN', mockSession)
+      await store.initialize();
 
-    expect(store.session).toEqual(mockSession)
-    expect(supabase.auth.getUser).toHaveBeenCalled()
-  })
+      // Simular cambio de auth con nueva sesión
+      await authCallback("SIGNED_IN", mockSession);
 
-  // 👇 NUEVO TEST - callback sin sesión (logout)
-  it('should handle auth state change without session', async () => {
-    let authCallback: any
+      expect(store.session).toEqual(mockSession);
+      expect(supabase.auth.getUser).toHaveBeenCalled();
+    });
 
-    // Setup inicial con usuario logueado
-    store.user = mockUser
-    store.session = mockSession
+    // 👇 NUEVO TEST - callback sin sesión (logout)
+    it("should handle auth state change without session", async () => {
+      let authCallback: any;
 
-    vi.mocked(supabase.auth.getSession).mockResolvedValue({
-      data: { session: mockSession },
-      error: null
-    } as any)
-    
-    vi.mocked(supabase.auth.getUser).mockResolvedValue({
-      data: { user: mockUser },
-      error: null
-    } as any)
+      // Setup inicial con usuario logueado
+      store.user = mockUser;
+      store.session = mockSession;
 
-    // Capturar el callback
-    vi.mocked(supabase.auth.onAuthStateChange).mockImplementationOnce((callback) => {
-      authCallback = callback
-      return {
-        data: { subscription: { unsubscribe: vi.fn() } }
-      } as any
-    })
+      vi.mocked(supabase.auth.getSession).mockResolvedValue({
+        data: { session: mockSession },
+        error: null,
+      } as any);
 
-    await store.initialize()
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as any);
 
-    // Simular logout (sin sesión)
-    await authCallback('SIGNED_OUT', null)
+      // Capturar el callback
+      vi.mocked(supabase.auth.onAuthStateChange).mockImplementationOnce(
+        (callback) => {
+          authCallback = callback;
+          return {
+            data: { subscription: { unsubscribe: vi.fn() } },
+          } as any;
+        },
+      );
 
-    expect(store.session).toBeNull()
-    expect(store.user).toBeNull()
-  })
+      await store.initialize();
+
+      // Simular logout (sin sesión)
+      await authCallback("SIGNED_OUT", null);
+
+      expect(store.session).toBeNull();
+      expect(store.user).toBeNull();
+    });
   });
 });
