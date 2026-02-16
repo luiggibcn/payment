@@ -36,6 +36,7 @@ describe('cart.store', () => {
   beforeEach(() => {
     // Crear Pinia nueva para cada test
     setActivePinia(createPinia())
+    localStorage.clear()
     store = useCartStore()
   })
 
