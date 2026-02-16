@@ -329,52 +329,59 @@
 
           <!-- Ordered Items -->
           <div class="mb-6">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-sm font-semibold text-gray-900">Ordered menu</h3>
-              <span class="text-sm text-gray-500">{{ cart.itemCount }} Items</span>
-            </div>
-
-            <div class="space-y-4 max-h-64 overflow-y-auto">
-              <div 
-                v-for="item in cart.items" 
-                :key="item.id"
-                class="flex items-start gap-3"
-              >
-                <img :src="item.image" :alt="item.name" class="w-16 h-16 rounded-lg object-cover shrink-0" />
-                <div class="flex-1 min-w-0">
-                  <h4 class="font-medium text-gray-900 text-sm">{{ item.name }}</h4>
-                  <p class="text-xs text-gray-500 mb-2">${{ item.price.toFixed(2) }} ×{{ item.quantity }}</p>
-                  <div class="flex items-center gap-2">
-                    <button 
-                      class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
-                      @click="cart.decrement(item.id)"
-                    >
-                      <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                      </svg>
-                    </button>
-                    <span class="text-sm font-medium w-6 text-center text-gray-600">{{ item.quantity }}</span>
-                    <button 
-                      class="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center hover:bg-gray-800 transition-colors cursor-pointer"
-                      @click="cart.increment(item)"
-                    >
-                      <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                      </svg>
-                    </button>
-                    <button 
-                      class="ml-auto p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors cursor-pointer"
-                      @click="cart.removeProduct(item.id)"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <span class="font-semibold text-gray-900 text-sm shrink-0">${{ (item.price * item.quantity).toFixed(2) }}</span>
+            <template v-if="cart.itemCount < 1">
+              <div class="p-4 mb-4 text-sm text-fg-brand-strong rounded-md bg-orange-100" role="alert">
+                <span class="font-xs text-orange-700 text-center block">{{ t('common.emptyCart') }}</span>
               </div>
-            </div>
+            </template>
+            <template v-else>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-semibold text-gray-900">Ordered menu</h3>
+                <span class="text-sm text-gray-500">{{ cart.itemCount }} Items</span>
+              </div>
+  
+              <div class="space-y-4 max-h-64 overflow-y-auto">
+                <div 
+                  v-for="item in cart.items" 
+                  :key="item.id"
+                  class="flex items-start gap-3"
+                >
+                  <img :src="item.image" :alt="item.name" class="w-16 h-16 rounded-lg object-cover shrink-0" />
+                  <div class="flex-1 min-w-0">
+                    <h4 class="font-medium text-gray-900 text-sm">{{ item.name }}</h4>
+                    <p class="text-xs text-gray-500 mb-2">${{ item.price.toFixed(2) }} ×{{ item.quantity }}</p>
+                    <div class="flex items-center gap-2">
+                      <button 
+                        class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
+                        @click="cart.decrement(item.id)"
+                      >
+                        <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                        </svg>
+                      </button>
+                      <span class="text-sm font-medium w-6 text-center text-gray-600">{{ item.quantity }}</span>
+                      <button 
+                        class="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center hover:bg-gray-800 transition-colors cursor-pointer"
+                        @click="cart.increment(item)"
+                      >
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                      </button>
+                      <button 
+                        class="ml-auto p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors cursor-pointer"
+                        @click="cart.removeProduct(item.id)"
+                      >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <span class="font-semibold text-gray-900 text-sm shrink-0">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                </div>
+              </div>
+            </template>
           </div>
 
           <!-- Payment Details -->
@@ -432,10 +439,12 @@ import { useCartStore, type CartProduct } from '@/stores/cart.store'
 import FeaturedGrid from '@/components/products/FeaturedGrid.vue'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
 import { useAuthStore } from '@/stores/auth.store'
+import { useI18n } from 'vue-i18n'
 
 // Cart store
 const cart = useCartStore()
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 // Scroll state
 const isScrolled = ref(false)

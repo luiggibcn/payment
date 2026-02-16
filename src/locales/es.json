@@ -7,7 +7,8 @@
     "save": "Guardar",
     "back": "Atrás",
     "continue": "Continuar",
-    "or": "o"
+    "or": "o",
+    "emptyCart": "Tu pedido esta vacío"
   },
   "languages": {
     "select": "Selecciona tu idioma",
