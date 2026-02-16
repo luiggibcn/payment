@@ -10,6 +10,7 @@ export interface CartProduct {
   image: string
   video?: string
   badge?: string | null
+  width?: 1 | 2
 }
 
 export interface CartItem extends CartProduct {
