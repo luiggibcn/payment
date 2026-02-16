@@ -8,12 +8,12 @@
       <div class="flex items-center justify-between px-6 py-4">
         <!-- Logo -->
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="sm:w-12 sm:h-12 w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 sm:rounded-xl rounded-md flex items-center justify-center">
+            <svg class="sm:w-7 sm:h-7 w-4 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
             </svg>
           </div>
-          <span class="text-xl font-bold text-gray-900">Payment4You</span>
+          <span class="sm:text-xl text-sm font-bold text-gray-900">Payment4You</span>
         </div>
 
         <!-- Navigation -->
