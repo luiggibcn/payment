@@ -8,6 +8,7 @@ export interface CartProduct {
   category: string
   price: number
   image: string
+  video?: string
   badge?: string | null
 }
 

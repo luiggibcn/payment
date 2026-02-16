@@ -215,7 +215,16 @@
               class="bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
             >
               <div class="relative h-48 bg-gray-200">
-                <img :src="item.image" :alt="item.name" class="w-full h-full object-cover" />
+                <video 
+                  v-if="item.video"
+                  :src="item.video" 
+                  autoplay 
+                  loop 
+                  muted 
+                  playsinline
+                  class="w-full h-full object-cover"
+                />
+                <img v-else :src="item.image" :alt="item.name" class="w-full h-full object-cover" />
                 <span 
                   v-if="item.badge"
                   class="absolute top-3 right-3 px-3 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full flex items-center gap-1"
@@ -505,9 +514,9 @@ const searchQuery = ref('')
 
 // Menu items (mock data)
 const menuItems = ref<CartProduct[]>([
-  { id: 1, name: 'Crispy Calamari', category: 'Appetizer', price: 22.90, image: '/products/1.png', badge: 'Best seller' },
+  { id: 1, name: 'Crispy Calamari', category: 'Appetizer', price: 22.90, image: '/products/1.png', video: '/videos/pasta.mp4', badge: 'Best seller' },
   { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/products/2.png', badge: 'Best seller' },
-  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png', badge: 'Best seller' },
+  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png',badge: 'Best seller' },
   { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/products/4.png', badge: 'Best seller' },
   { id: 5, name: 'Seafood Tempting', category: 'Main Course', price: 18.90, image: '/products/5.png', badge: null },
   { id: 6, name: 'Melting Brownie', category: 'Dessert', price: 8.50, image: '/products/6.png', badge: null },
