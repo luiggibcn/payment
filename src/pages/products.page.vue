@@ -505,14 +505,14 @@ const searchQuery = ref('')
 
 // Menu items (mock data)
 const menuItems = ref<CartProduct[]>([
-  { id: 1, name: 'Crispy Calamari', category: 'Appetizer', price: 22.90, image: 'https://placehold.net/1.png', badge: 'Best seller' },
-  { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: 'https://placehold.net/2.png', badge: 'Best seller' },
-  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: 'https://placehold.net/3.png', badge: 'Best seller' },
-  { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: 'https://placehold.net/4.png', badge: 'Best seller' },
-  { id: 5, name: 'Seafood Tempting', category: 'Main Course', price: 18.90, image: 'https://placehold.net/5.png', badge: null },
-  { id: 6, name: 'Melting Brownie', category: 'Dessert', price: 8.50, image: 'https://placehold.net/6.png', badge: null },
-  { id: 7, name: 'Cheesy Pizza', category: 'Italian', price: 15.90, image: 'https://placehold.net/7.png', badge: null },
-  { id: 8, name: 'Matcha Ice Cream', category: 'Dessert', price: 6.90, image: 'https://placehold.net/8.png', badge: null },
+  { id: 1, name: 'Crispy Calamari', category: 'Appetizer', price: 22.90, image: '/products/1.png', badge: 'Best seller' },
+  { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/products/2.png', badge: 'Best seller' },
+  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png', badge: 'Best seller' },
+  { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/products/4.png', badge: 'Best seller' },
+  { id: 5, name: 'Seafood Tempting', category: 'Main Course', price: 18.90, image: '/products/5.png', badge: null },
+  { id: 6, name: 'Melting Brownie', category: 'Dessert', price: 8.50, image: '/products/6.png', badge: null },
+  { id: 7, name: 'Cheesy Pizza', category: 'Italian', price: 15.90, image: '/products/7.png', badge: null },
+  { id: 8, name: 'Matcha Ice Cream', category: 'Dessert', price: 6.90, image: '/products/8.png', badge: null },
 ])
 
 // Cart actions

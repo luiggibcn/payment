@@ -34,8 +34,8 @@ export const handlerOptions: MockOptions = {
     http.get('https://placehold.co/*', () => {
       return new HttpResponse()
     }),
-    http.get('https://placehold.net/*', () => {
-      return new HttpResponse()
-    })
+    // http.get('https://placehold.net/*', () => {
+    //   return new HttpResponse()
+    // })
   ]
   
