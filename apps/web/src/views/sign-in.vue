@@ -10,7 +10,6 @@
       <div v-if="errorMessage" class="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
         <p class="text-red-200 text-sm">{{ errorMessage }}</p>
       </div>
-
       <!-- Step 1: Email (solo si currentStep === 1) -->
       <div v-if="currentStep === 1">
         <!-- Botones de OAuth -->
@@ -273,6 +272,7 @@ import HeaderAuth from '@/components/auth/HeaderAuth.vue'
 import ErrorSuccessMessage from '@/components/auth/ErrorSuccessMessage.vue'
 import Divider from '@/components/auth/Divider.vue'
 import TC from '@/components/auth/TC.vue'
+import { useBack } from '@/composables/useBackend'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -362,8 +362,9 @@ const handleGoogleSignIn = async () => {
   return
 }
 
-const handleAppleSignIn = async () => {
-  return
+const handleAppleSignIn = async (): Promise<void> => {
+  const res = await useBack().getHealth()
+  console.log({respuesta:res})
 }
 
 onMounted(()=>{
