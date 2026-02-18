@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     '/api/**': {
       cors: true,
       headers: {
-        'Access-Control-Allow-Origin': 'https://payment-nine-beta.vercel.app',
+        'Access-Control-Allow-Origin': process.env.WEB_URL,
         'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, X-DATA',
         'Access-Control-Allow-Credentials': 'true'
