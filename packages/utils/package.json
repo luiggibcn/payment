@@ -1,0 +1,14 @@
+{
+  "name": "@billsplit/utils",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "dependencies": {
+    "@billsplit/types": "workspace:*"
+  }
+}

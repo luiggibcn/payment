@@ -8,16 +8,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules/
+node_modules
 dist
 dist-ssr
-.output/
-.nuxt/
 *.local
 *.dev.*
-.env
-.env.local
-*.local
 
 # Editor directories and files
 .vscode/*
@@ -30,6 +25,5 @@ dist-ssr
 *.sln
 *.sw?
 
-.DS_Store
 coverage/
 coverage.html

@@ -103,6 +103,12 @@ export default defineConfig({
     port: 1313,
     headers: {
       'Service-Worker-Allowed': '/'
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      }
     }
   },
   plugins: [vue(), tailwindcss(), webSocketPlugin()],
