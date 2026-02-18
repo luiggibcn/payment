@@ -1,5 +1,8 @@
 {
   "name": "billsplit",
+  "author": {
+    "name": "Luiggi"
+  },
   "private": true,
   "scripts": {
     "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
