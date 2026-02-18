@@ -7,6 +7,8 @@ import { getRandomUUIDUser } from './src/utils'
 import type { Plugin } from 'vite'
 import type { IncomingMessage } from 'node:http'
 import type { Duplex } from 'node:stream'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 interface ExtendedWebSocket extends WebSocket {
   userId?: string
@@ -97,6 +99,9 @@ const webSocketPlugin = (): Plugin => ({
   }
 })
 
+const webPkg = JSON.parse(readFileSync(resolve(__dirname, 'package.json'), 'utf-8'))
+const apiPkg = JSON.parse(readFileSync(resolve(__dirname, '../api/package.json'), 'utf-8'))
+
 // https://vite.dev/config/
 export default defineConfig({
   server: {
@@ -114,7 +119,9 @@ export default defineConfig({
   define: {
     'process.env.VITE_APP_NODE_ENV': JSON.stringify(process.env.VITE_APP_NODE_ENV),
     'process.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL),
-    'process.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY)
+    'process.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY),
+    __WEB_VERSION__: JSON.stringify(webPkg.version),
+    __API_VERSION__: JSON.stringify(apiPkg.version),
   },
   resolve: {
     alias: {

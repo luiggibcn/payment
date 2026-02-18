@@ -68,3 +68,16 @@ export interface ApiResponse<T> {
   data: T | null
   error: string | null
 }
+
+// packages/config/index.ts
+
+// ...todo lo que ya tienes (API_ROUTES, ORDER_STATUS, etc.)
+
+// Window debug object
+export type IBillsplitWindow = Window & {
+  __BILLSPLIT__: {
+    web: string
+    api: string
+    env: string
+  }
+}
