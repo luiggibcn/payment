@@ -1,4 +1,3 @@
-// apps/api/nuxt.config.ts
 export default defineNuxtConfig({
   compatibilityDate: '2026-02-18',
   ssr: false,
@@ -7,14 +6,23 @@ export default defineNuxtConfig({
     supabaseUrl: process.env.SUPABASE_URL ?? '',
     supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
     public: {
-      webUrl: process.env.NUXT_PUBLIC_API_BASE ?? 'http://localhost:5173'
+      webUrl: process.env.WEB_URL ?? 'http://localhost:5173'
     }
   },
-
+  routeRules: {
+    '/api/**': {
+      cors: true,
+      headers: {
+        'Access-Control-Allow-Origin': 'https://payment-nine-beta.vercel.app',
+        'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-PAYMENT, X-DATA',
+        'Access-Control-Allow-Credentials': 'true'
+      }
+    }
+  },
   nitro: {
     experimental: { websocket: true }
   },
-
   typescript: {
     strict: true
   }
