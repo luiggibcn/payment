@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "buildCommand": "cd ../.. && pnpm build:api",
+  "installCommand": "cd ../.. && pnpm install",
+  "framework": "nuxtjs"
+}
