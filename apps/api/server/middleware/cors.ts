@@ -1,8 +1,9 @@
 export default defineEventHandler((event) => {
+  const config = useRuntimeConfig()
   const allowedOrigins = [
     'http://localhost:1313',
-    import.meta.env.VITE_API_URL ?? 'http://localhost:3001'  // ← pon tu URL de web en Vercel
-  ]
+    config.public.webUrl
+  ].filter(Boolean)
 
   const origin = getRequestHeader(event, 'origin') ?? ''
 
@@ -14,8 +15,8 @@ export default defineEventHandler((event) => {
   setResponseHeader(event, 'Access-Control-Allow-Headers', 'Content-Type, Authorization')
   setResponseHeader(event, 'Access-Control-Allow-Credentials', 'true')
 
-  // Preflight
-  if (getMethod(event) === 'OPTIONS') {
+  // ✅ event.method en vez de getMethod(event)
+  if (event.method === 'OPTIONS') {
     setResponseStatus(event, 204)
     return ''
   }

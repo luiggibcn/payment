@@ -1,5 +1,5 @@
 // apps/web/src/composables/useBack.ts
-import apiClient from '@/clients/client'
+import apiClient from '@/clients/axios'
 
 export const useBack = () => {
   const getHealth = async () => {
