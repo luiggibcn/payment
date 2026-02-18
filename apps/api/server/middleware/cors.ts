@@ -1,7 +1,7 @@
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig()
   const allowedOrigins = [
-    'http://localhost:1313',
+    'http://localhost:5173',
     config.public.webUrl
   ].filter(Boolean)
 
@@ -15,7 +15,6 @@ export default defineEventHandler((event) => {
   setResponseHeader(event, 'Access-Control-Allow-Headers', 'Content-Type, Authorization')
   setResponseHeader(event, 'Access-Control-Allow-Credentials', 'true')
 
-  // ✅ event.method en vez de getMethod(event)
   if (event.method === 'OPTIONS') {
     setResponseStatus(event, 204)
     return ''

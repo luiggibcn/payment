@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     supabaseUrl: process.env.SUPABASE_URL ?? '',
     supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
     public: {
-      webUrl: process.env.WEB_URL ?? 'http://localhost:3001'
+      webUrl: process.env.WEB_URL ?? 'http://localhost:5173'
     }
   },
   nitro: {
