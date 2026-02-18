@@ -10,9 +10,16 @@
     "dev:api": "pnpm --filter api dev",
     "build:web": "pnpm --filter web build",
     "build:api": "pnpm --filter api build",
-    "test:web": "pnpm --filter web test"
+    "test:web": "pnpm --filter web test",
+    "release:web": "bumpp --filter web",
+    "release:api": "bumpp --filter api",
+    "release": "pnpm release:web && pnpm release:api"
   },
   "devDependencies": {
+    "bumpp": "^10.4.1",
     "concurrently": "^9.2.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm release"
   }
 }
