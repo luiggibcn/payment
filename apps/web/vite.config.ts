@@ -100,7 +100,6 @@ const webSocketPlugin = (): Plugin => ({
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: 1313,
     headers: {
       'Service-Worker-Allowed': '/'
     },
