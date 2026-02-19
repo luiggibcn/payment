@@ -117,6 +117,7 @@ export default defineConfig({
   },
   plugins: [vue(), tailwindcss(), webSocketPlugin()],
   define: {
+    'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
     'process.env.VITE_APP_NODE_ENV': JSON.stringify(process.env.VITE_APP_NODE_ENV),
     'process.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL),
     'process.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY),
