@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { redirectTo } from '@/utils'
 import { useCartStore } from './cart.store'
-import axios from 'axios'
+import axiosClient from '@/clients/axios'
 
 // Nuestro tipo de usuario, no el de Supabase
 export type UserRole = 'admin' | 'editor' | 'waiter' | 'user'
@@ -49,7 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
 const signIn = async (email: string, password: string) => {
   loading.value = true
   try {
-    const { data } = await axios.post<{ session: AuthSession; user: AuthUser }>(
+    const { data } = await axiosClient.post<{ session: AuthSession; user: AuthUser }>(
       '/api/auth/sign-in',
       { email, password }
     )
@@ -70,7 +70,7 @@ const signIn = async (email: string, password: string) => {
 const signOut = async () => {
   loading.value = true
   try {
-    await axios.post('/api/auth/sign-out')
+    await axiosClient.post('/api/auth/sign-out')
   } catch {
     // Si falla el BE igualmente limpiamos local
   } finally {
