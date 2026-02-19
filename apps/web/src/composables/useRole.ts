@@ -11,7 +11,7 @@ export const useRole = () => {
   return {
     role: authStore.userRole,
     isAdmin: authStore.isAdmin,
-    isModerator: authStore.isModerator,
-    isUser: authStore.isUser
+    // isModerator: authStore.isModerator,
+    // isUser: authStore.isUser
   }
 }

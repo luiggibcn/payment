@@ -1,4 +1,3 @@
-import type { User } from '@supabase/supabase-js'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
 import type { AuthUser } from './auth.store'

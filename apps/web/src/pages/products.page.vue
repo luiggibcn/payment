@@ -476,7 +476,7 @@ const handleClickOutside = (event: MouseEvent) => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   document.addEventListener('click', handleClickOutside)
-  customerName.value = authStore.user?.user_metadata?.full_name ?? 'Domeniko'
+  // customerName.value = authStore.user?.user_metadata?.full_name ?? 'Domeniko'
 })
 
 onUnmounted(() => {

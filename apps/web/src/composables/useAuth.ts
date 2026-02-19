@@ -15,12 +15,12 @@ export const useAuth = () => {
     
     isAuthenticated: authStore.isAuthenticated,
     
-    signUp: authStore.signUp,
+    // signUp: authStore.signUp,
     signIn: authStore.signIn,
     signOut: authStore.signOut,
-    getCurrentUser: authStore.fetchUser,
-    getCurrentSession: authStore.fetchSession,
-    resetPassword: authStore.resetPassword,
-    updateUserRole: authStore.updateUserRole
+    // getCurrentUser: authStore.fetchUser,
+    // getCurrentSession: authStore.fetchSession,
+    // resetPassword: authStore.resetPassword,
+    // updateUserRole: authStore.updateUserRole
   }
 }
