@@ -1,6 +1,7 @@
 import type { User } from '@supabase/supabase-js'
 import { defineStore } from 'pinia'
 import { computed, ref, watch } from 'vue'
+import type { AuthUser } from './auth.store'
 
 export interface CartProduct {
   id: number | string
@@ -22,7 +23,7 @@ const CHANNEL_NAME = 'cart_sync'
 
 export const useCartStore = defineStore('cart', () => {
   // STATE
-  const userCart = ref<User | null>(null)
+  const userCart = ref<AuthUser | null>(null)
   const items = ref<CartItem[]>([])
   const taxRate = ref(5)
 

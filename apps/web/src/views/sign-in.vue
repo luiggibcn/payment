@@ -312,27 +312,27 @@ const handleLogin = async () => {
 
   try {
     const data = await authStore.signIn(email.value, password.value)
-    
+
     if (data.session) {
       const redirect = router.currentRoute.value.query.redirect as string
-      
-      if (redirect) {
-        router.push(redirect)
-      } else {
-        router.push('/products')
-      }
+      router.push(redirect ?? '/products')
     }
   } catch (error: any) {
-    if (error.message.includes('Invalid login credentials')) {
+    // Axios envuelve el error en error.response.data.message
+    const message = error.response?.data?.message ?? error.message ?? t('errors.genericError')
+
+    if (message.includes('Invalid login credentials') || message.includes('invalid_credentials')) {
       errorMessage.value = t('errors.invalidCredentials')
-    } else if (error.message.includes('Email not confirmed')) {
+    } else if (message.includes('Email not confirmed')) {
       errorMessage.value = t('errors.emailNotConfirmed')
     } else {
-      errorMessage.value = error.message || t('errors.genericError')
+      errorMessage.value = message
     }
+
     console.error('Login error:', error)
   }
 }
+
 
 const goBackToEmail = () => {
   currentStep.value = 1
@@ -341,21 +341,21 @@ const goBackToEmail = () => {
 }
 
 const handleForgotPassword = async () => {
-  if (!email.value) {
-    errorMessage.value = t('errors.enterEmailFirst')
-    currentStep.value = 1
-    return
-  }
+  // if (!email.value) {
+  //   errorMessage.value = t('errors.enterEmailFirst')
+  //   currentStep.value = 1
+  //   return
+  // }
 
-  errorMessage.value = ''
+  // errorMessage.value = ''
 
-  try {
-    await authStore.resetPassword(email.value)
-    alert(t('errors.passwordResetSent'))
-  } catch (error: any) {
-    errorMessage.value = error.message || t('errors.genericError')
-    console.error('Reset password error:', error)
-  }
+  // try {
+  //   await authStore.resetPassword(email.value)
+  //   alert(t('errors.passwordResetSent'))
+  // } catch (error: any) {
+  //   errorMessage.value = error.message || t('errors.genericError')
+  //   console.error('Reset password error:', error)
+  // }
 }
 
 const handleGoogleSignIn = async () => {

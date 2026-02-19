@@ -1,4 +1,4 @@
-// apps/web/src/clients/api.client.ts
+// appsweb/src/clients/api.client.ts
 import axios from 'axios'
 
 const axiosClient = axios.create({
@@ -8,20 +8,27 @@ const axiosClient = axios.create({
   }
 })
 
-// Interceptor de request — añade headers comunes a todas las peticiones
 axiosClient.interceptors.request.use((config) => {
   config.headers['X-PAYMENT'] = 'id'
   config.headers['X-DATA'] = new Date().toDateString()
-  // Aquí en el futuro añadirías el token JWT: config.headers['Authorization'] = `Bearer ${token}`
+
+  // ← añadir el token JWT si existe en localStorage
+  const session = localStorage.getItem('session')
+  if (session) {
+    const { access_token } = JSON.parse(session)
+    config.headers['Authorization'] = `Bearer ${access_token}`
+  }
+
   return config
 })
 
-// Interceptor de response — manejo de errores centralizado
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // redirigir a login si hace falta
+      localStorage.removeItem('session')
+      localStorage.removeItem('user')
+      window.location.href = '/login'
     }
     return Promise.reject(error)
   }
