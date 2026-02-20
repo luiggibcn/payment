@@ -133,8 +133,9 @@
               <div v-show="isLanguageDropdownOpen"
                 class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                 <button v-for="language in languages" :key="language.code" @click="selectLanguage(language)"
+                :disabled="!language.available"
                   class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer text-left"
-                  :class="{ 'bg-emerald-50': selectedLanguage.code === language.code }">
+                  :class="{ 'bg-emerald-50': selectedLanguage.code === language.code, 'hidden': !language.available }">
                   <span class="text-xl">{{ language.flag }}</span>
                   <span class="text-sm font-medium text-gray-700">{{ language.name }}</span>
                   <svg v-if="selectedLanguage.code === language.code" class="w-4 h-4 text-emerald-600 ml-auto"
@@ -173,20 +174,20 @@
       <div class="flex-1 space-y-6">
         <!-- Current Order Section -->
         <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Current order</h2>
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ t('products.currentOrder') }}</h2>
           <!-- Order Cards Grid -->
           <featured-grid />
         </section>
 
         <!-- Menu Section -->
         <section>
-          <h2 class="text-xl font-semibold text-gray-900 mb-4">Categories</h2>
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ t('products.categories') }}</h2>
           <categories-slider />
 
           <!-- Search & Filter -->
           <div class="flex items-center gap-3 mb-6">
             <div class="flex-1 relative">
-              <input type="text" v-model="searchQuery" placeholder="Search menu"
+              <input type="text" v-model="searchQuery" :placeholder="t('products.searchMenuPlaceholder')"
                 class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-600" />
               <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
@@ -273,7 +274,7 @@
       <!-- Right Section - Order Details -->
       <aside class="w-full xl:w-96 2xl:w-[420px] shrink-0">
         <div class="bg-white rounded-2xl p-6 xl:sticky xl:top-24">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6">Order details</h2>
+          <h2 class="text-xl font-semibold text-gray-900 mb-6">{{ t('products.orderDetails') }}</h2>
 
           <!-- Order Type Tabs -->
           <div class="flex gap-2 mb-6">
@@ -283,7 +284,7 @@
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]" @click="orderType = 'dine-in'">
-              Dine-in
+              {{t('products.dineIn')}}
             </button>
             <button :class="[
               'flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer',
@@ -291,7 +292,7 @@
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]" @click="orderType = 'takeaway'">
-              Takeaway
+              {{t('products.takeAway')}}
             </button>
             <button :class="[
               'flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer',
@@ -299,19 +300,19 @@
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             ]" @click="orderType = 'delivery'">
-              Delivery
+              {{t('products.delivery')}}
             </button>
           </div>
 
           <!-- Customer Info -->
           <div class="grid grid-cols-2 gap-4 mb-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Customer name</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{t('products.customerName')}}</label>
               <input type="text" :disabled="true" v-model="customerName" placeholder="Enter name"
                 class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700 cursor-not-allowed" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Table number</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">{{t('products.tableNumber')}}</label>
               <input type="text" v-model="tableNumber" :disabled="true" placeholder="04"
                 class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700 cursor-not-allowed" />
             </div>
@@ -371,21 +372,21 @@
 
           <!-- Payment Details -->
           <div class="border-t border-gray-200 pt-4 mb-6 space-y-3">
-            <h3 class="text-sm font-semibold text-gray-900 mb-3">Payment Details</h3>
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">{{ t('products.paymentDetails') }}</h3>
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-600">Subtotal</span>
+              <span class="text-gray-600">{{ t('products.subtotal') }}</span>
               <span class="font-medium text-gray-900">${{ cart.subtotal.toFixed(2) }}</span>
             </div>
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-600">Taxes</span>
+              <span class="text-gray-600">{{ t('products.taxes') }}</span>
               <span class="font-medium text-gray-900">{{ cart.taxRate }}%</span>
             </div>
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-600">Additional fee</span>
+              <span class="text-gray-600">{{ t('products.additionalFee') }}</span>
               <span class="font-medium text-gray-900">-</span>
             </div>
             <div class="flex items-center justify-between text-base font-semibold pt-3 border-t border-gray-200">
-              <span class="text-gray-900">Total</span>
+              <span class="text-gray-900">{{ t('products.total') }}</span>
               <span class="text-gray-900">${{ cart.total.toFixed(2) }}</span>
             </div>
           </div>
@@ -393,7 +394,7 @@
           <!-- Confirm Button -->
           <button
             class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors cursor-pointer">
-            Confirm
+            {{ t('products.confirmButton') }}
           </button>
         </div>
       </aside>
@@ -423,6 +424,8 @@ import FeaturedGrid from '@/components/products/FeaturedGrid.vue'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useI18n } from 'vue-i18n'
+import { setLocale } from '@/plugins/i18n'
+import type { Locale } from '@/locales'
 
 // Cart store
 const cart = useCartStore()
@@ -441,15 +444,16 @@ interface Language {
   code: string
   name: string
   flag: string
+  available: boolean
 }
 
 const languages = ref<Language[]>([
-  { code: 'EN', name: 'English', flag: '🇬🇧' },
-  { code: 'ES', name: 'Español', flag: '🇪🇸' },
-  { code: 'CA', name: 'Català', flag: '🏴' },
-  { code: 'FR', name: 'Français', flag: '🇫🇷' },
-  { code: 'DE', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'IT', name: 'Italiano', flag: '🇮🇹' },
+  { code: 'en', name: 'English', flag: '🇬🇧' , available: true},
+  { code: 'es', name: 'Español', flag: '🇪🇸' , available: true},
+  { code: 'ca', name: 'Català', flag: '🏴' , available: false},
+  { code: 'fr', name: 'Français', flag: '🇫🇷' , available: false},
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' , available: false},
+  { code: 'it', name: 'Italiano', flag: '🇮🇹' , available: false},
 ])
 
 const selectedLanguage = ref<Language>(languages.value[1]) // Español por defecto
@@ -460,9 +464,16 @@ const toggleLanguageDropdown = () => {
   isLanguageDropdownOpen.value = !isLanguageDropdownOpen.value
 }
 
+const changeLanguage = (newLocale: Language) => {
+  setLocale(newLocale.code as Locale)
+  console.log('Language changed to:', newLocale)
+}
+
 const selectLanguage = (language: Language) => {
+  if(!language.available) return
   selectedLanguage.value = language
   isLanguageDropdownOpen.value = false
+  changeLanguage(language)
   console.log('Language changed to:', language.code)
 }
 
@@ -488,9 +499,9 @@ const searchQuery = ref('')
 
 // Menu items (mock data)
 const menuItems = ref<CartProduct[]>([
-  { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/products/2.png', badge: 'Best seller' },
-  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png', video: '/videos/nachos.mp4', badge: 'Best seller' },
-  { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/products/4.png', badge: 'Best seller' },
+  { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/products/2.png', badge: t('products.bestSeller') },
+  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png', video: '/videos/nachos.mp4', badge: t('products.bestSeller') },
+  { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/products/4.png', badge: t('products.bestSeller') },
   { id: 5, name: 'Seafood Tempting', category: 'Main Course', price: 18.90, image: '/products/5.png', badge: null },
   { id: 6, name: 'Melting Brownie', category: 'Dessert', price: 8.50, image: '/products/6.png', badge: null },
   { id: 1, name: 'Crispy Calamari', category: 'Appetizer', price: 22.90, image: '/products/1.png', video: '/videos/pasta.mp4', badge: 'Destacado', width: 2 },

@@ -6,7 +6,7 @@ export const messages = {
   es
 }
 
-export const availableLocales = ['en', 'es'] as const
+export const availableLocales = ['en','es','ca','fr','de','it'] as const
 
 export type Locale = (typeof availableLocales)[number]
 

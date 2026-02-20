@@ -28,17 +28,6 @@
           🇪🇸 {{ t('languages.es') }}
         </button>
       </div>
-
-      <!-- Test de traducciones -->
-      <div class="mt-4 pt-4 border-t border-gray-700 hidden">
-        <p class="text-gray-400 text-xs mb-2">Translation Tests:</p>
-        <ul class="text-white text-xs space-y-1">
-          <li>{{ t('auth.welcomeTitle') }}</li>
-          <li>{{ t('common.loading') }}</li>
-          <li>{{ t('auth.signIn') }}</li>
-          <li>{{ t('errors.invalidCredentials') }}</li>
-        </ul>
-      </div>
     </div>
   </div>
 </template>

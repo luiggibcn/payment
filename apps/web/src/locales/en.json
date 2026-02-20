@@ -61,5 +61,23 @@
     "success": {
       "register": "Account created! Please check your email to confirm your account if it's needed."
     }
+  },
+  "products": {
+    "currentOrder": "Current order",
+    "categories": "Categories",
+    "searchMenuPlaceholder": "Search menu...",
+    "bestSeller": "Best Seller",
+    "orderDetails": "Order details",
+    "dineIn": "Dine in",
+    "takeAway": "Take away",
+    "delivery": "Delivery",
+    "customerName": "Customer name",
+    "tableNumber": "Table number",
+    "paymentDetails": "Payment details",
+    "subtotal": "Subtotal",
+    "taxes": "Taxes",
+    "additionalFee": "Additional fee",
+    "total": "Total",
+    "confirmButton": "Confirm"
   }
 }

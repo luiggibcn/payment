@@ -61,5 +61,23 @@
     "success": {
       "register": "¡Cuenta creada! Por favor, revisa tu correo electrónico para confirmar tu cuenta si es necesario."
     }
+  },
+  "products": {
+    "currentOrder": "Pedido actual",
+    "categories": "Categorías",
+    "searchMenuPlaceholder": "Buscar en el menú...",
+    "bestSeller": "Los más vendidos",
+    "orderDetails": "Detalles del pedido",
+    "dineIn": "Para comer en el restaurante",
+    "takeAway": "Para llevar",
+    "delivery": "Entrega a domicilio",
+    "customerName": "Nombre del cliente",
+    "tableNumber": "Número de mesa",
+    "paymentDetails": "Detalles del pago",
+    "subtotal": "Subtotal",
+    "taxes": "Impuestos",
+    "additionalFee": "Cargo adicional",
+    "total": "Total",
+    "confirmButton": "Confirmar"
   }
 }
