@@ -1,6 +1,7 @@
 {
   "version": 2,
   "buildCommand": "cd ../.. && pnpm build:api",
+  "outputDirectory": ".output/public",
   "installCommand": "cd ../.. && pnpm install",
   "framework": "nuxtjs"
 }

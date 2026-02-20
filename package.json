@@ -1,7 +1,8 @@
 {
   "name": "billsplit",
+  "packageManager": "pnpm@9.0.0",
   "author": {
-    "name": "Luiggi"
+    "name": "Project X"
   },
   "private": true,
   "scripts": {

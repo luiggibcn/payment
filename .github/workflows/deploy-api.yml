@@ -1,0 +1,16 @@
+name: Deploy API to Vercel
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/api/**'
+      - 'packages/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy
+        run: curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_API }}
