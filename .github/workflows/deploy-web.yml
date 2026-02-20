@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'apps/web/**'
-      - 'packages/**'   # si cambias tipos/utils también redeploya
+      - 'packages/**'
 
 jobs:
   deploy:
