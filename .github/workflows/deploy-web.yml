@@ -29,5 +29,4 @@ jobs:
         run: pnpm add -g vercel
 
       - name: Deploy Web
-        working-directory: apps/web
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes $GITHUB_WORKSPACE/apps/web
