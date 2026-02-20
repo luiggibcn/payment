@@ -227,7 +227,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
@@ -237,7 +237,7 @@ import ErrorSuccessMessage from '@/components/auth/ErrorSuccessMessage.vue'
 import Divider from '@/components/auth/Divider.vue'
 import TC from '@/components/auth/TC.vue'
 
-// const router = useRouter()
+const router = useRouter()
 const authStore = useAuthStore()
 const { t } = useI18n()
 const userName = ref('')
@@ -252,30 +252,31 @@ const { signOut } = useAuth()
 const loading = computed(() => authStore.loading)
 
 const handleEmailSignUp = async (): Promise<void> => {
-  // errorMessage.value = ''
-  // successMessage.value = ''
+  errorMessage.value = ''
+  successMessage.value = ''
 
-  // if (userName.value.trim().length < 3) {
-  //   errorMessage.value = t('errors.invalidUsername')
-  //   return
-  // }
-  // try {
-  //   const data = await authStore.signUp(email.value, password.value, userName.value)
+  if (userName.value.trim().length < 3) {
+    errorMessage.value = t('errors.invalidUsername')
+    return
+  }
+  try {
+    const data = await authStore.signUp(email.value, password.value, userName.value)
     
-  //   if (data.user) {
-  //     successMessage.value = t('messages.success.register')
-  //     email.value = ''
-  //     password.value = ''
-  //     userName.value = ''
+    if (data.data.user) {
+      successMessage.value = t('messages.success.register')
+      email.value = ''
+      password.value = ''
+      userName.value = ''
       
-  //     setTimeout(() => {
-  //       router.push('/login')
-  //     }, 3000)
-  //   }
-  // } catch (error: any) {
-  //   errorMessage.value = error.message || t('errors.genericError')
-  //   console.error('Sign up error:', error)
-  // }
+      setTimeout(() => {
+        router.push('/login')
+      }, 3000)
+    }
+  } catch (error: any) {
+    errorMessage.value = error.message || t('errors.genericError')
+    console.log({message:error})
+    console.error('Sign up error:', error)
+  }
 }
 
 const togglePasswordVisibility = (): boolean => {

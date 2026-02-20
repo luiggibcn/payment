@@ -95,7 +95,7 @@ const webSocketPlugin = (): Plugin => ({
       })
     })
 
-    console.log('WebSocket server disponible en ws://localhost:1313/ws')
+    console.log('WebSocket server disponible en ws://localhost:5173/ws')
   }
 })
 

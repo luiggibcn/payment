@@ -272,7 +272,6 @@ import HeaderAuth from '@/components/auth/HeaderAuth.vue'
 import ErrorSuccessMessage from '@/components/auth/ErrorSuccessMessage.vue'
 import Divider from '@/components/auth/Divider.vue'
 import TC from '@/components/auth/TC.vue'
-import { useBack } from '@/composables/useBackend'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -309,18 +308,25 @@ const handleEmailSubmit = () => {
 
 const handleLogin = async () => {
   errorMessage.value = ''
-
   try {
     const data = await authStore.signIn(email.value, password.value)
 
     if (data.session) {
       const redirect = router.currentRoute.value.query.redirect as string
-      router.push(redirect ?? '/products')
+      if (redirect) {
+        router.push(redirect)
+      } else {
+        // ⭐ Redirect por rol
+        const role = data.user?.role ?? 'user'
+        if (role === 'admin' || role === 'editor' || role === 'waiter') {
+          router.push('/dashboard')
+        } else {
+          router.push('/products')
+        }
+      }
     }
   } catch (error: any) {
-    // Axios envuelve el error en error.response.data.message
     const message = error.response?.data?.message ?? error.message ?? t('errors.genericError')
-
     if (message.includes('Invalid login credentials') || message.includes('invalid_credentials')) {
       errorMessage.value = t('errors.invalidCredentials')
     } else if (message.includes('Email not confirmed')) {
@@ -328,10 +334,9 @@ const handleLogin = async () => {
     } else {
       errorMessage.value = message
     }
-
-    console.error('Login error:', error)
   }
 }
+
 
 
 const goBackToEmail = () => {
@@ -363,8 +368,7 @@ const handleGoogleSignIn = async () => {
 }
 
 const handleAppleSignIn = async (): Promise<void> => {
-  const res = await useBack().getHealth()
-  console.log({respuesta:res})
+  return
 }
 
 onMounted(()=>{

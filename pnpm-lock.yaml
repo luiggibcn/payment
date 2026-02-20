@@ -20,6 +20,9 @@ importers:
       '@billsplit/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@nuxtjs/supabase':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@supabase/supabase-js':
         specifier: ^2.47.0
         version: 2.96.0
@@ -883,6 +886,9 @@ packages:
       rolldown:
         optional: true
 
+  '@nuxtjs/supabase@2.0.4':
+    resolution: {integrity: sha512-Atud3nn5/HIPM/MrHJa/SsAHwl4d0AWSVkpGCLfzbCejU0p64JGJKnzwx49T9tD+ZKFXs8Fsfjh68KY3BWCvsQ==}
+
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
@@ -1591,6 +1597,11 @@ packages:
   '@supabase/realtime-js@2.96.0':
     resolution: {integrity: sha512-m4ETI6KxiGfD50h5rDkuR2zIQEc0RlfiPV8Bhs2p/NPAmctweA8yb33slsMRLaJafoytadJyo4nP9gvig93wfA==}
     engines: {node: '>=20.0.0'}
+
+  '@supabase/ssr@0.8.0':
+    resolution: {integrity: sha512-/PKk8kNFSs8QvvJ2vOww1mF5/c5W8y42duYtXvkOSe+yZKRgTTZywYG2l41pjhNomqESZCpZtXuWmYjFRMV+dw==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.76.1
 
   '@supabase/storage-js@2.96.0':
     resolution: {integrity: sha512-7dgEM77GWw9phzLHi+M2vPqOqP99MAbdk/vorpebo/t50JWWS4ckxacHHjmaeLctT4ipVcbfB8rpdbLr95fTcw==}
@@ -5603,6 +5614,16 @@ snapshots:
       - vue-tsc
       - yaml
 
+  '@nuxtjs/supabase@2.0.4':
+    dependencies:
+      '@supabase/ssr': 0.8.0(@supabase/supabase-js@2.96.0)
+      '@supabase/supabase-js': 2.96.0
+      defu: 6.1.4
+      pathe: 2.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@one-ini/wasm@0.1.1': {}
 
   '@open-draft/deferred-promise@2.2.0': {}
@@ -6055,6 +6076,11 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+
+  '@supabase/ssr@0.8.0(@supabase/supabase-js@2.96.0)':
+    dependencies:
+      '@supabase/supabase-js': 2.96.0
+      cookie: 1.1.1
 
   '@supabase/storage-js@2.96.0':
     dependencies:

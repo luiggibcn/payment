@@ -93,7 +93,7 @@ const qrcode = useQRCode(finalUrl, {
 })
 
 // WebSocket connection
-const { status, data, send } = useWebSocket('ws://localhost:1313/ws', {
+const { status, data, send } = useWebSocket('ws://localhost:5173/ws', {
     autoReconnect: {
         retries: 3,
         delay: 1000

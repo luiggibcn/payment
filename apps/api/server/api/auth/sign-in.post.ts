@@ -3,57 +3,43 @@ import { createClient } from '@supabase/supabase-js'
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event)
 
-  // Validación básica
   if (!email || !password) {
-    throw createError({
-      statusCode: 400,
-      message: 'Email and password are required',
-    })
+    throw createError({ statusCode: 400, message: 'Email and password required' })
   }
 
-  const config = useRuntimeConfig()
-  const supabase = createClient(config.supabaseUrl, config.supabaseServiceKey)
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
 
-  // 1. Sign in con Supabase Auth
-  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  // 1. Sign in
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
-  if (authError || !authData.session || !authData.user) {
-    throw createError({
-      statusCode: 401,
-      message: authError?.message ?? 'Invalid credentials',
-    })
+  if (error) {
+    throw createError({ statusCode: 401, message: error.message })
   }
 
-  // 2. Obtener rol del usuario en su tenant
-  const { data: roleData, error: roleError } = await supabase
+  // 2. Obtener rol y tenant del usuario
+  const { data: roleData } = await supabase
     .from('user_roles')
     .select('role, tenant_id')
-    .eq('user_id', authData.user.id)
+    .eq('user_id', data.user.id)
+    .order('created_at', { ascending: true })
+    .limit(1)
     .single()
 
-  if (roleError || !roleData) {
-    throw createError({
-      statusCode: 403,
-      message: 'User has no role assigned',
-    })
-  }
-
-  // 3. Devolver sesión + user + rol
   return {
-    session: {
-      access_token: authData.session.access_token,
-      refresh_token: authData.session.refresh_token,
-      expires_at: authData.session.expires_at,
-    },
     user: {
-      id: authData.user.id,
-      email: authData.user.email,
-      full_name: authData.user.user_metadata?.full_name ?? null,
-      role: roleData.role,
-      tenant_id: roleData.tenant_id,
+      id: data.user.id,
+      email: data.user.email,
+      full_name: data.user.user_metadata?.full_name ?? null,
+      role: roleData?.role ?? 'user',
+      tenant_id: roleData?.tenant_id ?? null,
     },
+    session: {
+      access_token: data.session.access_token,
+      refresh_token: data.session.refresh_token,
+      expires_at: data.session.expires_at,
+    }
   }
 })

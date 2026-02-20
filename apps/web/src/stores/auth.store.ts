@@ -4,7 +4,6 @@ import { redirectTo } from '@/utils'
 import { useCartStore } from './cart.store'
 import axiosClient from '@/clients/axios'
 
-// Nuestro tipo de usuario, no el de Supabase
 export type UserRole = 'admin' | 'editor' | 'waiter' | 'user'
 
 export interface AuthUser {
@@ -23,7 +22,6 @@ export interface AuthSession {
 
 export const useAuthStore = defineStore('auth', () => {
   const cart = useCartStore()
-
   const user = ref<AuthUser | null>(null)
   const session = ref<AuthSession | null>(null)
   const loading = ref(false)
@@ -38,93 +36,92 @@ export const useAuthStore = defineStore('auth', () => {
   const userId = computed(() => user.value?.id ?? '')
   const tenantId = computed(() => user.value?.tenant_id ?? '')
 
-  const setUser = (newUser: AuthUser | null) => {
-    user.value = newUser
+  const setUser = (newUser: AuthUser | null) => { user.value = newUser }
+  const setSession = (newSession: AuthSession | null) => { session.value = newSession }
+
+  const signIn = async (email: string, password: string) => {
+    loading.value = true
+    try {
+      const { data } = await axiosClient.post<{ session: AuthSession; user: AuthUser }>(
+        '/api/auth/sign-in',
+        { email, password }
+      )
+      setSession(data.session)
+      setUser(data.user)
+      cart.userCart = data.user
+      localStorage.setItem('session', JSON.stringify(data.session))
+      localStorage.setItem('user', JSON.stringify(data.user))
+      return data
+    } finally {
+      loading.value = false
+    }
   }
 
-  const setSession = (newSession: AuthSession | null) => {
-    session.value = newSession
+  const signOut = async () => {
+    loading.value = true
+    try {
+      await axiosClient.post('/api/auth/sign-out')
+    } catch {
+      // Si falla el BE igualmente limpiamos local
+    } finally {
+      setUser(null)
+      setSession(null)
+      localStorage.removeItem('session')
+      localStorage.removeItem('user')
+      loading.value = false
+      redirectTo('/login')
+    }
   }
 
-const signIn = async (email: string, password: string) => {
-  loading.value = true
-  try {
-    const { data } = await axiosClient.post<{ session: AuthSession; user: AuthUser }>(
-      '/api/auth/sign-in',
-      { email, password }
-    )
-
-    setSession(data.session)
-    setUser(data.user)
-    cart.userCart = data.user
-
-    localStorage.setItem('session', JSON.stringify(data.session))
-    localStorage.setItem('user', JSON.stringify(data.user))
-
-    return data
-  } finally {
-    loading.value = false
+  const signUp = async (email: string, password: string, fullName?: string) => {
+    loading.value = true
+    try {
+      const data = await axiosClient.post<{
+        message: string
+        user: { id: string; email: string }
+      }>('/api/auth/sign-up', { email, password, fullName }) // ✅ fullName incluido
+      return data
+    } finally {
+      loading.value = false
+    }
   }
-}
-
-const signOut = async () => {
-  loading.value = true
-  try {
-    await axiosClient.post('/api/auth/sign-out')
-  } catch {
-    // Si falla el BE igualmente limpiamos local
-  } finally {
-    setUser(null)
-    setSession(null)
-    localStorage.removeItem('session')
-    localStorage.removeItem('user')
-    loading.value = false
-    redirectTo('/login')
-  }
-}
 
   const initialize = async () => {
     if (initialized.value) return
-
-    // Rehydrate desde localStorage
     const storedSession = localStorage.getItem('session')
     const storedUser = localStorage.getItem('user')
 
     if (storedSession && storedUser) {
       const parsedSession: AuthSession = JSON.parse(storedSession)
-
-      // Verificar que el token no ha expirado
       const isExpired = parsedSession.expires_at * 1000 < Date.now()
+
       if (!isExpired) {
         setSession(parsedSession)
         setUser(JSON.parse(storedUser))
       } else {
-        // Token expirado — limpiar
-        localStorage.removeItem('session')
-        localStorage.removeItem('user')
+        // ✅ Intentar refresh antes de limpiar
+        try {
+          const { data } = await axiosClient.post<{ session: AuthSession; user: AuthUser }>(
+            '/api/auth/refresh',
+            { refresh_token: parsedSession.refresh_token }
+          )
+          setSession(data.session)
+          setUser(data.user)
+          localStorage.setItem('session', JSON.stringify(data.session))
+          localStorage.setItem('user', JSON.stringify(data.user))
+        } catch {
+          localStorage.removeItem('session')
+          localStorage.removeItem('user')
+        }
       }
     }
-
     initialized.value = true
   }
 
   return {
-    user,
-    session,
-    loading,
-    initialized,
-    isAuthenticated,
-    userRole,
-    isAdmin,
-    isEditor,
-    isWaiter,
-    userEmail,
-    userId,
-    tenantId,
-    setUser,
-    setSession,
-    signIn,
-    signOut,
-    initialize,
+    user, session, loading, initialized,
+    isAuthenticated, userRole, isAdmin, isEditor, isWaiter,
+    userEmail, userId, tenantId,
+    setUser, setSession, signIn, signOut, signUp, initialize,
   }
 })

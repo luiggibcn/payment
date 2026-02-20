@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@billsplit/types": "workspace:*",
+    "@nuxtjs/supabase": "^2.0.4",
     "@supabase/supabase-js": "^2.47.0",
     "nuxt": "^4.3.1",
     "vue": "^3.5.28",

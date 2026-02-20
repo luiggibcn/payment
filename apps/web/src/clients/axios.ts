@@ -1,18 +1,18 @@
-// appsweb/src/clients/api.client.ts
 import axios from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: 'https://payment-api-tawny.vercel.app',
+  // baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3001',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
 axiosClient.interceptors.request.use((config) => {
-  config.headers['X-PAYMENT'] = 'id'
-  config.headers['X-DATA'] = new Date().toDateString()
+  // Headers custom del BE, no se activaran hasta que negocio decida que es necesario
+  // config.headers['X-PAYMENT'] = 'id'
+  // config.headers['X-DATA'] = new Date().toDateString()
 
-  // ← añadir el token JWT si existe en localStorage
+  // Token JWT si existe
   const session = localStorage.getItem('session')
   if (session) {
     const { access_token } = JSON.parse(session)
