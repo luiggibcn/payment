@@ -2,7 +2,7 @@
 	<div class="text-center mb-8">
 		<div class="flex items-center justify-center gap-2 mb-4">
 			<div class="text-pink-500 text-2xl">
-				<img alt="Payment4You logo" src="../../assets/logo.svg" class="h-16 w-16">
+				<img alt="Payment4You" src="../../assets/logo.svg" class="h-16 w-16">
 			</div>
 			<h1 class="text-white text-2xl font-semibold">Payment4You</h1>
 		</div>
