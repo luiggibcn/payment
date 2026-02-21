@@ -1,9 +1,5 @@
 name: Deploy Web to Vercel
 
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_WEB }}
-
 on:
   push:
     branches:
@@ -16,15 +12,5 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Install Vercel CLI
-        run: pnpm add -g vercel
-
-      - name: Deploy Web
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes $GITHUB_WORKSPACE/apps/web
+      - name: Trigger Vercel Deploy
+        run: curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_WEB }}
