@@ -1,6 +1,6 @@
 {
   "version": 2,
   "buildCommand": "pnpm build:api",
-  "installCommand": "npm i -g pnpm && cd ../.. && pnpm install",
+  "installCommand": "npm i -g pnpm && pnpm install",
   "framework": "nuxtjs"
 }
