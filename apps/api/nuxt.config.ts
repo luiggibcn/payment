@@ -1,5 +1,5 @@
 const getWebUrl = (): string => {
-  return process.env.APP_NODE_ENV !== 'local' ? process.env.WEB_URL : 'http://localhost:5173'
+  return process.env.APP_NODE_ENV !== 'local' ? process.env.WEB_URL! : 'http://localhost:5173'
 }
 export default defineNuxtConfig({
   compatibilityDate: '2026-02-18',
