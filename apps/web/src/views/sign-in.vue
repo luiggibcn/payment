@@ -1,5 +1,4 @@
 <template>
-  <LanguageSwitcher />
   <div class="min-h-screen bg-black flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-lg">
       <!-- Logo y título -->
@@ -265,7 +264,6 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import { useI18n } from 'vue-i18n'
 import { redirectTo } from '@/utils'
 import HeaderAuth from '@/components/auth/HeaderAuth.vue'

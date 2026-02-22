@@ -1,5 +1,4 @@
 <template>
-  <LanguageSwitcher />
   <div class="min-h-screen bg-black flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-lg">
       <HeaderAuth :welcome-title="t('auth.welcomeTitle')" :welcome-subtitle="t('auth.welcomeSubtitle')" />
@@ -231,7 +230,6 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAuth } from '@/composables/useAuth'
 import { useI18n } from 'vue-i18n'
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import HeaderAuth from '@/components/auth/HeaderAuth.vue'
 import ErrorSuccessMessage from '@/components/auth/ErrorSuccessMessage.vue'
 import Divider from '@/components/auth/Divider.vue'
