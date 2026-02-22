@@ -1,5 +1,4 @@
-
-# 🚀 Payment Platform
+# 🚀 project X Platform
 
 [![GitHub stars](https://img.shields.io/github/stars/luiggibcn/payment?style=for-the-badge)](https://github.com/luiggibcn/payment/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/luiggibcn/payment?style=for-the-badge)](https://github.com/luiggibcn/payment/network)
@@ -13,155 +12,152 @@ This repository hosts a comprehensive payment platform, structured as a monorepo
 
 ## ✨ Features
 
--   **Modular Monorepo Architecture:** Organized into `apps` for individual applications and `packages` for reusable modules and utilities.
--   **Payment Processing Foundation:** Core structure designed to support various payment functionalities.
--   **TypeScript Support:** Ensures type safety, improves code quality, and enhances developer experience across the entire codebase.
--   **Scalable Development:** Facilitates the development of multiple interconnected applications and libraries from a single repository.
--   **Efficient Dependency Management:** Leverages pnpm for fast, space-efficient, and deterministic dependency installation.
--   **Vercel Deployment Ready:** Optimized for seamless deployment to Vercel for frontend applications.
+- **Modular Monorepo Architecture:** Organized into `apps` for individual applications and `packages` for reusable modules and utilities.
+- **Payment Processing Foundation:** Core structure designed to support various payment functionalities.
+- **TypeScript Support:** Ensures type safety, improves code quality, and enhances developer experience across the entire codebase.
+- **Scalable Development:** Facilitates the development of multiple interconnected applications and libraries from a single repository.
+- **Efficient Dependency Management:** Leverages pnpm for fast, space-efficient, and deterministic dependency installation.
+- **Vercel Deployment Ready:** Optimized for seamless deployment to Vercel for frontend applications.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 Before you begin, ensure you have the following installed:
--   [Node.js](https://nodejs.org/en/download/) (LTS version recommended)
--   [pnpm](https://pnpm.io/installation) (Preferred package manager for this monorepo)
+
+- [Node.js](https://nodejs.org/en/download/) v22 (LTS recommended) — check with `node -v`
+- [pnpm](https://pnpm.io/installation) v9 — this project uses `pnpm@9.0.0` as defined in `package.json`
+
+> ℹ️ This project uses **pnpm workspaces**. Do **not** use `npm` or `yarn` — it will not work correctly.
 
 ### Installation
 
-1.  **Clone the repository**
+1. **Clone the repository**
     ```bash
     git clone https://github.com/luiggibcn/payment.git
     cd payment
     ```
 
-2.  **Install dependencies**
-    This will install dependencies for all applications and packages within the monorepo.
+2. **Enable pnpm via Corepack** *(recommended — no global install needed)*
+    ```bash
+    corepack enable
+    ```
+    Or install it globally if you prefer:
+    ```bash
+    npm install -g pnpm@9
+    ```
+
+3. **Install dependencies**
     ```bash
     pnpm install
     ```
 
-3.  **Environment setup**
-    Each application might require specific environment variables. Navigate to the respective `apps/<app-name>` directory and set up its `.env` file.
+4. **Environment setup**
+
+    Each app needs its own `.env.local` file. Copy the examples and fill in your values:
+
     ```bash
-    # Example for an app named 'web':
-    cd apps/web
-    cp .env.example .env # If an example file exists
-    # Configure your environment variables as needed
+    cp apps/web/.env.example apps/web/.env.local
+    cp apps/api/.env.example apps/api/.env.local
     ```
 
-4.  **Database setup** (if applicable)
-    Individual applications within the `apps/` directory might require database setup. Please refer to their specific documentation or configuration files.
+    > ⚠️ Use `.env.local` for local development — it is git-ignored. Never commit real secrets.
 
-5.  **Start development server**
-    To start a specific application, navigate to its directory within `apps/` and run its `dev` script.
+5. **Start development servers**
+
+    Run both `web` and `api` simultaneously from the root:
     ```bash
-    # To run a specific application (e.g., 'web'):
-    pnpm --filter web dev
-    # Or, if a top-level dev script exists that orchestrates all services:
-    # pnpm dev
+    pnpm dev
     ```
-
-6.  **Open your browser**
-    If running a web application, it will typically be available at `http://localhost:[detected-port]` (e.g., `http://localhost:3000`).
+    Or individually:
+    ```bash
+    pnpm --filter web dev   # Vue frontend → http://localhost:5173
+    pnpm --filter api dev   # Nuxt API     → http://localhost:3001
+    ```
 
 ## 📁 Project Structure
 
-This project is organized as a pnpm monorepo with the following high-level structure:
-
 ```
 payment/
-├── .gitignore          # Specifies intentionally untracked files to ignore
-├── .vscode/            # VS Code workspace settings and recommended extensions
-├── apps/               # Contains individual applications
-│   └── [app-name]/     # Example: web, admin, api, etc.
-│       ├── src/        # Source code for the application
-│       ├── public/     # Static assets for the application
-│       └── package.json# Application-specific dependencies and scripts
-├── packages/           # Contains reusable libraries, components, and utilities
-│   └── [package-name]/ # Example: ui, utils, types, config
-│       ├── src/        # Source code for the package
-│       └── package.json# Package-specific dependencies and scripts
-├── package.json        # Root monorepo dependencies and shared scripts
-├── pnpm-lock.yaml      # pnpm lock file for consistent dependency versions
-└── pnpm-workspace.yaml # Defines pnpm workspaces for the monorepo
+├── apps/
+│   ├── web/               # Vue 3 + Vite — Frontend
+│   │   ├── src/
+│   │   ├── .env.example   # Copy to .env.local
+│   │   └── package.json
+│   └── api/               # Nuxt 3 — Backend API
+│       ├── server/
+│       ├── .env.example   # Copy to .env.local
+│       └── package.json
+├── packages/
+│   ├── types/             # Shared TypeScript types
+│   └── config/            # Shared constants and config
+├── package.json           # Root scripts and monorepo config
+├── pnpm-workspace.yaml    # Workspace definitions
+└── pnpm-lock.yaml         # Lockfile — do not modify manually
 ```
 
-## ⚙️ Configuration
+## ⚙️ Environment Variables
 
-### Environment Variables
-Each application within `apps/` will likely use environment variables for configuration. Common variables might include:
+### `apps/web/.env.local`
 
-| Variable        | Description                           | Required |
-|-----------------|---------------------------------------|----------|
-| `NODE_ENV`      | Application environment (development, production) | Yes      |
-| `PORT`          | Port for the development server       | No       |
-| `NUXT_PUBLIC_*` | Public environment variables for Nuxt apps | No       |
-| `DATABASE_URL`  | Connection string for a database      | No       |
+| Variable                    | Description                        | Required |
+|-----------------------------|------------------------------------|----------|
+| `VITE_API_URL`              | URL of the API (e.g. `http://localhost:3001`) | ✅ |
+| `VITE_SUPABASE_URL`         | Supabase project URL               | ✅ |
+| `VITE_SUPABASE_ANON_KEY`    | Supabase public anon key           | ✅ |
 
-### Monorepo Configuration
--   `.pnpm-workspace.yaml`: Defines the workspace roots for the monorepo (e.g., `apps/*`, `packages/*`).
+### `apps/api/.env.local`
+
+| Variable                    | Description                        | Required |
+|-----------------------------|------------------------------------|----------|
+| `SUPABASE_URL`              | Supabase project URL               | ✅ |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (**never expose this on the frontend**) | ✅ |
+| `WEB_URL`                   | Frontend URL for CORS (e.g. `http://localhost:5173`) | ✅ |
+
+> 🔑 Get your Supabase keys from: **Supabase Dashboard → Project → Settings → API**
 
 ## 🔧 Development
 
 ### Available Scripts
-The root `package.json` contains scripts for managing the entire monorepo. Individual `apps/` and `packages/` may have their own specific scripts.
 
-| Command                     | Description                                            |
-|-----------------------------|--------------------------------------------------------|
-| `pnpm install`              | Installs dependencies for all projects in the monorepo. |
-| `pnpm dev`                  | Starts development servers for specific applications (e.g., `pnpm --filter web dev`). |
-| `pnpm build`                | Builds all projects (or specific ones, e.g., `pnpm --filter web build`). |
-| `pnpm lint`                 | Runs linter across the codebase (or specific projects). |
-| `pnpm test`                 | Runs tests across the codebase (or specific projects). |
+Run from the **root** of the monorepo:
 
+| Command                        | Description                                      |
+|--------------------------------|--------------------------------------------------|
+| `pnpm dev`                     | Starts both `web` (5173) and `api` (3001)        |
+| `pnpm --filter web dev`        | Starts only the frontend                         |
+| `pnpm --filter api dev`        | Starts only the API                              |
+| `pnpm --filter web test run`   | Runs frontend unit tests (single run)            |
+| `pnpm --filter web test`       | Runs frontend unit tests in watch mode           |
+| `pnpm --filter web build`      | Production build for frontend                    |
+| `pnpm --filter api build`      | Production build for API                         |
 
-### Development Workflow
-To contribute or develop features, it's recommended to work within the specific `apps/` or `packages/` relevant to your task. pnpm's filtering capabilities are useful:
+### Add a dependency to a specific app
 
 ```bash
-# Run the 'dev' script for only the 'web' application
-pnpm --filter web dev
-
-# Run the 'test' script for only the 'utils' package
-pnpm --filter utils test
-
-# Install a new dependency to a specific application/package
-pnpm add <package-name> --filter <app-or-package-name>
+pnpm add <package> --filter web   # add to frontend
+pnpm add <package> --filter api   # add to backend
+pnpm add -D <package> --filter web # add as devDependency
 ```
 
 ## 🧪 Testing
 
-Testing is typically configured per application or package.
 ```bash
-# Run tests for all projects in the monorepo (if a root test script exists)
-pnpm test
-
-# Run tests for a specific application (e.g., 'web')
+# Run tests for the frontend (watch mode)
 pnpm --filter web test
 
-# Run tests with coverage for a specific package (e.g., 'ui')
-pnpm --filter ui test --coverage
+# Single run + coverage
+pnpm --filter web test run --coverage
 ```
 
 ## 🚀 Deployment
 
-### Production Build
-To create optimized production builds for all applications:
-```bash
-pnpm build
-# Or to build a specific application (e.g., 'web'):
-pnpm --filter web build
-```
+The project is deployed automatically via **GitHub Actions** on push to `main`:
 
-### Deployment Options
-This project is configured for easy deployment to **Vercel**, as indicated by the live demo link.
--   **Vercel**: Simply connect your GitHub repository to Vercel, and it will automatically detect and deploy your `NUXT` applications within the monorepo. You may need to configure specific build commands and root directories for individual apps if they are not at the root.
+- `apps/web` → Vercel (triggered after tests pass)
+- `apps/api` → Vercel (triggered after tests pass)
 
-## 📚 API Reference (if backend detected)
-
-If a backend service is included within `apps/` (e.g., `apps/api`), its API endpoints and documentation would be detailed here.
-
+For manual deploy, trigger the Vercel deploy hooks or push to `main`.
 
 ## 📄 License
 
@@ -169,16 +165,17 @@ This project is currently without an explicit license file.
 
 ## 🙏 Acknowledgments
 
--   Built with [pnpm](https://pnpm.io/) for efficient monorepo management.
--   Deployed with [Vercel](https://vercel.com/) for seamless frontend hosting.
+- Built with [Vue 3](https://vuejs.org/) + [Nuxt 3](https://nuxt.com/)
+- Monorepo managed with [pnpm](https://pnpm.io/)
+- Database & Auth by [Supabase](https://supabase.com/)
+- Deployed with [Vercel](https://vercel.com/)
 
 ## 📞 Support & Contact
 
--   🐛 Issues: [GitHub Issues](https://github.com/luiggibcn/payment/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/luiggibcn/payment/issues)
 
 ---
 
 **⭐ Star this repo if you find it helpful!**
 
 Made with ❤️ by [luiggibcn](https://github.com/luiggibcn)
-```
