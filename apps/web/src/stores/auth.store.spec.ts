@@ -27,7 +27,7 @@ vi.mock("@/utils", () => ({
 }));
 
 
-describe.skip("auth.store", () => {
+describe("auth.store", () => {
   let store: ReturnType<typeof useAuthStore>;
 
 
