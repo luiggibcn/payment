@@ -238,7 +238,7 @@
         </div>
 
         <!-- Right Section - Order Details -->
-        <aside class="w-full xl:w-96 2xl:w-[420px] shrink-0">
+        <aside class="w-full xl:w-96 2xl:w-[420px] shrink-0 aside-cart">
           <div class="bg-white rounded-2xl p-6 xl:sticky xl:top-20 xl:max-h-[calc(100vh-5rem)] xl:overflow-y-auto">
             <h2 class="text-xl font-semibold text-gray-900 mb-6">{{ t('products.orderDetails') }}</h2>
 
@@ -557,7 +557,8 @@ const userSignOut = async (): Promise<void> => {
   } catch (_) { }
 }
 const scrollToCart = () => {
-  const cartSection = document.querySelector('aside')
+  console.log('scrollToCart called')
+  const cartSection = document.querySelector('.aside-cart')
   if (cartSection) {
     cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
