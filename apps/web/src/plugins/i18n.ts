@@ -1,9 +1,18 @@
 import { createI18n } from 'vue-i18n'
 import { messages, defaultLocale, type Locale } from '@/locales'
 
+// ✅ Guardar safe access a localStorage
+const getSavedLocale = (): Locale => {
+  try {
+    return (localStorage.getItem('locale') as Locale) || defaultLocale
+  } catch {
+    return defaultLocale
+  }
+}
+
 export const i18n = createI18n({
   legacy: false,
-  locale: (localStorage.getItem('locale') as Locale) || defaultLocale,
+  locale: getSavedLocale(),
   fallbackLocale: defaultLocale,
   messages: messages as any,
   globalInjection: true,
@@ -11,32 +20,22 @@ export const i18n = createI18n({
   fallbackWarn: import.meta.env.DEV
 })
 
-/**
- * Cambiar idioma de la aplicación
- */
 export const setLocale = (locale: Locale) => {
-  // ✅ Forma correcta de cambiar el locale en Composition API
   i18n.global.locale.value = locale
-  localStorage.setItem('locale', locale)
+  try {
+    localStorage.setItem('locale', locale)
+  } catch {}
   document.documentElement.setAttribute('lang', locale)
-  
-  // 👇 Forzar actualización (por si acaso)
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event('localechange'))
   }
 }
 
-/**
- * Obtener idioma actual
- */
 export const getLocale = (): Locale => {
   return i18n.global.locale.value as Locale
 }
 
-/**
- * Detectar idioma del navegador
- */
 export const detectBrowserLocale = (): Locale => {
   const browserLang = navigator.language.split('-')[0]
-  return (browserLang === 'es' ? 'es' : 'en') as Locale
+  return (browserLang === 'es' ? 'es' : browserLang === 'ca' ? 'ca' : 'en') as Locale
 }
