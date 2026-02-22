@@ -9,7 +9,7 @@
                   ? 'bg-emerald-600 text-white' 
                   : 'bg-white text-gray-700 hover:bg-green-200'
               ]"
-              @click="selectedCategory = category.id"
+              @click="selectCategory(category.id)"
             >
               <span class="text-2xl">{{ category.icon }}</span>
               <span class="text-sm font-medium whitespace-nowrap">{{ category.name }}</span>
@@ -18,6 +18,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+
+const emit = defineEmits<{ (e: 'categoryChange', categoryId: string): void }>()
 
 const selectedCategory = ref('all')
 const categories = ref([
@@ -31,9 +33,13 @@ const categories = ref([
   { id: 'dessert', name: 'Dessert', icon: '🧁' },
   { id: 'beverages', name: 'Beverages', icon: '☕' },
 ])
+
+const selectCategory = (id: string) => {
+  selectedCategory.value = id
+  emit('categoryChange', id)
+}
 </script>
 <style lang="scss" scoped>
-// Ocultar scrollbar pero mantener funcionalidad
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

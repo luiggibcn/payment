@@ -105,6 +105,7 @@ const apiPkg = JSON.parse(readFileSync(resolve(__dirname, '../api/package.json')
 // https://vite.dev/config/
 export default defineConfig({
   server: {
+    host: true,
     headers: {
       'Service-Worker-Allowed': '/'
     },
