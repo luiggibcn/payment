@@ -557,7 +557,6 @@ const userSignOut = async (): Promise<void> => {
   } catch (_) { }
 }
 const scrollToCart = () => {
-  console.log('scrollToCart called')
   const cartSection = document.querySelector('.aside-cart')
   if (cartSection) {
     cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
