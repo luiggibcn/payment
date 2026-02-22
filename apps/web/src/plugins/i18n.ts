@@ -37,5 +37,5 @@ export const getLocale = (): Locale => {
 
 export const detectBrowserLocale = (): Locale => {
   const browserLang = navigator.language.split('-')[0]
-  return (browserLang === 'es' ? 'es' : browserLang === 'ca' ? 'ca' : 'en') as Locale
+  return (browserLang === 'ca' ? 'ca' : browserLang === 'ca' ? 'ca' : 'en') as Locale
 }
