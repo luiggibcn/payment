@@ -25,7 +25,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
-              Dashboard
+              {{ t('sidebar.dashboard') }}
             </span>
           </button>
 
@@ -36,7 +36,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-              Menu
+              {{ t('sidebar.menu') }}
             </span>
           </button>
 
@@ -47,7 +47,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
-              Stock
+              {{ t('sidebar.stock') }}
             </span>
           </button>
 
@@ -58,7 +58,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
-              Table
+              {{ t('sidebar.table') }}
             </span>
           </button>
 
@@ -69,7 +69,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              History
+              {{ t('sidebar.history') }}
             </span>
           </button>
 
@@ -82,7 +82,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Settings
+              {{ t('sidebar.settings') }}
             </span>
           </button>
           <button
@@ -94,7 +94,7 @@
                   d="m6 3c-.79565 0-1.55871.31607-2.12132.87868s-.87868 1.32567-.87868 2.12132v12c0 .7956.31607 1.5587.87868 2.1213s1.32567.8787 2.12132.8787h11c.2652 0 .5196-.1054.7071-.2929s.2929-.4419.2929-.7071-.1054-.5196-.2929-.7071-.4419-.2929-.7071-.2929h-11c-.26522 0-.51957-.1054-.70711-.2929-.18753-.1875-.29289-.4419-.29289-.7071v-12c0-.26522.10536-.51957.29289-.70711.18754-.18753.44189-.29289.70711-.29289h11c.2652 0 .5196-.10536.7071-.29289.1875-.18754.2929-.44189.2929-.70711s-.1054-.51957-.2929-.70711c-.1875-.18753-.4419-.29289-.7071-.29289zm9.707 4.293c-.0922-.09551-.2026-.17169-.3246-.2241s-.2532-.08-.386-.08115-.2645.02415-.3874.07443-.2345.12453-.3284.21842c-.0939.0939-.1681.20555-.2184.32845-.0503.12289-.0756.25457-.0745.38735.0012.13278.0288.264.0812.386.0524.12201.1286.23235.2241.3246l2.293 2.293h-8.586c-.26522 0-.51957.1054-.70711.2929-.18753.1875-.29289.4419-.29289.7071s.10536.5196.29289.7071c.18754.1875.44189.2929.70711.2929h8.586l-2.293 2.293c-.1822.1886-.283.4412-.2807.7034s.1075.513.2929.6984.4362.2906.6984.2929.5148-.0985.7034-.2807l4-4c.1875-.1875.2928-.4418.2928-.707s-.1053-.5195-.2928-.707z"
                   fill="rgb(0,0,0)" fill-rule="evenodd" />
               </svg>
-              Sign out
+              {{ t('sidebar.signOut') }}
             </span>
           </button>
         </nav>
@@ -466,7 +466,6 @@ const toggleLanguageDropdown = () => {
 
 const changeLanguage = (newLocale: Language) => {
   setLocale(newLocale.code as Locale)
-  console.log('Language changed to:', newLocale)
 }
 
 const selectLanguage = (language: Language) => {
@@ -474,7 +473,6 @@ const selectLanguage = (language: Language) => {
   selectedLanguage.value = language
   isLanguageDropdownOpen.value = false
   changeLanguage(language)
-  console.log('Language changed to:', language.code)
 }
 
 // Cerrar dropdown al hacer click fuera

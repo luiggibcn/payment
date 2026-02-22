@@ -80,5 +80,14 @@
     "additionalFee": "Additional fee",
     "total": "Total",
     "confirmButton": "Confirm"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "menu": "Menu",
+    "stock": "Stock",
+    "table": "Tables",
+    "history": "History",
+    "settings": "Settings",
+    "signOut": "Sign Out"
   }
 }

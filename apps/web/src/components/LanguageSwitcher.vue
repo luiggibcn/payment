@@ -42,6 +42,5 @@ const { t, locale } = useI18n()
 
 const changeLanguage = (newLocale: Locale) => {
   setLocale(newLocale)
-  console.log('Language changed to:', newLocale)
 }
 </script>

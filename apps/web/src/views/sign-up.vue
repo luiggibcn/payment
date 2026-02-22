@@ -272,7 +272,6 @@ const handleEmailSignUp = async (): Promise<void> => {
     }
   } catch (error: any) {
     errorMessage.value = error.message || t('errors.genericError')
-    console.log({message:error})
     console.error('Sign up error:', error)
   }
 }

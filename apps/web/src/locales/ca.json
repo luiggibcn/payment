@@ -80,5 +80,14 @@
     "additionalFee": "Càrrec adicional",
     "total": "Total",
     "confirmButton": "Confirmar"
+  },
+  "sidebar": {
+    "dashboard": "Taulell",
+    "menu": "Menú",
+    "stock": "Inventari",
+    "table": "Taules",
+    "history": "Historial",
+    "settings": "Configuració",
+    "signOut": "Tancar sessió"
   }
 }

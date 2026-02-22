@@ -30,14 +30,7 @@ const routes: RouteRecordRaw[] = [
     path: "/products",
     name: AppRoute.PRODUCTS,
     component: ProductsPage,
-    beforeEnter: authGuard,
-    // children: [
-    //    {
-    //      path: "products",
-    //      name: AppRoute.PRODUCTS,
-    //      component: ProductsPage,
-    //    },
-    // ],
+    beforeEnter: authGuard // comment this line to allow access without authentication
   },
   {
     path: "/qr",

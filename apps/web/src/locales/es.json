@@ -80,5 +80,14 @@
     "additionalFee": "Cargo adicional",
     "total": "Total",
     "confirmButton": "Confirmar"
+  },
+  "sidebar": {
+    "dashboard": "Tablero",
+    "menu": "Menú",
+    "stock": "Inventario",
+    "table": "Mesas",
+    "history": "Historial",
+    "settings": "Configuración",
+    "signOut": "Cerrar sesión"
   }
 }

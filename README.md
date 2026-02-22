@@ -58,10 +58,10 @@ Before you begin, ensure you have the following installed:
 
     ```bash
     cp apps/web/.env.example apps/web/.env.local
-    cp apps/api/.env.example apps/api/.env.local
     ```
 
     > ⚠️ Use `.env.local` for local development — it is git-ignored. Never commit real secrets.
+    > ⚠️ Use `APP_NODE_ENV=local` in aapps/web/.env for local development toy avoid CORS in localhost
 
 5. **Start development servers**
 
