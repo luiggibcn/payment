@@ -1,0 +1,84 @@
+{
+  "common": {
+    "loading": "Carregant...",
+    "error": "Error",
+    "success": "Èxit",
+    "cancel": "Cancel·lar",
+    "save": "Desar",
+    "back": "Enrere",
+    "continue": "Continuar",
+    "or": "o",
+    "emptyCart": "La teva comanda està buida"
+  },
+  "languages": {
+    "select": "Selecciona el teu idioma",
+    "en": "Anglès",
+    "es": "Castellà",
+    "ca": "Català"
+  },
+  "auth": {
+    "signIn": "Inicia Sessió",
+    "signUp": "Registra't",
+    "signOut": "Tanca Sessió",
+    "login": "Entrar",
+    "loggingIn": "Iniciant sessió...",
+    "signInAccount": "Creant compte...",
+    "register": "Registra't",
+    "email": "Correu electrònic",
+    "password": "Contrasenya",
+    "yourName": "Usuari",
+    "yourNamePlaceholder": "El teu nom d'usuari",
+    "yourEmail": "El teu correu electrònic",
+    "yourPassword": "La teva contrasenya",
+    "enterEmail": "Introdueix el teu correu electrònic",
+    "enterPassword": "Introdueix la teva contrasenya",
+    "enterPasswordChars": "Introdueix la teva contrasenya (mínim {chars} caràcters)",
+    "forgotPassword": "Has oblidat la contrasenya?",
+    "resetPassword": "Restablir Contrasenya",
+    "welcomeTitle": "Benvingut a Payment4You",
+    "welcomeSubtitle": "Demana, comparteix i divideix el compte sense complicacions.",
+    "continueWithEmail": "Continuar amb correu",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
+    "dontHaveAccount": "No tens un compte?",
+    "alreadyHaveAccount": "Ja tens un compte?",
+    "byAgreeing": "En continuar, acceptes els",
+    "termsAndConditions": "Termes i Condicions",
+    "privacyPolicy": "Política de Privacitat",
+    "and": "i"
+  },
+  "errors": {
+    "invalidUsername": "El nom d'usuari ha de tenir com a mínim 3 caràcters",
+    "invalidEmail": "Format de correu invàlid",
+    "invalidPassword": "La contrasenya ha de tenir almenys 6 caràcters",
+    "invalidCredentials": "Correu o contrasenya incorrectes. Si us plau, torna-ho a intentar.",
+    "emailNotConfirmed": "Si us plau, confirma el teu correu abans d'iniciar sessió.",
+    "emailAlreadyRegistered": "Aquest correu ja està registrat. Si us plau, inicia sessió.",
+    "genericError": "Ha ocorregut un error. Si us plau, torna-ho a intentar.",
+    "enterEmailFirst": "Si us plau, introdueix el teu correu primer",
+    "passwordResetSent": "Correu de restabliment enviat! Revisa la teva bústia d'entrada."
+  },
+  "messages": {
+    "success": {
+      "register": "Compte creat! Si us plau, revisa el teu correu electrònic per confirmar el teu compte si és necessari."
+    }
+  },
+  "products": {
+    "currentOrder": "Comanda actual",
+    "categories": "Categories",
+    "searchMenuPlaceholder": "Cercar al menú...",
+    "bestSeller": "Els més venuts",
+    "orderDetails": "Detalls de la comanda",
+    "dineIn": "Per menjar al restaurant",
+    "takeAway": "Per emportar",
+    "delivery": "Entrega a domicili",
+    "customerName": "Nom del client",
+    "tableNumber": "Número de taula",
+    "paymentDetails": "Detalls del pagament",
+    "subtotal": "Subtotal",
+    "taxes": "Impostos",
+    "additionalFee": "Càrrec addicional",
+    "total": "Total",
+    "confirmButton": "Confirmar"
+  }
+}

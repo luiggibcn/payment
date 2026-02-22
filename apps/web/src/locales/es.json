@@ -13,7 +13,8 @@
   "languages": {
     "select": "Selecciona tu idioma",
     "en": "Inglés",
-    "es": "Español"
+    "es": "Español",
+    "ca": "Catalán"
   },
   "auth": {
     "signIn": "Iniciar Sesión",

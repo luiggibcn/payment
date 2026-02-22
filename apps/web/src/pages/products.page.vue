@@ -19,6 +19,7 @@
         <!-- Navigation -->
         <nav class="hidden lg:flex items-center gap-1">
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,6 +31,7 @@
           </button>
 
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors cursor-pointer">
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,6 +43,7 @@
           </button>
 
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,6 +55,7 @@
           </button>
 
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,6 +67,7 @@
           </button>
 
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,6 +79,7 @@
           </button>
 
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
             <span class="flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,6 +92,7 @@
             </span>
           </button>
           <button
+            :lang="selectedLanguage.code"
             class="px-4 py-2 text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
             @click="userSignOut">
             <span class="flex items-center gap-2">
@@ -116,6 +123,7 @@
           </div>
           <div class="relative" ref="languageDropdownRef">
             <button @click="toggleLanguageDropdown"
+              :lang="selectedLanguage.code"
               class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
               <span class="text-xl">{{ selectedLanguage.flag }}</span>
               <span class="hidden md:inline text-sm font-medium text-gray-700">{{ selectedLanguage.code }}</span>
@@ -158,7 +166,7 @@
               <p class="text-sm font-medium text-gray-900">Sania</p>
               <p class="text-xs text-gray-500">Webber</p>
             </div>
-            <button class="p-1 hover:bg-gray-100 rounded cursor-pointer">
+            <button class="p-1 hover:bg-gray-100 rounded cursor-pointer" :lang="selectedLanguage.code">
               <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
@@ -196,6 +204,7 @@
               </svg>
             </div>
             <button
+              :lang="selectedLanguage.code"
               class="p-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
               <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -249,6 +258,7 @@
                   <span class="text-lg font-bold text-gray-900">${{ item.price.toFixed(2) }}</span>
                   <div class="flex items-center gap-2">
                     <button
+                      :lang="selectedLanguage.code"
                       class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
                       @click.stop="handleDecrement(item)">
                       <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,6 +267,7 @@
                     </button>
                     <span class="w-8 text-center font-medium text-gray-600">{{ getItemQuantity(item.id) }}</span>
                     <button
+                      :lang="selectedLanguage.code"
                       class="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center hover:bg-gray-800 transition-colors cursor-pointer"
                       @click.stop="handleIncrement(item)">
                       <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +294,8 @@
               orderType === 'dine-in'
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            ]" @click="orderType = 'dine-in'">
+            ]" @click="orderType = 'dine-in'"
+              :lang="selectedLanguage.code">
               {{t('products.dineIn')}}
             </button>
             <button :class="[
@@ -291,7 +303,8 @@
               orderType === 'takeaway'
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            ]" @click="orderType = 'takeaway'">
+            ]" @click="orderType = 'takeaway'"
+              :lang="selectedLanguage.code">
               {{t('products.takeAway')}}
             </button>
             <button :class="[
@@ -299,7 +312,8 @@
               orderType === 'delivery'
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            ]" @click="orderType = 'delivery'">
+            ]" @click="orderType = 'delivery'"
+              :lang="selectedLanguage.code">
               {{t('products.delivery')}}
             </button>
           </div>
@@ -339,6 +353,7 @@
                     <p class="text-xs text-gray-500 mb-2">${{ item.price.toFixed(2) }} ×{{ item.quantity }}</p>
                     <div class="flex items-center gap-2">
                       <button
+                        :lang="selectedLanguage.code"
                         class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
                         @click="cart.decrement(item.id)">
                         <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -347,6 +362,7 @@
                       </button>
                       <span class="text-sm font-medium w-6 text-center text-gray-600">{{ item.quantity }}</span>
                       <button
+                        :lang="selectedLanguage.code"
                         class="w-6 h-6 rounded-full bg-gray-900 flex items-center justify-center hover:bg-gray-800 transition-colors cursor-pointer"
                         @click="cart.increment(item)">
                         <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -355,6 +371,7 @@
                       </button>
                       <button
                         class="ml-auto p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors cursor-pointer"
+                        :lang="selectedLanguage.code"
                         @click="cart.removeProduct(item.id)">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -393,6 +410,7 @@
 
           <!-- Confirm Button -->
           <button
+            :lang="selectedLanguage.code"
             class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors cursor-pointer">
             {{ t('products.confirmButton') }}
           </button>
@@ -401,6 +419,7 @@
     </div>
     <!-- Floating Cart Button (Mobile Only) -->
     <button @click="scrollToCart"
+      :lang="selectedLanguage.code"
       class="fixed bottom-6 right-6 xl:hidden w-16 h-16 bg-emerald-600 hover:bg-emerald-700 rounded-full shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 z-50">
       <!-- Cart Icon -->
       <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -450,7 +469,7 @@ interface Language {
 const languages = ref<Language[]>([
   { code: 'en', name: 'English', flag: '🇬🇧' , available: true},
   { code: 'es', name: 'Español', flag: '🇪🇸' , available: true},
-  { code: 'ca', name: 'Català', flag: '🏴' , available: false},
+  { code: 'ca', name: 'Català', flag: '🏴' , available: true},
   { code: 'fr', name: 'Français', flag: '🇫🇷' , available: false},
   { code: 'de', name: 'Deutsch', flag: '🇩🇪' , available: false},
   { code: 'it', name: 'Italiano', flag: '🇮🇹' , available: false},
