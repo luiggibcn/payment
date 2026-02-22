@@ -87,36 +87,48 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const initialize = async () => {
-    if (initialized.value) return
+  if (initialized.value) return
+
+  try {
     const storedSession = localStorage.getItem('session')
     const storedUser = localStorage.getItem('user')
 
-    if (storedSession && storedUser) {
-      const parsedSession: AuthSession = JSON.parse(storedSession)
-      const isExpired = parsedSession.expires_at * 1000 < Date.now()
-
-      if (!isExpired) {
-        setSession(parsedSession)
-        setUser(JSON.parse(storedUser))
-      } else {
-        // ✅ Intentar refresh antes de limpiar
-        try {
-          const { data } = await axiosClient.post<{ session: AuthSession; user: AuthUser }>(
-            '/api/auth/refresh',
-            { refresh_token: parsedSession.refresh_token }
-          )
-          setSession(data.session)
-          setUser(data.user)
-          localStorage.setItem('session', JSON.stringify(data.session))
-          localStorage.setItem('user', JSON.stringify(data.user))
-        } catch {
-          localStorage.removeItem('session')
-          localStorage.removeItem('user')
-        }
-      }
+    // ✅ Limpiar si alguno es inválido
+    const isValid = (val: string | null): boolean => {
+      if (!val || val === 'undefined' || val === 'null') return false
+      try { JSON.parse(val); return true }
+      catch { return false }
     }
-    initialized.value = true
+
+    if (!isValid(storedSession) || !isValid(storedUser)) {
+      localStorage.removeItem('session')
+      localStorage.removeItem('user')
+      initialized.value = true
+      return
+    }
+
+    const parsedSession = JSON.parse(storedSession!) as AuthSession
+    const isExpired = parsedSession.expires_at * 1000 < Date.now()
+
+    if (isExpired) {
+      localStorage.removeItem('session')
+      localStorage.removeItem('user')
+      initialized.value = true
+      return
+    }
+
+    setSession(parsedSession)
+    setUser(JSON.parse(storedUser!) as AuthUser)
+
+  } catch {
+    // Cualquier otro fallo inesperado → limpiar
+    localStorage.removeItem('session')
+    localStorage.removeItem('user')
   }
+
+  initialized.value = true
+}
+
 
   return {
     user, session, loading, initialized,
