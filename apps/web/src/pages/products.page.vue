@@ -182,18 +182,26 @@
         <!-- Menu Section -->
         <section>
           <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ t('products.categories') }}</h2>
-          <categories-slider />
+          <categories-slider @category-change="onCategoryChange" />
 
           <!-- Search & Filter -->
           <div class="flex items-center gap-3 mb-6">
             <div class="flex-1 relative">
-              <input type="text" v-model="searchQuery" :placeholder="t('products.searchMenuPlaceholder')"
-                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-600" />
+              <input type="text" v-model="searchQuery"
+                :placeholder="t('products.searchMenuPlaceholder')"
+                class="w-full pl-10 pr-10 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-600"
+                autocomplete="off" />
               <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
+              <button v-if="searchQuery" @click="searchQuery = ''"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
             <button
               class="p-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
@@ -205,9 +213,17 @@
           </div>
 
           <!-- Menu Items Grid -->
+          <div v-if="filteredMenuItems.length === 0" class="flex flex-col items-center justify-center py-16 text-center">
+            <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <p class="text-gray-500 font-medium">No se encontraron resultados para "{{ searchQuery }}"</p>
+            <p class="text-gray-400 text-sm mt-1">Prueba con otro nombre o categoría</p>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
             <!-- Menu Item Card -->
-            <div v-for="item in menuItems" :key="item.id" :class="[
+            <div v-for="item in filteredMenuItems" :key="item.id" :class="[
               'bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow cursor-pointer',
               'flex flex-col', // ← Añadir flex column
               item.width === 2
@@ -273,7 +289,7 @@
 
       <!-- Right Section - Order Details -->
       <aside class="w-full xl:w-96 2xl:w-[420px] shrink-0">
-        <div class="bg-white rounded-2xl p-6 xl:sticky xl:top-24">
+        <div class="bg-white rounded-2xl p-6 xl:sticky xl:top-24 xl:max-h-[calc(100vh-6rem)] xl:overflow-y-auto">
           <h2 class="text-xl font-semibold text-gray-900 mb-6">{{ t('products.orderDetails') }}</h2>
 
           <!-- Order Type Tabs -->
@@ -418,7 +434,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useCartStore, type CartProduct } from '@/stores/cart.store'
 import FeaturedGrid from '@/components/products/FeaturedGrid.vue'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
@@ -494,9 +510,41 @@ onUnmounted(() => {
 })
 
 const searchQuery = ref('')
+const selectedCategory = ref('all')
+
+// Category id -> product category name mapping
+const categoryMap: Record<string, string> = {
+  all: 'all',
+  appetizer: 'Appetizer',
+  soup: 'Soup',
+  salads: 'Salads',
+  main: 'Main Course',
+  italian: 'Italian',
+  side: 'Side Dish',
+  dessert: 'Dessert',
+  beverages: 'Beverages',
+}
+
+const onCategoryChange = (categoryId: string) => {
+  selectedCategory.value = categoryId
+}
+
+const filteredMenuItems = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase()
+  const cat = selectedCategory.value
+
+  return allMenuItems.value.filter(item => {
+    const matchesSearch = !q ||
+      item.name.toLowerCase().includes(q) ||
+      item.category.toLowerCase().includes(q)
+    const matchesCategory = cat === 'all' ||
+      item.category === categoryMap[cat]
+    return matchesSearch && matchesCategory
+  })
+})
 
 // Menu items (mock data)
-const menuItems = ref<CartProduct[]>([
+const allMenuItems = ref<CartProduct[]>([
   { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/products/2.png', badge: t('products.bestSeller') },
   { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png', video: '/videos/nachos.mp4', badge: t('products.bestSeller') },
   { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/products/4.png', badge: t('products.bestSeller') },
