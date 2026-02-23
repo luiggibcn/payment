@@ -9,6 +9,7 @@ import SignUp from "@/views/sign-up.vue";
 import SignIn from "@/views/sign-in.vue";
 import { authGuard, guestGuard } from "@/middlewares";
 import ProductsPage from "@/pages/products.page.vue";
+import TablesPage from "@/pages/tables.page.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -31,6 +32,11 @@ const routes: RouteRecordRaw[] = [
     name: AppRoute.PRODUCTS,
     component: ProductsPage,
     beforeEnter: authGuard // comment this line to allow access without authentication
+  },
+  {
+    path: "/tables",
+    name: AppRoute.TABLES,
+    component: TablesPage
   },
   {
     path: "/qr",
