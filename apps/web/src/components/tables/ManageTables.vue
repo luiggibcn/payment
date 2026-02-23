@@ -8,10 +8,10 @@
         <button
           v-for="zone in zones"
           :key="zone.id"
-          @click="activeZone = zone.id"
+          @click="tableStore.activeZone = zone.id"
           :class="[
             'px-4 py-2 rounded-xl text-sm font-medium transition-all',
-            activeZone === zone.id
+            tableStore.activeZone === zone.id
               ? 'bg-teal-600 text-white'
               : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
           ]"
@@ -40,24 +40,24 @@
 
       <div class="flex gap-2 flex-wrap">
         <!-- Acciones de selección (solo en modo normal) -->
-        <template v-if="!editMode">
+        <template v-if="!tableStore.editMode">
           <button
-            v-if="selectedTables.length >= 2"
-            @click="mergeTables"
+            v-if="tableStore.selectedIds.length >= 2"
+            @click="tableStore.mergeTables(tableStore.selectedIds)"
             class="px-3 py-1.5 bg-teal-600 text-white text-sm rounded-lg hover:bg-teal-700 transition"
           >
-            ⊕ Unir ({{ selectedTables.length }})
+            ⊕ Unir ({{ tableStore.selectedIds.length }})
           </button>
           <button
-            v-if="selectedTables.length === 1"
-            @click="openSplitModal(selectedTables[0])"
+            v-if="tableStore.selectedIds.length === 1"
+            @click="openSplitModal(tableStore.selectedIds[0])"
             class="px-3 py-1.5 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition"
           >
             ⊗ Dividir
           </button>
           <button
-            v-if="selectedTables.length > 0"
-            @click="clearSelection"
+            v-if="tableStore.selectedIds.length > 0"
+            @click="tableStore.clearSelection"
             class="px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200 transition"
           >
             Cancelar
@@ -72,22 +72,22 @@
 
         <!-- Toggle modo edición -->
         <button
-          @click="toggleEditMode"
+          @click="tableStore.toggleEditMode"
           :class="[
             'px-3 py-1.5 text-sm rounded-lg transition font-medium',
-            editMode
+            tableStore.editMode
               ? 'bg-teal-600 text-white hover:bg-teal-700'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
         >
-          {{ editMode ? '✓ Guardar layout' : '✏️ Editar layout' }}
+          {{ tableStore.editMode ? '✓ Guardar layout' : '✏️ Editar layout' }}
         </button>
       </div>
     </div>
 
     <!-- ─── Banner modo edición ─── -->
     <div
-      v-if="editMode"
+      v-if="tableStore.editMode"
       class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-sm text-amber-700 flex items-center gap-2"
     >
       <span>✏️</span>
@@ -109,7 +109,7 @@
         @drop="onDropOnGrid"
       >
         <!-- Celdas guía visibles en modo edición -->
-        <template v-if="editMode">
+        <template v-if="tableStore.editMode">
           <div
             v-for="cell in gridCells"
             :key="`cell-${cell.col}-${cell.row}`"
@@ -132,9 +132,9 @@
 
         <!-- Mesas -->
         <div
-          v-for="table in filteredTables"
+          v-for="table in tableStore.filteredTables"
           :key="table.id"
-          :draggable="editMode"
+          :draggable="tableStore.editMode"
           :style="{
             gridColumn: `${table.gridCol} / span ${table.colSpan}`,
             gridRow: `${table.gridRow} / span ${table.rowSpan}`,
@@ -143,19 +143,19 @@
           :class="[
             'relative rounded-2xl border-2 cursor-pointer transition-all select-none',
             tableCardClass(table),
-            !editMode && selectedTables.includes(table.id)
+            !tableStore.editMode && tableStore.selectedIds.includes(table.id)
               ? 'ring-1 ring-teal-500'
               : '',
-            editMode ? 'cursor-grab active:cursor-grabbing shadow-lg' : 'hover:scale-[0.95]'
+            tableStore.editMode ? 'cursor-grab active:cursor-grabbing shadow-lg' : 'hover:scale-[0.95]'
           ]"
-          @click="!editMode && toggleSelect(table)"
+          @click="!tableStore.editMode && tableStore.toggleSelect(table.id)"
           @dragstart="onDragStart($event, table)"
           @dragend="onDragEnd"
         >
           <!-- Controles de edición -->
            
           <div
-            v-if="!editMode"
+            v-if="!tableStore.editMode"
             class="absolute top-1.5 right-1.5 flex gap-1 z-20"
           >
                     <button
@@ -166,18 +166,18 @@
               ✏︎
             </button></div>
           <div
-            v-if="editMode"
+            v-if="tableStore.editMode"
             class="absolute top-1.5 right-1.5 flex gap-1 z-20"
           >
             <button
-              @click.stop="rotateTable(table)"
+              @click.stop="tableStore.rotateTable(table.id)"
               class="w-6 h-6 bg-white border border-gray-200 rounded-md flex items-center justify-center text-xs hover:bg-gray-50 shadow-sm text-black cursor-pointer"
               title="Rotar 90°"
             >
               ↻
             </button>
             <button
-              @click.stop="toggleSize(table)"
+              @click.stop="tableStore.toggleSize(table.id)"
               class="w-6 h-6 bg-white border border-gray-200 rounded-md flex items-center justify-center text-xs hover:bg-gray-50 shadow-sm text-black cursor-pointer"
               title="Cambiar tamaño"
             >
@@ -226,7 +226,7 @@
 
           <!-- Check selección -->
           <div
-            v-if="!editMode && selectedTables.includes(table.id)"
+            v-if="!tableStore.editMode && tableStore.selectedIds.includes(table.id)"
             class="absolute top-2 right-2 w-5 h-5 bg-teal-600 rounded-full flex items-center justify-center text-white text-xs shadow"
           >
             ✓
@@ -449,53 +449,21 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useTablesStore, type RestaurantTable, type TableStatus } from '@/stores/tables.store'
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-type TableStatus = 'available' | 'reserved' | 'on-dine'
-type TableSize   = 'small' | 'large'
-type Rotation    = 0 | 90 | 180 | 270
-
-interface RestaurantTable {
-  id: string
-  number: number
-  zone: string
-  status: TableStatus
-  seats: number
-  occupants: number
-  size: TableSize
-  // Grid layout
-  gridCol: number
-  gridRow: number
-  colSpan: number
-  rowSpan: number
-  rotation: Rotation
-  mergedFrom?: number[]
-}
-
-interface GridCell {
-  col: number
-  row: number
-}
-
-// ─── Emits ───────────────────────────────────────────────────────────────────
-const emit = defineEmits<{
-  merge:       [tableIds: string[]]
-  split:       [tableId: string, into: number]
-  tableAdded:  [table: RestaurantTable]
-  layoutSaved: [tables: RestaurantTable[]]
-}>()
+const tableStore = useTablesStore()
 
 // ─── Grid config ─────────────────────────────────────────────────────────────
 const GRID_COLS = 6
 const GRID_ROWS = 5
 
+interface GridCell { col: number; row: number }
+
 const gridCells = computed<GridCell[]>(() => {
   const cells: GridCell[] = []
-  for (let row = 1; row <= GRID_ROWS; row++) {
-    for (let col = 1; col <= GRID_COLS; col++) {
+  for (let row = 1; row <= GRID_ROWS; row++)
+    for (let col = 1; col <= GRID_COLS; col++)
       cells.push({ col, row })
-    }
-  }
   return cells
 })
 
@@ -505,36 +473,6 @@ const zones = [
   { id: 'terrace', name: 'Terrace'     },
   { id: 'outdoor', name: 'Outdoor'     },
 ]
-const activeZone = ref('main')
-
-// ─── Mesas ───────────────────────────────────────────────────────────────────
-const tables = ref<RestaurantTable[]>([
-  { id: 't1',  number: 1, zone: 'main', status: 'reserved',  seats: 8, occupants: 6,  size: 'large', gridCol: 1, gridRow: 1, colSpan: 2, rowSpan: 1, rotation: 0 },
-  { id: 't2',  number: 2, zone: 'main', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't3',  number: 3, zone: 'main', status: 'available', seats: 4, occupants: 0,  size: 'small', gridCol: 4, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't4',  number: 4, zone: 'main', status: 'on-dine',   seats: 4, occupants: 3,  size: 'small', gridCol: 1, gridRow: 2, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't5',  number: 5, zone: 'main', status: 'available', seats: 2, occupants: 0,  size: 'small', gridCol: 2, gridRow: 2, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't6',  number: 6, zone: 'main', status: 'reserved',  seats: 8, occupants: 7,  size: 'large', gridCol: 3, gridRow: 2, colSpan: 2, rowSpan: 1, rotation: 0 },
-  { id: 't7',  number: 7, zone: 'main', status: 'reserved',  seats: 8, occupants: 10, size: 'large', gridCol: 1, gridRow: 3, colSpan: 2, rowSpan: 1, rotation: 0 },
-  { id: 't8',  number: 8, zone: 'main', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't9',  number: 9, zone: 'main', status: 'on-dine',   seats: 4, occupants: 4,  size: 'small', gridCol: 4, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 'tt1', number: 1, zone: 'terrace', status: 'available', seats: 4, occupants: 0, size: 'small', gridCol: 1, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 'tt2', number: 2, zone: 'terrace', status: 'on-dine',   seats: 4, occupants: 3, size: 'small', gridCol: 2, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-])
-
-const filteredTables = computed(() =>
-  tables.value.filter(t => t.zone === activeZone.value)
-)
-
-// ─── Sillas (sin laterales fijas) ────────────────────────────────────────────
-function topSeats(table: RestaurantTable): number {
-  // Si está rotada 90/270, las sillas "top/bottom" pasan a ser laterales visualmente
-  // pero el conteo sigue siendo ceil/floor del total
-  return Math.ceil(table.seats / 2)
-}
-function bottomSeats(table: RestaurantTable): number {
-  return Math.floor(table.seats / 2)
-}
 
 // ─── Estilos ─────────────────────────────────────────────────────────────────
 function tableCardClass(table: RestaurantTable): string {
@@ -549,68 +487,19 @@ function chairColor(table: RestaurantTable): string {
   return 'text-gray-300'
 }
 
-// ─── Selección ───────────────────────────────────────────────────────────────
-const selectedTables = ref<string[]>([])
-
-function toggleSelect(table: RestaurantTable) {
-  const idx = selectedTables.value.indexOf(table.id)
-  if (idx === -1) selectedTables.value.push(table.id)
-  else selectedTables.value.splice(idx, 1)
+function topSeats(table: RestaurantTable): number {
+  return Math.ceil(table.seats / 2)
+}
+function bottomSeats(table: RestaurantTable): number {
+  return Math.floor(table.seats / 2)
 }
 
-function clearSelection() {
-  selectedTables.value = []
-}
-
-// ─── Modo edición ────────────────────────────────────────────────────────────
-const editMode = ref(false)
-
-function toggleEditMode() {
-  editMode.value = !editMode.value
-  if (!editMode.value) {
-    // Al salir del modo edición, persistir el layout
-    emit('layoutSaved', tables.value)
-    clearSelection()
-  }
-}
-
-// ─── Rotar mesa ──────────────────────────────────────────────────────────────
-function rotateTable(table: RestaurantTable) {
-  const t = tables.value.find(t => t.id === table.id)
-  if (!t) return
-
-  // Intercambiar colSpan y rowSpan al rotar
-  const prevColSpan = t.colSpan
-  t.colSpan = t.rowSpan
-  t.rowSpan = prevColSpan
-
-  t.rotation = ((t.rotation + 90) % 360) as Rotation
-}
-
-// ─── Cambiar tamaño ──────────────────────────────────────────────────────────
-function toggleSize(table: RestaurantTable) {
-  const t = tables.value.find(t => t.id === table.id)
-  if (!t) return
-
-  if (t.colSpan === 1 && t.rowSpan === 1) {
-    // small → large horizontal
-    t.colSpan = 2
-    t.rowSpan = 1
-    t.size = 'large'
-  } else {
-    // large → small
-    t.colSpan = 1
-    t.rowSpan = 1
-    t.size = 'small'
-  }
-}
-
-// ─── Drag & Drop entre celdas ─────────────────────────────────────────────────
+// ─── Drag & Drop ─────────────────────────────────────────────────────────────
 const draggingTableId = ref<string | null>(null)
 const dragOverCell    = ref<GridCell | null>(null)
 
 function onDragStart(event: DragEvent, table: RestaurantTable) {
-  if (!editMode.value) return
+  if (!tableStore.editMode) return
   draggingTableId.value = table.id
   event.dataTransfer?.setData('tableId', table.id)
 }
@@ -622,145 +511,15 @@ function onDragEnd() {
 
 function onDropOnCell(cell: GridCell) {
   if (!draggingTableId.value) return
-  const t = tables.value.find(t => t.id === draggingTableId.value)
-  if (!t) return
-
-  t.gridCol = cell.col
-  t.gridRow = cell.row
-
+  tableStore.moveTable(draggingTableId.value, cell.col, cell.row)
   draggingTableId.value = null
   dragOverCell.value    = null
 }
 
 function onDropOnGrid(event: DragEvent) {
-  // Fallback: si suelta en el grid pero no sobre una celda específica, no hacemos nada
   event.preventDefault()
 }
 
-// ─── Unir mesas ──────────────────────────────────────────────────────────────
-function mergeTables() {
-  const toMerge = tables.value.filter(t => selectedTables.value.includes(t.id))
-  if (toMerge.length < 2) return
-
-  const merged: RestaurantTable = {
-    id: `merged-${Date.now()}`,
-    number: toMerge[0].number,
-    zone: toMerge[0].zone,
-    status: toMerge.some(t => t.status === 'on-dine')  ? 'on-dine'
-          : toMerge.some(t => t.status === 'reserved') ? 'reserved'
-          : 'available',
-    seats:     toMerge.reduce((acc, t) => acc + t.seats, 0),
-    occupants: toMerge.reduce((acc, t) => acc + t.occupants, 0),
-    size:      'large',
-    gridCol:   toMerge[0].gridCol,
-    gridRow:   toMerge[0].gridRow,
-    colSpan:   2,
-    rowSpan:   1,
-    rotation:  0,
-    mergedFrom: toMerge.map(t => t.number),
-  }
-
-  tables.value = tables.value.filter(t => !selectedTables.value.includes(t.id))
-  tables.value.push(merged)
-
-  emit('merge', selectedTables.value)
-  clearSelection()
-}
-
-// ─── Dividir mesa ─────────────────────────────────────────────────────────────
-const showSplitModal  = ref(false)
-const tableToSplit    = ref<RestaurantTable | null>(null)
-const splitCount      = ref(2)
-
-const splitSeatsPreview = computed<number[]>(() => {
-  if (!tableToSplit.value || splitCount.value < 2) return []
-  const total     = tableToSplit.value.seats
-  const base      = Math.floor(total / splitCount.value)
-  const remainder = total % splitCount.value
-  return Array.from({ length: splitCount.value }, (_, i) =>
-    i < remainder ? base + 1 : base
-  )
-})
-
-function openSplitModal(tableId: string) {
-  tableToSplit.value = tables.value.find(t => t.id === tableId) ?? null
-  splitCount.value   = 2
-  showSplitModal.value = true
-}
-
-function confirmSplit() {
-  const source = tableToSplit.value
-  if (!source || splitCount.value < 2) return
-
-  const newTables: RestaurantTable[] = splitSeatsPreview.value.map((seats, i) => ({
-    id:        `split-${source.id}-${i}-${Date.now()}`,
-    number:    source.number + i,
-    zone:      source.zone,
-    status:    'available' as TableStatus,
-    seats,
-    occupants: 0,
-    size:      'small' as TableSize,
-    gridCol:   source.gridCol + i,  // las coloca en celdas consecutivas
-    gridRow:   source.gridRow,
-    colSpan:   1,
-    rowSpan:   1,
-    rotation:  0,
-  }))
-
-  tables.value = tables.value.filter(t => t.id !== source.id)
-  tables.value.push(...newTables)
-
-  emit('split', source.id, splitCount.value)
-  showSplitModal.value = false
-  tableToSplit.value   = null
-  clearSelection()
-}
-
-// ─── Añadir mesa ─────────────────────────────────────────────────────────────
-const showAddModal = ref(false)
-const newTable     = ref({ number: 10, seats: 4, size: 'small' as TableSize })
-
-function openAddTableModal() {
-  const max = Math.max(0, ...filteredTables.value.map(t => t.number))
-  newTable.value = { number: max + 1, seats: 4, size: 'small' }
-  showAddModal.value = true
-}
-
-function addTable() {
-  // Buscar primera celda libre
-  const occupied = new Set(
-    filteredTables.value.map(t => `${t.gridCol}-${t.gridRow}`)
-  )
-  let freeCol = 1, freeRow = 1
-  outer: for (let row = 1; row <= GRID_ROWS; row++) {
-    for (let col = 1; col <= GRID_COLS; col++) {
-      if (!occupied.has(`${col}-${row}`)) {
-        freeCol = col
-        freeRow = row
-        break outer
-      }
-    }
-  }
-
-  const table: RestaurantTable = {
-    id:        `new-${Date.now()}`,
-    number:    newTable.value.number,
-    zone:      activeZone.value,
-    status:    'available',
-    seats:     newTable.value.seats,
-    occupants: 0,
-    size:      newTable.value.size,
-    gridCol:   freeCol,
-    gridRow:   freeRow,
-    colSpan:   newTable.value.size === 'large' ? 2 : 1,
-    rowSpan:   1,
-    rotation:  0,
-  }
-
-  tables.value.push(table)
-  emit('tableAdded', table)
-  showAddModal.value = false
-}
 // ─── Editar mesa ─────────────────────────────────────────────────────────────
 const showEditModal = ref(false)
 const tableToEdit   = ref<RestaurantTable | null>(null)
@@ -777,15 +536,83 @@ function openEditModal(table: RestaurantTable) {
 }
 
 function confirmEdit() {
-  const t = tables.value.find(t => t.id === tableToEdit.value?.id)
-  if (!t) return
-
-  t.seats     = editForm.value.seats
-  t.occupants = Math.min(editForm.value.occupants, editForm.value.seats) // nunca > seats
-  t.status    = editForm.value.status
-
+  if (!tableToEdit.value) return
+  tableStore.updateTable(tableToEdit.value.id, {
+    seats:     editForm.value.seats,
+    occupants: Math.min(editForm.value.occupants, editForm.value.seats),
+    status:    editForm.value.status,
+  })
   showEditModal.value = false
   tableToEdit.value   = null
 }
 
+// ─── Dividir mesa ─────────────────────────────────────────────────────────────
+const showSplitModal = ref(false)
+const tableToSplit   = ref<RestaurantTable | null>(null)
+const splitCount     = ref(2)
+
+const splitSeatsPreview = computed<number[]>(() => {
+  if (!tableToSplit.value || splitCount.value < 2) return []
+  const total     = tableToSplit.value.seats
+  const base      = Math.floor(total / splitCount.value)
+  const remainder = total % splitCount.value
+  return Array.from({ length: splitCount.value }, (_, i) =>
+    i < remainder ? base + 1 : base
+  )
+})
+
+function openSplitModal(tableId: string) {
+  tableToSplit.value   = tableStore.tables.find(t => t.id === tableId) ?? null
+  splitCount.value     = 2
+  showSplitModal.value = true
+}
+
+function confirmSplit() {
+  if (!tableToSplit.value || splitCount.value < 2) return
+  tableStore.splitTable(tableToSplit.value.id, splitCount.value)
+  showSplitModal.value = false
+  tableToSplit.value   = null
+}
+
+// ─── Añadir mesa ─────────────────────────────────────────────────────────────
+const showAddModal = ref(false)
+const newTable     = ref({ number: 1, seats: 4, size: 'small' as RestaurantTable['size'] })
+
+function openAddTableModal() {
+  const max = Math.max(0, ...tableStore.filteredTables.map(t => t.number))
+  newTable.value     = { number: max + 1, seats: 4, size: 'small' }
+  showAddModal.value = true
+}
+
+function addTable() {
+  // Buscar primera celda libre en la zona activa
+  const occupied = new Set(
+    tableStore.filteredTables.map(t => `${t.gridCol}-${t.gridRow}`)
+  )
+  let freeCol = 1, freeRow = 1
+  outer: for (let row = 1; row <= GRID_ROWS; row++) {
+    for (let col = 1; col <= GRID_COLS; col++) {
+      if (!occupied.has(`${col}-${row}`)) {
+        freeCol = col; freeRow = row
+        break outer
+      }
+    }
+  }
+
+  tableStore.addTable({
+    number:    newTable.value.number,
+    zone:      tableStore.activeZone,
+    status:    'available',
+    seats:     newTable.value.seats,
+    occupants: 0,
+    size:      newTable.value.size,
+    gridCol:   freeCol,
+    gridRow:   freeRow,
+    colSpan:   newTable.value.size === 'large' ? 2 : 1,
+    rowSpan:   1,
+    rotation:  0,
+  })
+
+  showAddModal.value = false
+}
 </script>
