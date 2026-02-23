@@ -5,7 +5,7 @@
     <aside
       :class="[
         'flex flex-col bg-white border-r border-gray-200 shrink-0 transition-all duration-300 ease-in-out',
-        sidebarOpen ? 'w-60' : 'w-16'
+        sidebarOpen ? 'md:w-60 w-full' : 'w-16'
       ]"
       class="sticky top-0 h-screen z-40 overflow-hidden"
     >
@@ -38,7 +38,7 @@
         <button v-for="item in navItems" :key="item.key"
           :class="[
             'w-full flex items-center rounded-xl transition-all cursor-pointer group',
-            sidebarOpen ? 'px-3 py-2.5 gap-3' : 'px-0 py-2.5 justify-center',
+            sidebarOpen ? 'px-3 py-2.5 gap-3' : 'px-3 py-2.5',
             item.active
               ? 'bg-orange-50 text-orange-500'
               : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
