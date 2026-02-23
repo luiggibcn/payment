@@ -349,7 +349,7 @@
       </div>
 
       <!-- Floating Cart Button (Mobile Only) -->
-      <button @click="scrollToCart"
+      <button v-if="!isMobile || (!sidebarOpen && isMobile)" @click="scrollToCart"
         class="fixed bottom-6 right-6 xl:hidden w-16 h-16 bg-emerald-600 hover:bg-emerald-700 rounded-full shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 z-50">
         <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -374,10 +374,12 @@ import { useAuthStore } from '@/stores/auth.store'
 import { useI18n } from 'vue-i18n'
 import { setLocale } from '@/plugins/i18n'
 import type { Locale } from '@/locales'
+import { useIsMobile } from '@/composables/isMobile.composable'
 
 // Cart store
 const cart = useCartStore()
 const authStore = useAuthStore()
+const { isMobile } = useIsMobile()
 const { t } = useI18n()
 
 // Sidebar
