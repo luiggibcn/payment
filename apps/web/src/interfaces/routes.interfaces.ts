@@ -4,6 +4,7 @@ export enum AppRoute {
     SHOP = 'shop',
     SIGNIN = 'signin',
     SIGNUP = 'signup',
-    TEST = 'test'
+    TEST = 'test',
+    TABLES = 'tables'
   }
   
