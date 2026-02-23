@@ -8,7 +8,8 @@
     "back": "Back",
     "continue": "Continue",
     "or": "or",
-    "emptyCart": "Your order is empty"
+    "emptyCart": "Your order is empty",
+    "add": "Add"
   },
   "languages": {
     "select": "Select your language",
@@ -89,5 +90,46 @@
     "history": "History",
     "settings": "Settings",
     "signOut": "Sign Out"
+  },
+  "tables": {
+    "title": "Manage Tables",
+    "saloon": "Saloon",
+    "terrace": "Terrace",
+    "outdoor": "Outside",
+    "available": "Available",
+    "reserved": "Reserved",
+    "on-dine": "Eating",
+    "newTable": "New Table",
+    "editTable": "Edit mesa",
+    "editLayout": "Edit layout",
+    "saveLayout": "Save layout",
+    "number": "Number",
+    "splitTable": "Split table",
+    "tableOccupantsMsg": "This table has",
+    "seat": "seat",
+    "seats": "seats",
+    "splitMsg": "Indicate how many tables you want to divide into.",
+    "labelTotalTables": "Number of resulting tables",
+    "result": "Result",
+    "table": "Table",
+    "split": "Split",
+    "join": "Join",
+    "totalSeats": "Total seats",
+    "currentOccupants": "Current occupants",
+    "occupied": "occupied",
+    "preview": "Preview",
+    "state": "State",
+    "banner": "Edit mode: Drag the tables to reposition them. Use the buttons on each table to rotate or resize it.",
+    "normal": "Normal (1x1)",
+    "big": "Big (2x1)",
+    "modal": {
+      "title": "New table",
+      "numberTable": "Table number",
+      "seats": "Seats",
+      "sizeTable": "Table size (visual)",
+      "previewText": "Preview seats",
+      "addButton": "Create table",
+      "cancelButton": "Cancel"
+    }
   }
 }

@@ -10,6 +10,8 @@ import SignIn from "@/views/sign-in.vue";
 import { authGuard, guestGuard } from "@/middlewares";
 import ProductsPage from "@/pages/products.page.vue";
 import TablesPage from "@/pages/tables.page.vue";
+import ManageTables from "@/components/tables/ManageTables.vue";
+import TpvLayout from "@/views/tpv.layout.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -27,16 +29,33 @@ const routes: RouteRecordRaw[] = [
     name: AppRoute.SIGNIN,
     beforeEnter: guestGuard
   },
+    {
+    path: '/tpv',
+    component: TpvLayout,
+    children: [
+      {
+        path: '',
+        name: AppRoute.TPV,
+        component: ManageTables
+      },
+      {
+        path: 'products',
+        name: AppRoute.TPVPRODUCTS,
+        component: ProductsPage
+      }
+    ]
+  },
+  {
+    path: "/tables",
+    name: AppRoute.TABLES,
+    component: TablesPage,
+    beforeEnter: guestGuard
+  },
   {
     path: "/products",
     name: AppRoute.PRODUCTS,
     component: ProductsPage,
     beforeEnter: authGuard // comment this line to allow access without authentication
-  },
-  {
-    path: "/tables",
-    name: AppRoute.TABLES,
-    component: TablesPage
   },
   {
     path: "/qr",

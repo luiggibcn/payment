@@ -8,7 +8,8 @@
     "back": "Enrere",
     "continue": "Continuar",
     "or": "o",
-    "emptyCart": "La teva comanda està buida"
+    "emptyCart": "La teva comanda està buida",
+    "add": "Afegir"
   },
   "languages": {
     "select": "Selecciona el teu idioma",
@@ -89,5 +90,47 @@
     "history": "Historial",
     "settings": "Configuració",
     "signOut": "Tancar sessió"
+  },
+  "tables": {
+    "title": "Gestiona taules",
+    "saloon": "Sala",
+    "terrace": "Terrassa",
+    "outdoor": "Exterior",
+    "available": "Disponible",
+    "reserved": "Reservat",
+    "on-dine": "Menjant",
+    "dining": "Menjador",
+    "newTable": "Taula nova",
+    "editTable": "Editar taula",
+    "editLayout": "Editar layout",
+    "saveLayout": "Guardar layout",
+    "number": "Número",
+    "splitTable": "Dividir taula",
+    "tableOccupantsMsg": "Aquesta taula té",
+    "seat": "seient",
+    "seats": "seients",
+    "splitMsg": "Indica en quantes taules la vols dividir.",
+    "labelTotalTables": "Nombre de taules resultants",
+    "result": "Resultat",
+    "table": "Taula",
+    "split": "Dividir",
+    "join": "Unir",
+    "totalSeats": "Total seients",
+    "currentOccupants": "Ocupants actuals",
+    "occupied": "ocupats",
+    "preview": "Previsualització",
+    "state": "Estat",
+    "banner": "Mode edició: arrossega les taules per reposicionar-les. Fes servir els botons de cada taula per rotar o redimensionar.",
+    "normal": "Normal (1x1)",
+    "big": "Gran (2x1)",
+    "modal": {
+      "title": "Taula nova",
+      "numberTable": "Número de taula",
+      "seats": "Seients",
+      "sizeTable": "Mida de la taula (visual)",
+      "previewText": "Vista prèvia dels seients",
+      "addButton": "Crear taula",
+      "cancelButton": "Cancel·lar"
+    }
   }
 }

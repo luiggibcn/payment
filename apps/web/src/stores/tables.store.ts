@@ -24,15 +24,15 @@ export interface RestaurantTable {
 
 // ─── Datos iniciales (fallback si no hay nada en localStorage) ───────────────
 const DEFAULT_TABLES: RestaurantTable[] = [
-  { id: 't1',  number: 1, zone: 'main', status: 'reserved',  seats: 8, occupants: 6,  size: 'large', gridCol: 1, gridRow: 1, colSpan: 2, rowSpan: 1, rotation: 0 },
-  { id: 't2',  number: 2, zone: 'main', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't3',  number: 3, zone: 'main', status: 'available', seats: 4, occupants: 0,  size: 'small', gridCol: 4, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't4',  number: 4, zone: 'main', status: 'on-dine',   seats: 4, occupants: 3,  size: 'small', gridCol: 1, gridRow: 2, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't5',  number: 5, zone: 'main', status: 'available', seats: 2, occupants: 0,  size: 'small', gridCol: 2, gridRow: 2, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't6',  number: 6, zone: 'main', status: 'reserved',  seats: 8, occupants: 7,  size: 'large', gridCol: 3, gridRow: 2, colSpan: 2, rowSpan: 1, rotation: 0 },
-  { id: 't7',  number: 7, zone: 'main', status: 'reserved',  seats: 8, occupants: 10, size: 'large', gridCol: 1, gridRow: 3, colSpan: 2, rowSpan: 1, rotation: 0 },
-  { id: 't8',  number: 8, zone: 'main', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 't9',  number: 9, zone: 'main', status: 'on-dine',   seats: 4, occupants: 4,  size: 'small', gridCol: 4, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 't1',  number: 1, zone: 'saloon', status: 'reserved',  seats: 8, occupants: 6,  size: 'large', gridCol: 1, gridRow: 1, colSpan: 2, rowSpan: 1, rotation: 0 },
+  { id: 't2',  number: 2, zone: 'saloon', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 't3',  number: 3, zone: 'saloon', status: 'available', seats: 4, occupants: 0,  size: 'small', gridCol: 4, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 't4',  number: 4, zone: 'saloon', status: 'on-dine',   seats: 4, occupants: 3,  size: 'small', gridCol: 1, gridRow: 2, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 't5',  number: 5, zone: 'saloon', status: 'available', seats: 2, occupants: 0,  size: 'small', gridCol: 2, gridRow: 2, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 't6',  number: 6, zone: 'saloon', status: 'reserved',  seats: 8, occupants: 7,  size: 'large', gridCol: 3, gridRow: 2, colSpan: 2, rowSpan: 1, rotation: 0 },
+  { id: 't7',  number: 7, zone: 'saloon', status: 'reserved',  seats: 8, occupants: 10, size: 'large', gridCol: 1, gridRow: 3, colSpan: 2, rowSpan: 1, rotation: 0 },
+  { id: 't8',  number: 8, zone: 'saloon', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 't9',  number: 9, zone: 'saloon', status: 'on-dine',   seats: 4, occupants: 4,  size: 'small', gridCol: 4, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
   { id: 'tt1', number: 1, zone: 'terrace', status: 'available', seats: 4, occupants: 0, size: 'small', gridCol: 1, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
   { id: 'tt2', number: 2, zone: 'terrace', status: 'on-dine',   seats: 4, occupants: 3, size: 'small', gridCol: 2, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
 ]
@@ -44,7 +44,7 @@ export const useTablesStore = defineStore('tables', () => {
 
   // ── Estado ────────────────────────────────────────────────────────────────
   const tables     = ref<RestaurantTable[]>(loadFromStorage())
-  const activeZone = ref('main')
+  const activeZone = ref('saloon')
   const editMode   = ref(false)
   const selectedIds = ref<string[]>([])
   const isSaving   = ref(false)
@@ -57,7 +57,7 @@ export const useTablesStore = defineStore('tables', () => {
 
   const tablesByZone = computed(() =>
     Object.fromEntries(
-      ['main', 'terrace', 'outdoor'].map(zone => [
+      ['saloon', 'terrace', 'outdoor'].map(zone => [
         zone,
         tables.value.filter(t => t.zone === zone)
       ])
