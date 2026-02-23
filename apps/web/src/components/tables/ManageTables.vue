@@ -156,7 +156,7 @@
            
           <div
             v-if="!tableStore.editMode"
-            class="absolute top-1.5 right-1.5 flex gap-1 z-20"
+            class="absolute bottom-1.5 right-1.5 flex gap-1 z-20"
           >
                     <button
               @click.stop="openEditModal(table)"
@@ -167,7 +167,7 @@
             </button></div>
           <div
             v-if="tableStore.editMode"
-            class="absolute top-1.5 right-1.5 flex gap-1 z-20"
+            class="absolute bottom-1.5 right-1.5 flex gap-1 z-20"
           >
             <button
               @click.stop="tableStore.rotateTable(table.id)"
