@@ -483,6 +483,7 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 onMounted(() => {
+  if(isMobile) sidebarOpen.value = false
   window.addEventListener('scroll', handleScroll)
   document.addEventListener('click', handleClickOutside)
   // customerName.value = authStore.user?.user_metadata?.full_name ?? 'Domeniko'
@@ -574,6 +575,7 @@ const scrollToCart = () => {
 }
 const changePage = (url: string) => {
   if (url.trim() !== '') {
+    sidebarOpen.value = false
     redirectTo(`/${url}`)
   }
 }
