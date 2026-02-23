@@ -5,6 +5,8 @@ export enum AppRoute {
     SIGNIN = 'signin',
     SIGNUP = 'signup',
     TEST = 'test',
-    TABLES = 'tables'
+    TABLES = 'tables',
+    TPV = 'tpv',
+    TPVPRODUCTS = 'tpvproducts'
   }
   

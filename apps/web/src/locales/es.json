@@ -8,7 +8,8 @@
     "back": "Atrás",
     "continue": "Continuar",
     "or": "o",
-    "emptyCart": "Tu pedido esta vacío"
+    "emptyCart": "Tu pedido esta vacío",
+    "add": "Añadir"
   },
   "languages": {
     "select": "Selecciona tu idioma",
@@ -89,5 +90,46 @@
     "history": "Historial",
     "settings": "Configuración",
     "signOut": "Cerrar sesión"
+  },
+  "tables": {
+    "title": "Gestionar mesas",
+    "saloon": "Sala",
+    "terrace": "Terraza",
+    "outdoor": "Exterior",
+    "available": "Disponible",
+    "reserved": "Reservado",
+    "on-dine": "Comiendo",
+    "newTable": "Mesa nueva",
+    "editTable": "Editar layout",
+    "editLayout": "Editar layout",
+    "saveLayout": "Guardar layout",
+    "number": "Número",
+    "splitTable": "Dividir mesa",
+    "tableOccupantsMsg": "Esta mesa tiene",
+    "seat": "asiento",
+    "seats": "asientos",
+    "splitMsg": "Indica en cuántas mesas quieres dividirla",
+    "labelTotalTables": "Número de mesas resultantes",
+    "result": "Resultado",
+    "table": "Mesa",
+    "split": "Dividir",
+    "join": "Unir",
+    "totalSeats": "Asientos totales",
+    "currentOccupants": "Ocupantes actuales",
+    "occupied": "ocupados",
+    "preview": "Vista previa",
+    "state": "Estado",
+    "banner": "Modo edición: arrastra las mesas para reposicionarlas. Usa los botones de cada mesa para rotar o redimensionar.",
+    "normal": "Normal (1x1)",
+    "big": "Grande (2x1)",
+    "modal": {
+      "title": "Mesa nueva",
+      "numberTable": "Número de mesa",
+      "seats": "Asientos",
+      "sizeTable": "Tamaño de la mesa (visual)",
+      "previewText": "Vista previa de los asientos",
+      "addButton": "Crear mesa",
+      "cancelButton": "Cancelar"
+    }
   }
 }
