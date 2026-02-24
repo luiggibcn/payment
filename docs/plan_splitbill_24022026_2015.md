@@ -674,7 +674,7 @@ La RLS de `orders.*` usa `current_setting('app.session_token', true)`. Hay tres 
 
 **2. ¿Quién y cómo crea los `order_items`?**
 
-- **Opción manual:** el camarero introduce los items desde el dashboard al generar el QR. El panel MVP necesita un formulario "añadir plato a la cuenta". Impacta el Sprint 2 del dashboard.
+- **Opción manual:** el camarero o el propio usuario introduce los items desde el dashboard al generar el QR. El panel MVP necesita un formulario "añadir plato a la cuenta". Impacta el Sprint 2 del dashboard.
 - **Opción automática:** los items vienen del flujo de comanda ya existente. No hay que crear nada en el cliente.
 
 Decidir antes de empezar el Sprint 2.

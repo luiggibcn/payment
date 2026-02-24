@@ -7,9 +7,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+.claude/
 node_modules/
 dist
+.docs
+skills-lock.json
 dist-ssr
 .output/
 .nuxt/
