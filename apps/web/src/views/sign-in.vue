@@ -316,10 +316,10 @@ const handleLogin = async () => {
       } else {
         // ⭐ Redirect por rol
         const role = data.user?.role ?? 'user'
-        if (role === 'admin' || role === 'editor' || role === 'waiter') {
-          router.push('/dashboard')
+        if (role === 'superadmin' || role === 'editor' || role === 'waiter') {
+          router.push('/tpv/products')
         } else {
-          router.push('/products')
+          router.push('/tpv')
         }
       }
     }
@@ -370,7 +370,7 @@ const handleAppleSignIn = async (): Promise<void> => {
 }
 
 onMounted(()=>{
-  if(authStore.isAuthenticated) redirectTo('/products')
+  if(authStore.isAuthenticated) redirectTo('/tpv')
 })
 </script>
 

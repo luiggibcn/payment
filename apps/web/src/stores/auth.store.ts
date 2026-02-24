@@ -4,7 +4,7 @@ import { redirectTo } from '@/utils'
 import { useCartStore } from './cart.store'
 import axiosClient from '@/clients/axios'
 
-export type UserRole = 'admin' | 'editor' | 'waiter' | 'user'
+export type UserRole = 'admin' | 'editor' | 'waiter' | 'user' | 'superadmin'
 
 export interface AuthUser {
   id: string
