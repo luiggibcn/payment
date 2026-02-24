@@ -84,12 +84,12 @@ describe('object.util', () => {
       })
     })
 
-    it('should merge arrays by concatenation', () => {
+    it('should replace arrays (source wins)', () => {
       const target = { items: [1, 2] }
       const source = { items: [3, 4] }
       const result = deepMerge(target, source)
 
-      expect(result).toEqual({ items: [1, 2, 3, 4] })
+      expect(result).toEqual({ items: [3, 4] })
     })
 
     it('should not mutate original objects', () => {

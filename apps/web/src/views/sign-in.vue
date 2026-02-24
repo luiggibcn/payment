@@ -317,9 +317,9 @@ const handleLogin = async () => {
         // ⭐ Redirect por rol
         const role = data.user?.role ?? 'user'
         if (role === 'superadmin' || role === 'editor' || role === 'waiter') {
-          router.push('/tpv/products')
+          router.push('/dashboard/products')
         } else {
-          router.push('/tpv')
+          router.push('/dashboard')
         }
       }
     }
@@ -370,7 +370,7 @@ const handleAppleSignIn = async (): Promise<void> => {
 }
 
 onMounted(()=>{
-  if(authStore.isAuthenticated) redirectTo('/tpv')
+  if(authStore.isAuthenticated) redirectTo('/dashboard')
 })
 </script>
 

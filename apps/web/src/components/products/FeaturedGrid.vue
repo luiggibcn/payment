@@ -95,18 +95,16 @@
         </div>
     </div>
 </template>
-<style lang="scss" scoped>
-// Ocultar scrollbar pero mantener funcionalidad
+<style scoped>
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  
-  &::-webkit-scrollbar {
-    display: none;
-  }
 }
 
-// Animación suave para el spinner
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);

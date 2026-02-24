@@ -1,6 +1,0 @@
-import axios from 'axios'
-
-export const fetchMessage = async () => {
-  const response = await axios.get('/message')
-  return response.data.message
-}

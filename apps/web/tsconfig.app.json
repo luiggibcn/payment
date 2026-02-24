@@ -9,7 +9,7 @@
     "noEmit": true,
     /* Linting */
     "strict": true,
-    "types": ["@types/lodash-es", "@types/node", "@types/jsdom", "vite/client"],
+    "types": ["@types/node", "@types/jsdom", "vite/client"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,

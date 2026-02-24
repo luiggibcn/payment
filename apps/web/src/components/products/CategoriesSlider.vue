@@ -39,13 +39,13 @@ const selectCategory = (id: string) => {
   emit('categoryChange', id)
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  
-  &::-webkit-scrollbar {
-    display: none;
-  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 </style>

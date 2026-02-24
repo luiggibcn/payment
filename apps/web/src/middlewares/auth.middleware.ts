@@ -39,7 +39,7 @@ export const adminGuard = async (
   }
 
   if (!authStore.isAdmin) {
-    next({ path: '/products' })
+    next({ path: '/dashboard' })
   } else {
     next()
   }
@@ -57,7 +57,7 @@ export const guestGuard = async (
   }
 
   if (authStore.isAuthenticated) {
-    next({ path: '/products' })
+    next({ path: '/dashboard' })
   } else {
     next()
   }

@@ -260,7 +260,7 @@ const handleEmailSignUp = async (): Promise<void> => {
   try {
     const data = await authStore.signUp(email.value, password.value, userName.value)
     
-    if (data.data.user) {
+    if (data.user) {
       successMessage.value = t('messages.success.register')
       email.value = ''
       password.value = ''

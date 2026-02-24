@@ -1,9 +1,9 @@
-import { throttle } from 'lodash-es'
+import { useThrottleFn } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 export const useIsMobile = (breakpoint: number = 768) => {
   const isMobile = ref<boolean>(window.innerWidth < breakpoint)
-  const handleResize = throttle(() => {
+  const handleResize = useThrottleFn(() => {
     isMobile.value = window.innerWidth < breakpoint
   }, 200)
 
