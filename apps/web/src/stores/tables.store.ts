@@ -75,11 +75,11 @@ export const useTablesStore = defineStore('tables', () => {
   function loadFromStorage(): RestaurantTable[] {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
-      if (!raw) return DEFAULT_TABLES
+      if (!raw) return [...DEFAULT_TABLES]
       const parsed = JSON.parse(raw) as RestaurantTable[]
-      return parsed.length ? parsed : DEFAULT_TABLES
+      return parsed.length ? parsed : [...DEFAULT_TABLES]
     } catch {
-      return DEFAULT_TABLES
+      return [...DEFAULT_TABLES]
     }
   }
 
@@ -93,9 +93,42 @@ export const useTablesStore = defineStore('tables', () => {
   }
 
   function resetToDefaults() {
-    tables.value = DEFAULT_TABLES
+    tables.value = [...DEFAULT_TABLES]
     saveToStorage()
+    return tables.value
   }
+
+  // Listener para detectar cambios en localStorage desde otras pestañas
+  // o cuando se borra la key externamente (ej: DevTools → Clear storage)
+  function handleStorageEvent(e: StorageEvent) {
+    if (e.key !== null && e.key !== STORAGE_KEY) return
+    // key === null significa que se hizo localStorage.clear()
+    const newValue = e.key === null ? null : e.newValue
+    if (!newValue) {
+      tables.value = [...DEFAULT_TABLES]
+      saveToStorage()
+    } else {
+      try {
+        const parsed = JSON.parse(newValue) as RestaurantTable[]
+        if (parsed.length) tables.value = parsed
+      } catch {
+        tables.value = [...DEFAULT_TABLES]
+      }
+    }
+  }
+
+  // Re-valida al volver a la pestaña (cubre el borrado desde DevTools)
+  function handleVisibilityChange() {
+    if (document.visibilityState !== 'visible') return
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) {
+      tables.value = [...DEFAULT_TABLES]
+      saveToStorage()
+    }
+  }
+
+  window.addEventListener('storage', handleStorageEvent)
+  document.addEventListener('visibilitychange', handleVisibilityChange)
 
   // ── Sincronización con BE (cuando conectes Nuxt) ───────────────────────────
   async function syncWithBackend() {
@@ -199,9 +232,25 @@ export const useTablesStore = defineStore('tables', () => {
     const base      = Math.floor(source.seats / into)
     const remainder = source.seats % into
 
+    // Números ya usados en la zona (excluyendo la mesa origen)
+    const usedNumbers = new Set(
+      tables.value
+        .filter(t => t.zone === source.zone && t.id !== tableId)
+        .map(t => t.number)
+    )
+
+    // Genera `into` números consecutivos libres a partir del número de la mesa origen
+    const assignedNumbers: number[] = []
+    let candidate = source.number
+    while (assignedNumbers.length < into) {
+      if (!usedNumbers.has(candidate)) assignedNumbers.push(candidate)
+      candidate++
+    }
+
+    const ts = Date.now()
     const newTables: RestaurantTable[] = Array.from({ length: into }, (_, i) => ({
-      id:        `split-${source.id}-${i}-${Date.now()}`,
-      number:    source.number + i,
+      id:        `split-${source.id}-${i}-${ts}`,
+      number:    assignedNumbers[i],
       zone:      source.zone,
       status:    'available' as TableStatus,
       seats:     i < remainder ? base + 1 : base,

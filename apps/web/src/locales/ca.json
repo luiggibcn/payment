@@ -82,11 +82,24 @@
     "total": "Total",
     "confirmButton": "Confirmar"
   },
+  "orders": {
+    "title": "Obrir / Crear taula",
+    "subtitle": "Selecciona una taula disponible per continuar",
+    "tableLabel": "Taula",
+    "seats": "seients",
+    "noTablesAvailable": "No hi ha taules disponibles en aquest moment",
+    "openTable": "Obrir taula",
+    "selectTableFirst": "Selecciona una taula per continuar",
+    "generating": "Generant...",
+    "continueTable": "Continuar amb taula",
+    "closeTable": "Tancar taula"
+  },
   "sidebar": {
     "dashboard": "Taulell",
     "menu": "Menú",
     "stock": "Inventari",
     "table": "Taules",
+    "orders": "Comandes",
     "history": "Historial",
     "settings": "Configuració",
     "signOut": "Tancar sessió",

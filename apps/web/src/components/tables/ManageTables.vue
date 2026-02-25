@@ -621,6 +621,7 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+  if(!tableStore.tables.length) tableStore.resetToDefaults()
   window.addEventListener('scroll', handleScroll)
 })
 

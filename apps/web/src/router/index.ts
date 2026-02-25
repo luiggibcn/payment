@@ -9,6 +9,7 @@ import SignUp from "@/views/sign-up.vue";
 import SignIn from "@/views/sign-in.vue";
 import { authGuard, guestGuard } from "@/middlewares";
 import ProductsPage from "@/pages/products.page.vue";
+import OrdersPage from "@/pages/orders.page.vue";
 import TablesPage from "@/pages/tables.page.vue";
 import ManageTables from "@/components/tables/ManageTables.vue";
 import DashboardLayout from "@/views/dashboard.layout.vue";
@@ -45,6 +46,11 @@ const routes: RouteRecordRaw[] = [
         path: 'products',
         name: AppRoute.PRODUCTS,
         component: ProductsPage
+      },
+      {
+        path: 'orders',
+        name: AppRoute.ORDERS,
+        component: OrdersPage
       }
     ]
   },
