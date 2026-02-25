@@ -20,14 +20,15 @@ describe('useNavItems', () => {
   })
 
   describe('navItems', () => {
-    it('should export 3 nav items', () => {
-      expect(navItems).toHaveLength(3)
+    it('should export 4 nav items', () => {
+      expect(navItems).toHaveLength(4)
     })
 
-    it('should contain tables, menu and history items', () => {
+    it('should contain tables, menu, orders and history items', () => {
       const keys = navItems.map(i => i.key)
       expect(keys).toContain('tables')
       expect(keys).toContain('menu')
+      expect(keys).toContain('orders')
       expect(keys).toContain('history')
     })
 
@@ -44,6 +45,7 @@ describe('useNavItems', () => {
       const routeMap = Object.fromEntries(navItems.map(i => [i.key, i.routeName]))
       expect(routeMap.tables).toBe(AppRoute.TABLES)
       expect(routeMap.menu).toBe(AppRoute.PRODUCTS)
+      expect(routeMap.orders).toBe(AppRoute.ORDERS)
       expect(routeMap.history).toBe(AppRoute.QR)
     })
 
@@ -86,6 +88,8 @@ describe('useNavItems', () => {
       const { navigate } = useNavItems()
       navigate(AppRoute.PRODUCTS)
       expect(mockPush).toHaveBeenCalledWith({ name: AppRoute.PRODUCTS })
+      navigate(AppRoute.ORDERS)
+      expect(mockPush).toHaveBeenCalledWith({ name: AppRoute.ORDERS })
       navigate(AppRoute.QR)
       expect(mockPush).toHaveBeenCalledWith({ name: AppRoute.QR })
     })

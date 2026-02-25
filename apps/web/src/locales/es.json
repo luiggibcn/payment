@@ -82,11 +82,24 @@
     "total": "Total",
     "confirmButton": "Confirmar"
   },
+  "orders": {
+    "title": "Abrir / Crear mesa",
+    "subtitle": "Selecciona una mesa disponible para continuar",
+    "tableLabel": "Mesa",
+    "seats": "asientos",
+    "noTablesAvailable": "No hay mesas disponibles en este momento",
+    "openTable": "Abrir mesa",
+    "selectTableFirst": "Selecciona una mesa para continuar",
+    "generating": "Generando...",
+    "continueTable": "Continuar con mesa",
+    "closeTable": "Cerrar mesa"
+  },
   "sidebar": {
     "dashboard": "Tablero",
     "menu": "Menú",
     "stock": "Inventario",
     "table": "Mesas",
+    "orders": "Pedidos",
     "history": "Historial",
     "settings": "Configuración",
     "signOut": "Cerrar sesión",

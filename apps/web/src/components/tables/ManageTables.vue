@@ -446,7 +446,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onUnmounted, onMounted } from 'vue'
+import { ref, computed, onUnmounted, onMounted, watch } from 'vue'
 import { useTablesStore, type RestaurantTable, type TableStatus } from '@/stores/tables.store'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -621,6 +621,7 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+  if(!tableStore.tables.length) tableStore.resetToDefaults()
   window.addEventListener('scroll', handleScroll)
 })
 
