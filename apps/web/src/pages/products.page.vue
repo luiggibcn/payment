@@ -86,7 +86,7 @@ const tableNumber = ref('04')
 </script>
 
 <template>
-      <div class="flex flex-col xl:flex-row gap-6 p-6">
+      <div class="flex flex-col xl:flex-row gap-6 p-6 min-h-0 flex-1">
         <!-- Left Section - Menu -->
         <div class="flex-1 space-y-6 min-w-0">
           <section>
