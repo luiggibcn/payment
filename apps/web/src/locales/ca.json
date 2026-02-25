@@ -89,7 +89,8 @@
     "table": "Taules",
     "history": "Historial",
     "settings": "Configuració",
-    "signOut": "Tancar sessió"
+    "signOut": "Tancar sessió",
+    "language": "Idioma"
   },
   "tables": {
     "title": "Gestiona taules",

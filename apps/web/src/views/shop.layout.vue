@@ -15,6 +15,6 @@ const userSignOut = async (): Promise<void> => {
   await authStore.signOut()
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

@@ -7,9 +7,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+.claude/
 node_modules/
 dist
+.docs
+CLAUDE.md
+skills-lock.json
 dist-ssr
 .output/
 .nuxt/
@@ -18,6 +21,7 @@ dist-ssr
 .env
 .env.local
 *.local
+docs/features
 
 # Editor directories and files
 .vscode/*

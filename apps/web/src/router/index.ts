@@ -11,7 +11,9 @@ import { authGuard, guestGuard } from "@/middlewares";
 import ProductsPage from "@/pages/products.page.vue";
 import TablesPage from "@/pages/tables.page.vue";
 import ManageTables from "@/components/tables/ManageTables.vue";
-import TpvLayout from "@/views/tpv.layout.vue";
+import DashboardLayout from "@/views/dashboard.layout.vue";
+
+
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -29,39 +31,38 @@ const routes: RouteRecordRaw[] = [
     name: AppRoute.SIGNIN,
     beforeEnter: guestGuard
   },
-    {
-    path: '/tpv',
-    component: TpvLayout,
+  {
+    path: '/dashboard',
+    component: DashboardLayout,
+    beforeEnter: authGuard,
     children: [
       {
         path: '',
-        name: AppRoute.TPV,
+        name: AppRoute.TABLES,
         component: ManageTables
       },
       {
         path: 'products',
-        name: AppRoute.TPVPRODUCTS,
+        name: AppRoute.PRODUCTS,
         component: ProductsPage
       }
     ]
   },
   {
     path: "/tables",
-    name: AppRoute.TABLES,
+    name: 'tables-legacy',
     component: TablesPage,
     beforeEnter: guestGuard
-  },
-  {
-    path: "/products",
-    name: AppRoute.PRODUCTS,
-    component: ProductsPage,
-    beforeEnter: authGuard // comment this line to allow access without authentication
   },
   {
     path: "/qr",
     component: QR,
     name: AppRoute.QR,
   },
+  // Legacy TPV redirects
+  { path: '/tpv', redirect: '/dashboard' },
+  { path: '/tpv/products', redirect: '/dashboard/products' },
+  { path: '/products', redirect: '/dashboard/products' },
   {
     path: "/:pathMatch(.*)*",
     name: "error",

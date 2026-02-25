@@ -89,7 +89,8 @@
     "table": "Mesas",
     "history": "Historial",
     "settings": "Configuración",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "language": "Idioma"
   },
   "tables": {
     "title": "Gestionar mesas",

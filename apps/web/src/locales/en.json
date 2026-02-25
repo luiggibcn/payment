@@ -89,7 +89,8 @@
     "table": "Tables",
     "history": "History",
     "settings": "Settings",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "language": "Language"
   },
   "tables": {
     "title": "Manage Tables",

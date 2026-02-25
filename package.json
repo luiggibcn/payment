@@ -6,19 +6,17 @@
   },
   "private": true,
   "scripts": {
-    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:web\"",
+    "dev": "pnpm dev:web",
     "dev:web": "pnpm --filter web dev",
-    "dev:api": "pnpm --filter api dev",
+    "build": "pnpm --filter web build",
     "build:web": "pnpm --filter web build",
-    "build:api": "pnpm --filter api build",
+    "test": "pnpm --filter web test",
     "test:web": "pnpm --filter web test",
     "release:web": "bumpp --filter web",
-    "release:api": "bumpp --filter api",
-    "release": "pnpm release:web && pnpm release:api"
+    "release": "pnpm release:web"
   },
   "devDependencies": {
-    "bumpp": "^10.4.1",
-    "concurrently": "^9.2.1"
+    "bumpp": "^10.4.1"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm release"

@@ -166,7 +166,7 @@ describe('auth.middleware', () => {
       expect(mockNext).toHaveBeenCalledTimes(1)
     })
 
-    it('should redirect to /products when user is authenticated but not admin', async () => {
+    it('should redirect to /dashboard when user is authenticated but not admin', async () => {
       mockAuthStore.isAuthenticated = true
       mockAuthStore.isAdmin = false
       mockAuthStore.user = mockUser
@@ -175,7 +175,7 @@ describe('auth.middleware', () => {
       await adminGuard(mockTo, mockFrom, mockNext)
 
       expect(mockNext).toHaveBeenCalledWith({
-        path: '/products'
+        path: '/dashboard'
       })
       expect(mockNext).toHaveBeenCalledTimes(1)
     })
@@ -214,7 +214,7 @@ describe('auth.middleware', () => {
       expect(mockNext).toHaveBeenCalledTimes(1)
     })
 
-    it('should redirect to /products when user is authenticated', async () => {
+    it('should redirect to /dashboard when user is authenticated', async () => {
       mockAuthStore.isAuthenticated = true
       mockAuthStore.user = mockUser
       mockAuthStore.session = mockSession
@@ -222,7 +222,7 @@ describe('auth.middleware', () => {
       await guestGuard(mockTo, mockFrom, mockNext)
 
       expect(mockNext).toHaveBeenCalledWith({
-        path: '/products'
+        path: '/dashboard'
       })
     })
 
@@ -245,7 +245,7 @@ describe('auth.middleware', () => {
       await guestGuard(mockTo, mockFrom, mockNext)
 
       expect(mockNext).toHaveBeenCalledWith({
-        path: '/products'
+        path: '/dashboard'
       })
     })
   })
