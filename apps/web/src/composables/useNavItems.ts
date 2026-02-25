@@ -1,14 +1,9 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { AppRoute } from '@/interfaces/routes.interfaces'
+import { AppRoute } from '@billsplit/types'
+import type { NavItem } from '@billsplit/types'
 
-export interface NavItem {
-  key: string
-  labelKey: string
-  routeName: AppRoute
-  icon: string
-  badge?: number
-}
+export type { NavItem }
 
 export const navItems: NavItem[] = [
   {
