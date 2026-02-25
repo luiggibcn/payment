@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-2xl px-6 h-full flex flex-col gap-4">
+  <div class="bg-white px-6 h-full flex flex-col gap-4">
     <div class="flex items-center justify-between flex-wrap gap-2">
       <h2 class="text-2xl font-semibold text-gray-900">{{ t('tables.title') }}</h2>
       <div class="flex gap-2 flex-wrap">
