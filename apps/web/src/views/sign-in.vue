@@ -9,8 +9,10 @@
       <div v-if="errorMessage" class="mb-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
         <p class="text-red-200 text-sm">{{ errorMessage }}</p>
       </div>
+      <!-- Steps with slide transition -->
+      <Transition name="step-slide" mode="out-in" @after-enter="focusPassword">
       <!-- Step 1: Email (solo si currentStep === 1) -->
-      <div v-if="currentStep === 1">
+      <div v-if="currentStep === 1" :key="1">
         <!-- Botones de OAuth -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
           <button
@@ -112,7 +114,7 @@
       </div>
 
       <!-- Step 2: Password -->
-      <div v-else-if="currentStep === 2" class="space-y-4">
+      <div v-else-if="currentStep === 2" :key="2" class="space-y-4">
         <!-- Form Password -->
         <form @submit.prevent="handleLogin" class="space-y-4">
           <div>
@@ -234,6 +236,8 @@
         </div>
       </div>
 
+      </Transition>
+
       <!-- Don't have account (solo en step 1) -->
       <div v-if="currentStep === 1" class="text-center mt-4">
         <p class="text-gray-400 text-sm">
@@ -261,7 +265,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { useI18n } from 'vue-i18n'
@@ -286,12 +290,11 @@ const passwordInput = ref<HTMLInputElement | null>(null)
 // Loading viene de la store (se comparte entre componentes)
 const loading = computed(() => authStore.loading)
 
-watch(currentStep, async (newStep) => {
-  if (newStep === 2) {
-    await nextTick()
+const focusPassword = () => {
+  if (currentStep.value === 2) {
     passwordInput.value?.focus()
   }
-})
+}
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
@@ -376,4 +379,18 @@ onMounted(()=>{
 
 
 <style scoped>
+.step-slide-enter-active,
+.step-slide-leave-active {
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
+}
+
+.step-slide-enter-from {
+  transform: translateX(24px);
+  opacity: 0;
+}
+
+.step-slide-leave-to {
+  transform: translateX(-24px);
+  opacity: 0;
+}
 </style>
