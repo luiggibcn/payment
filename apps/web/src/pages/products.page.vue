@@ -70,14 +70,17 @@ const filteredMenuItems = computed(() => {
 
 // TODO: Replace with Supabase dishes query
 const allMenuItems = ref<MenuItem[]>([
-  { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/logo.svg', badge: t('products.bestSeller') },
-  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/logo.svg', badge: t('products.bestSeller') },
-  { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/logo.svg', badge: t('products.bestSeller') },
-  { id: 5, name: 'Seafood Tempting', category: 'Main Course', price: 18.90, image: '/logo.svg', badge: null },
-  { id: 6, name: 'Melting Brownie', category: 'Dessert', price: 8.50, image: '/logo.svg', badge: null },
-  { id: 1, name: 'Crispy Calamari', category: 'Appetizer', price: 22.90, image: '/logo.svg', badge: 'Destacado', width: 2 },
-  { id: 7, name: 'Cheesy Pizza', category: 'Italian', price: 15.90, image: '/logo.svg', badge: null },
-  { id: 8, name: 'Matcha Ice Cream', category: 'Dessert', price: 6.90, image: '/logo.svg', badge: null },
+  { id: 2, name: 'Chicken Tofu Soup', category: 'Soup', price: 12.90, image: '/products/2.png', badge: t('products.bestSeller') },
+  { id: 3, name: 'Quinoa Salad', category: 'Salads', price: 4.90, image: '/products/3.png', video: '/videos/nachos.mp4', badge: t('products.bestSeller') },
+  { id: 4, name: 'Beef Wellington', category: 'Main Course', price: 22.50, image: '/products/4.png', badge: t('products.bestSeller') },
+  { id: 5, name: 'Seafood Tempting', category: 'Main Course', price: 18.90, image: '/products/5.png', badge: null },
+  { id: 6, name: 'Melting Brownie', category: 'Dessert', price: 8.50, image: '/products/6.png', badge: null },
+  { id: 1, name: 'Espagueti Carbonara', category: 'Italian', price: 22.90, image: '/products/1.png', video: '/videos/pasta.mp4', badge: 'Destacado', width: 2 },
+  { id: 7, name: 'Cheesy Pizza', category: 'Italian', price: 15.90, image: '/products/7.png', badge: null },
+  { id: 8, name: 'Matcha Ice Cream', category: 'Dessert', price: 6.90, image: '/products/8.png', badge: null },
+  { id: 9, name: 'Jamón ibérico', category: 'Dessert', price: 6.90, image: '/products/9.png', badge: null },
+  { id: 10, name: 'Carpaccio de pulpo', category: 'Dessert', price: 6.90, image: '/products/10.png', badge: null },
+  { id: 11, name: 'Aguas de gazpacho a modo de Bloody Mary on the rocks', category: 'Dessert', price: 6.90, image: '/products/11.png', badge: null },
 ])
 
 const orderType = ref('dine-in')
@@ -138,7 +141,9 @@ const tableNumber = ref('04')
                 item.width === 2 ? 'sm:col-span-2 xl:col-span-2 2xl:col-span-2' : ''
               ]">
                 <div :class="['relative bg-gray-200 shrink-0', item.width === 2 ? 'h-64 xl:h-80' : 'h-48']">
-                  <img :src="item.image" :alt="item.name" class="w-full h-full object-cover" />
+                  <video v-if="item.video" :src="item.video" autoplay loop muted playsinline
+                  class="w-full h-full object-cover" />
+                  <img v-else :src="item.image" :alt="item.name" class="w-full h-full object-cover" />
                   <span v-if="item.badge"
                     class="absolute top-3 right-3 px-3 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full flex items-center gap-1">
                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
