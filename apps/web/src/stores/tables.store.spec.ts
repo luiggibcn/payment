@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useTablesStore } from './tables.store'
+import { useTablesStore, type RestaurantTable } from './tables.store'
 
 const STORAGE_KEY = 'billsplit:tables'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-function makeTable(overrides: Partial<Parameters<typeof useTablesStore>[0]> = {}) {
+function makeTable(overrides: Partial<RestaurantTable> = {}): Omit<RestaurantTable, 'id'> {
   return {
     number:    99,
     zone:      'saloon',
