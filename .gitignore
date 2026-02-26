@@ -37,3 +37,6 @@ docs/
 .DS_Store
 coverage/
 coverage.html
+.env
+.mcp.json
+.agents/

@@ -4,15 +4,7 @@ import {
   type RouteRecordRaw,
 } from "vue-router";
 import { AppRoute } from "@/interfaces/routes.interfaces";
-import QR from "@/components/QR.vue";
-import SignUp from "@/views/sign-up.vue";
-import SignIn from "@/views/sign-in.vue";
 import { authGuard, guestGuard } from "@/middlewares";
-import ProductsPage from "@/pages/products.page.vue";
-import OrdersPage from "@/pages/orders.page.vue";
-import TablesPage from "@/pages/tables.page.vue";
-import ManageTables from "@/components/tables/ManageTables.vue";
-import DashboardLayout from "@/views/dashboard.layout.vue";
 
 
 const routes: RouteRecordRaw[] = [
@@ -22,53 +14,43 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/register",
-    component: SignUp,
+    component: () => import("@/views/sign-up.vue"),
     name: AppRoute.SIGNUP,
     beforeEnter: guestGuard
   },
   {
     path: "/login",
-    component: SignIn,
+    component: () => import("@/views/sign-in.vue"),
     name: AppRoute.SIGNIN,
     beforeEnter: guestGuard
   },
   {
     path: '/dashboard',
-    component: DashboardLayout,
+    component: () => import("@/views/dashboard.layout.vue"),
     beforeEnter: authGuard,
     children: [
       {
         path: '',
         name: AppRoute.TABLES,
-        component: ManageTables
+        component: () => import("@/components/tables/ManageTables.vue")
       },
       {
         path: 'products',
         name: AppRoute.PRODUCTS,
-        component: ProductsPage
+        component: () => import("@/pages/products.page.vue")
       },
       {
         path: 'orders',
         name: AppRoute.ORDERS,
-        component: OrdersPage
+        component: () => import("@/pages/orders.page.vue")
       }
     ]
   },
   {
-    path: "/tables",
-    name: 'tables-legacy',
-    component: TablesPage,
-    beforeEnter: guestGuard
-  },
-  {
     path: "/qr",
-    component: QR,
+    component: () => import("@/components/QR.vue"),
     name: AppRoute.QR,
   },
-  // Legacy TPV redirects
-  { path: '/tpv', redirect: '/dashboard' },
-  { path: '/tpv/products', redirect: '/dashboard/products' },
-  { path: '/products', redirect: '/dashboard/products' },
   {
     path: "/:pathMatch(.*)*",
     name: "error",
