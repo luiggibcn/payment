@@ -92,7 +92,22 @@
     "selectTableFirst": "Selecciona una mesa para continuar",
     "generating": "Generando...",
     "continueTable": "Continuar con mesa",
-    "closeTable": "Cerrar mesa"
+    "closeTable": "Cerrar mesa",
+    "activeTables": "Mesas activas",
+    "availableTables": "Mesas disponibles",
+    "cookingStatus": "En cocina",
+    "currentOrder": "Pedido actual",
+    "emptyOrder": "Sin productos todavía",
+    "emptyOrderHint": "Pulsa un producto para añadirlo",
+    "total": "Total",
+    "sendToKitchen": "Enviar a cocina",
+    "pendingReasonWarning": "Añade un motivo antes de reenviar",
+    "cancelReasonTitle": "Motivo de cancelación",
+    "cancelReasonSubtitle": "Este pedido ya está en cocina. Indica por qué eliminas este artículo.",
+    "cancelReasonLabel": "Motivo",
+    "cancelReasonPlaceholder": "Ej. El cliente cambió de opinión...",
+    "cancelReasonMinChars": "caract. mín.",
+    "cancelReasonConfirm": "Eliminar artículo"
   },
   "sidebar": {
     "dashboard": "Tablero",
