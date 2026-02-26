@@ -368,7 +368,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <!-- Mesas en curso (on-dine) -->
         <div v-if="onDineTables.length > 0" class="mb-8">
           <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{{ t('orders.activeTables') }}</h2>
-          <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <button
               v-for="table in onDineTables"
               :key="table.id"
@@ -407,7 +407,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <div>
           <h2 v-if="onDineTables.length > 0" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{{ t('orders.availableTables') }}</h2>
 
-          <div v-if="availableTables.length > 0" class="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-10">
+          <div v-if="availableTables.length > 0" class="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-10">
             <button
               v-for="table in availableTables"
               :key="table.id"

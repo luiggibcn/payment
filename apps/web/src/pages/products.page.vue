@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import FeaturedGrid from '@/components/products/FeaturedGrid.vue'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
 import { useI18n } from 'vue-i18n'
 import { useIsMobile } from '@/composables/isMobile.composable'
@@ -92,10 +91,10 @@ const tableNumber = ref('04')
       <div class="flex flex-col xl:flex-row gap-6 p-6 min-h-0 flex-1">
         <!-- Left Section - Menu -->
         <div class="flex-1 space-y-6 min-w-0">
-          <section>
+          <!-- <section>
             <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ t('products.currentOrder') }}</h2>
             <featured-grid />
-          </section>
+          </section> -->
 
           <section>
             <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ t('products.categories') }}</h2>
