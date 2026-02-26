@@ -67,7 +67,7 @@ describe('auth.store', () => {
     })
 
     it('should compute isAdmin correctly', () => {
-      store.setUser({ ...mockUser, role: 'admin' })
+      store.setUser({ ...mockUser, role: 'superadmin' })
       expect(store.isAdmin).toBe(true)
       expect(store.isEditor).toBe(false)
       expect(store.isWaiter).toBe(false)
