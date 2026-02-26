@@ -178,6 +178,20 @@ const needsReason = computed(() =>
   hasStagedChanges.value
 )
 
+// El botón "Enviar a cocina" solo se activa cuando hay algo nuevo que enviar:
+// – orden nueva (no en cocina): basta con que el carrito no esté vacío
+// – orden en cocina: debe haber cambios reales respecto al último envío
+//   (items nuevos en el store) O cambios staged (decrementos/eliminaciones)
+const hasChangesToSend = computed(() => {
+  if (!selectedTable.value) return false
+  // Staged changes siempre desbloquean el botón, incluso si displayCart está
+  // vacío (caso: último ítem staged para eliminar → hay que poder confirmar)
+  if (hasStagedChanges.value) return true
+  if (displayCart.value.length === 0) return false
+  if (!ordersStore.isInKitchen(selectedTable.value.id)) return true
+  return ordersStore.hasChangesFromKitchen(selectedTable.value.id)
+})
+
 // Vista del carrito con los cambios staged aplicados (lo que ve el usuario)
 const displayCart = computed(() => {
   if (!hasStagedChanges.value) return tableCart.value
@@ -241,7 +255,7 @@ function removeItem(item: { menuItemId: number }) {
 }
 
 function onSendButtonClick() {
-  if (!selectedTable.value || displayCart.value.length === 0) return
+  if (!hasChangesToSend.value) return
   if (needsReason.value) {
     cancelReason.value = ''
     showCancelModal.value = true
@@ -267,7 +281,14 @@ function confirmCancel() {
   })
   stagedQuantities.value = {}
   showCancelModal.value = false
-  handleSendToKitchen()
+  // Si el carrito quedó vacío (todos los ítems eliminados), no hay nada que
+  // re-enviar a cocina — solo volvemos al paso 1
+  if (tableCart.value.length === 0) {
+    ordersStore.removeFromKitchen(tableId)
+    router.push({ query: {} })
+  } else {
+    handleSendToKitchen()
+  }
 }
 
 function dismissCancel() {
@@ -592,10 +613,10 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         </div>
         <button
           @click="onSendButtonClick"
-          :disabled="displayCart.length === 0"
+          :disabled="!hasChangesToSend"
           :class="[
             'w-full py-3.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2',
-            displayCart.length > 0
+            hasChangesToSend
               ? 'bg-orange-500 hover:bg-orange-600 text-white cursor-pointer'
               : 'bg-gray-100 text-gray-400 cursor-not-allowed'
           ]"
