@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useTablesStore, type RestaurantTable } from '@/stores/tables.store'
 import { useOrdersStore } from '@/stores/orders.store'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
+import OrderPanel from '@/components/orders/OrderPanel.vue'
+import BaseModal from '@/components/ui/BaseModal.vue'
 
 interface MenuItem {
   id: number
@@ -439,7 +441,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   </div>
 
   <!-- ── Step 2: Productos + Pedido ─────────────────────────────────────────── -->
-  <div v-else-if="currentStep === 2" class="flex gap-0 min-h-0 flex-1">
+  <div v-else-if="currentStep === 2" class="flex flex-col lg:flex-row gap-0 min-h-0 flex-1">
 
     <!-- ── Columna productos ───────────────────────────────────────────────── -->
     <div class="flex-1 min-w-0 flex flex-col gap-6 p-6 overflow-y-auto">
@@ -544,159 +546,78 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     </div>
 
     <!-- ── Panel pedido (lateral en desktop, parte inferior en mobile) ──────── -->
-    <div class="w-full lg:w-80 xl:w-96 shrink-0 bg-white border-t lg:border-t-0 lg:border-l border-gray-100 flex flex-col">
-
-      <!-- Header pedido -->
-      <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-        <h3 class="font-semibold text-gray-900">{{ t('orders.currentOrder') }}</h3>
-        <button
-          @click="closeTable"
-          class="text-xs text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-        >
-          {{ t('orders.closeTable') }}
-        </button>
-      </div>
-
-      <!-- Lista de items -->
-      <div class="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
-
-        <!-- Estado vacío -->
-        <div v-if="displayCart.length === 0" class="flex flex-col items-center justify-center h-full py-12 text-center gap-3">
-          <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-          </svg>
-          <p class="text-sm text-gray-400">{{ t('orders.emptyOrder') }}</p>
-          <p class="text-xs text-gray-300">{{ t('orders.emptyOrderHint') }}</p>
-        </div>
-
-        <!-- Items -->
-        <div
-          v-for="item in displayCart"
-          :key="item.menuItemId"
-          class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0"
-        >
-          <img :src="item.image" :alt="item.name" class="w-10 h-10 rounded-lg object-cover bg-gray-100 shrink-0"/>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-900 truncate">{{ item.name }}</p>
-            <p class="text-xs text-gray-400">{{ item.price.toFixed(2) }}€ / ud.</p>
-          </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <button
-              @click="decreaseItem(item)"
-              class="w-6 h-6 rounded-full border border-gray-200 text-gray-600 flex items-center justify-center text-sm hover:bg-gray-50 cursor-pointer transition-colors"
-            >−</button>
-            <span class="text-sm font-semibold text-gray-800 w-4 text-center">{{ item.quantity }}</span>
-            <button
-              @click="increaseItem(item)"
-              class="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm hover:bg-orange-600 cursor-pointer transition-colors"
-            >+</button>
-          </div>
-          <span class="text-sm font-semibold text-gray-900 w-14 text-right shrink-0">
-            {{ (item.price * item.quantity).toFixed(2) }}€
-          </span>
-          <button
-            @click="removeItem(item)"
-            class="text-gray-300 hover:text-red-400 transition-colors cursor-pointer shrink-0"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Total + Enviar a cocina -->
-      <div class="px-5 py-4 border-t border-gray-100 flex flex-col gap-3">
-        <div class="flex items-center justify-between text-sm">
-          <span class="text-gray-500">{{ t('orders.total') }}</span>
-          <span class="text-xl font-bold text-gray-900">{{ displayTotal.toFixed(2) }}€</span>
-        </div>
-        <button
-          @click="onSendButtonClick"
-          :disabled="!hasChangesToSend"
-          :class="[
-            'w-full py-3.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2',
-            hasChangesToSend
-              ? 'bg-orange-500 hover:bg-orange-600 text-white cursor-pointer'
-              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-          ]"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-          {{ needsReason ? t('orders.continueToKitchen') : t('orders.sendToKitchen') }}
-        </button>
-      </div>
-    </div>
+    <OrderPanel
+      :items="displayCart"
+      :total="displayTotal"
+      :can-send="hasChangesToSend"
+      :needs-reason="needsReason"
+      @close-table="closeTable"
+      @decrease="decreaseItem"
+      @increase="increaseItem"
+      @remove="removeItem"
+      @send="onSendButtonClick"
+    />
 
   </div>
 
   <!-- ── Modal: motivo de cancelación ──────────────────────────────────────── -->
-  <Teleport to="body">
-    <div
-      v-if="showCancelModal"
-      class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
-      @click.self="dismissCancel"
-    >
-      <div class="bg-white rounded-2xl w-full max-w-sm flex flex-col gap-5 shadow-xl p-6">
+  <BaseModal :open="showCancelModal" @dismiss="dismissCancel">
 
-        <!-- Icono + título -->
-        <div class="flex items-start gap-3">
-          <span class="text-2xl leading-none mt-0.5">⚠️</span>
-          <div>
-            <h3 class="font-semibold text-gray-900 text-base">{{ t('orders.cancelReasonTitle') }}</h3>
-            <p class="text-sm text-gray-500 mt-0.5">{{ t('orders.cancelReasonSubtitle') }}</p>
-          </div>
-        </div>
-
-        <!-- Input motivo -->
-        <div class="flex flex-col gap-1.5">
-          <label class="text-xs font-medium text-gray-600 uppercase tracking-wide">
-            {{ t('orders.cancelReasonLabel') }}
-          </label>
-          <textarea
-            v-model="cancelReason"
-            :placeholder="t('orders.cancelReasonPlaceholder')"
-            rows="3"
-            autofocus
-            class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent resize-none"
-          />
-          <p
-            :class="[
-              'text-xs transition-colors',
-              cancelReason.trim().length === 0 ? 'text-gray-400'
-              : cancelReasonValid ? 'text-green-500'
-              : 'text-amber-500'
-            ]"
-          >
-            {{ cancelReason.trim().length }}/3 {{ t('orders.cancelReasonMinChars') }}
-          </p>
-        </div>
-
-        <!-- Acciones -->
-        <div class="flex gap-2">
-          <button
-            @click="dismissCancel"
-            class="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors cursor-pointer"
-          >
-            {{ t('common.cancel') }}
-          </button>
-          <button
-            @click="confirmCancel"
-            :disabled="!cancelReasonValid"
-            :class="[
-              'flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all',
-              cancelReasonValid
-                ? 'bg-red-500 hover:bg-red-600 text-white cursor-pointer'
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            ]"
-          >
-            {{ t('orders.cancelReasonConfirm') }}
-          </button>
-        </div>
-
+    <!-- Icono + título -->
+    <div class="flex items-start gap-3">
+      <span class="text-2xl leading-none mt-0.5">⚠️</span>
+      <div>
+        <h3 class="font-semibold text-gray-900 text-base">{{ t('orders.cancelReasonTitle') }}</h3>
+        <p class="text-sm text-gray-500 mt-0.5">{{ t('orders.cancelReasonSubtitle') }}</p>
       </div>
     </div>
-  </Teleport>
+
+    <!-- Input motivo -->
+    <div class="flex flex-col gap-1.5">
+      <label class="text-xs font-medium text-gray-600 uppercase tracking-wide">
+        {{ t('orders.cancelReasonLabel') }}
+      </label>
+      <textarea
+        v-model="cancelReason"
+        :placeholder="t('orders.cancelReasonPlaceholder')"
+        rows="3"
+        autofocus
+        class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent resize-none"
+      />
+      <p
+        :class="[
+          'text-xs transition-colors',
+          cancelReason.trim().length === 0 ? 'text-gray-400'
+          : cancelReasonValid ? 'text-green-500'
+          : 'text-amber-500'
+        ]"
+      >
+        {{ cancelReason.trim().length }}/3 {{ t('orders.cancelReasonMinChars') }}
+      </p>
+    </div>
+
+    <!-- Acciones -->
+    <div class="flex gap-2">
+      <button
+        @click="dismissCancel"
+        class="flex-1 py-2.5 rounded-xl text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors cursor-pointer"
+      >
+        {{ t('common.cancel') }}
+      </button>
+      <button
+        @click="confirmCancel"
+        :disabled="!cancelReasonValid"
+        :class="[
+          'flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all',
+          cancelReasonValid
+            ? 'bg-red-500 hover:bg-red-600 text-white cursor-pointer'
+            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+        ]"
+      >
+        {{ t('orders.cancelReasonConfirm') }}
+      </button>
+    </div>
+
+  </BaseModal>
 
 </template>
