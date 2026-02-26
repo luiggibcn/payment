@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!session.value && !!user.value)
   const userRole = computed(() => user.value?.role ?? 'user')
-  const isAdmin = computed(() => userRole.value === 'admin')
+  const isAdmin = computed(() => userRole.value === 'superadmin')
   const isEditor = computed(() => userRole.value === 'editor')
   const isWaiter = computed(() => userRole.value === 'waiter')
   const userEmail = computed(() => user.value?.email ?? '')
@@ -38,7 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
         id: supaUser.id,
         email: supaUser.email,
         full_name: supaUser.user_metadata?.full_name ?? null,
-        role: (supaUser.user_metadata?.role as UserRole) ?? 'user',
+        role: (supaUser.role as UserRole) ?? 'user',
         tenant_id: supaUser.user_metadata?.tenant_id ?? '',
       }
 
