@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useTablesStore, type RestaurantTable } from '@/stores/tables.store'
 import { useOrdersStore } from '@/stores/orders.store'
@@ -17,14 +18,26 @@ interface MenuItem {
 }
 
 const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 const tablesStore = useTablesStore()
 const ordersStore = useOrdersStore()
 
-// ── Multi-step ────────────────────────────────────────────────────────────────
-const currentStep = ref<1 | 2>(1)
+// ── Navegación basada en URL (?table=<id>) ─────────────────────────────────────
+// /dashboard/orders          → step 1
+// /dashboard/orders?table=t3 → step 2 con la mesa t3
 
-// ── Step 1: selección de mesa ─────────────────────────────────────────────────
-const selectedTable = ref<RestaurantTable | null>(null)
+// ── Step 2: mesa activa (derivada de la URL) ───────────────────────────────────
+const selectedTable = computed<RestaurantTable | null>(() => {
+  const id = route.query.table as string | undefined
+  if (!id) return null
+  return tablesStore.tables.find(t => t.id === id) ?? null
+})
+
+const currentStep = computed<1 | 2>(() => selectedTable.value ? 2 : 1)
+
+// ── Step 1: selección pendiente (antes de abrir la mesa) ──────────────────────
+const pendingTable = ref<RestaurantTable | null>(null)
 const isGeneratingTable = ref(false)
 
 const availableTables = computed(() =>
@@ -36,16 +49,22 @@ const onDineTables = computed(() =>
 )
 
 function selectTable(table: RestaurantTable) {
-  selectedTable.value = table
+  pendingTable.value = table
+}
+
+// Descarta la selección pendiente sin tocar el store
+function clearPendingTable() {
+  pendingTable.value = null
 }
 
 async function generateTable() {
-  if (!selectedTable.value) return
+  if (!pendingTable.value) return
   isGeneratingTable.value = true
   try {
     await new Promise(resolve => setTimeout(resolve, 600))
-    tablesStore.updateTable(selectedTable.value.id, { status: 'on-dine' })
-    currentStep.value = 2
+    tablesStore.updateTable(pendingTable.value.id, { status: 'on-dine' })
+    router.push({ query: { table: pendingTable.value.id } })
+    pendingTable.value = null
   } finally {
     isGeneratingTable.value = false
   }
@@ -53,13 +72,13 @@ async function generateTable() {
 
 // Navega al step 2 con una mesa que ya está on-dine
 function goToOnDineTable(table: RestaurantTable) {
-  selectedTable.value = table
-  currentStep.value = 2
+  resetOrderState()
+  router.push({ query: { table: table.id } })
 }
 
-// Solo navega al step anterior, conserva el estado de la mesa en el store
+// Vuelve al step 1 (quita el query param)
 function goBack() {
-  currentStep.value = 1
+  router.push({ query: {} })
 }
 
 // Libera la mesa activa y vuelve al step 1
@@ -68,8 +87,8 @@ function closeTable() {
     tablesStore.updateTable(selectedTable.value.id, { status: 'available' })
     ordersStore.clearTable(selectedTable.value.id)
   }
-  selectedTable.value = null
-  currentStep.value = 1
+  resetOrderState()
+  router.push({ query: {} })
 }
 
 // ── Step 2: productos ─────────────────────────────────────────────────────────
@@ -118,18 +137,10 @@ const filteredMenuItems = computed(() => {
 })
 
 // ── Pedido actual ──────────────────────────────────────────────────────────────
+// tableCart = estado real persistido en el store
 const tableCart = computed(() =>
   selectedTable.value ? ordersStore.getCart(selectedTable.value.id) : []
 )
-
-const tableTotal = computed(() =>
-  selectedTable.value ? ordersStore.getTotal(selectedTable.value.id) : 0
-)
-
-function itemQtyInCart(menuItemId: number): number {
-  const item = tableCart.value.find(i => i.menuItemId === menuItemId)
-  return item?.quantity ?? 0
-}
 
 function addToOrder(item: MenuItem) {
   if (!selectedTable.value) return
@@ -142,60 +153,140 @@ function addToOrder(item: MenuItem) {
 }
 
 function handleSendToKitchen() {
-  if (!selectedTable.value || tableCart.value.length === 0 || pendingRemoval.value) return
+  if (!selectedTable.value || tableCart.value.length === 0) return
   ordersStore.sendToKitchen(selectedTable.value.id)
-  selectedTable.value = null
-  currentStep.value = 1
+  router.push({ query: {} })
 }
 
-// ── Cancelación con motivo (cuando la order ya está en cocina) ─────────────────
-interface PendingRemoval {
-  menuItemId: number
-  name: string
-  action: 'remove' | 'decrease'
-}
+// ── Staging de cambios en órdenes en cocina ────────────────────────────────────
+// Los decrementos/eliminaciones sobre una orden ya enviada a cocina se almacenan
+// localmente (stagedQuantities) y NO se aplican al store hasta que el usuario
+// confirma con un motivo. Si navega atrás o recarga, los cambios se descartan
+// y el carrito original se mantiene intacto en localStorage.
+//
+// stagedQuantities: menuItemId → nueva cantidad deseada (0 = eliminar)
+const stagedQuantities = ref<Record<number, number>>({})
+const hasStagedChanges = computed(() => Object.keys(stagedQuantities.value).length > 0)
 
-const pendingRemoval = ref<PendingRemoval | null>(null)
+const showCancelModal = ref(false)
 const cancelReason = ref('')
 const cancelReasonValid = computed(() => cancelReason.value.trim().length >= 3)
 
-function tryDecrease(item: { menuItemId: number; name: string; quantity: number }) {
+const needsReason = computed(() =>
+  !!selectedTable.value &&
+  ordersStore.isInKitchen(selectedTable.value.id) &&
+  hasStagedChanges.value
+)
+
+// Vista del carrito con los cambios staged aplicados (lo que ve el usuario)
+const displayCart = computed(() => {
+  if (!hasStagedChanges.value) return tableCart.value
+  return tableCart.value
+    .map(item => {
+      const staged = stagedQuantities.value[item.menuItemId]
+      return staged !== undefined ? { ...item, quantity: staged } : item
+    })
+    .filter(item => item.quantity > 0)
+})
+
+const displayTotal = computed(() =>
+  displayCart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+)
+
+function itemQtyInCart(menuItemId: number): number {
+  if (menuItemId in stagedQuantities.value) return stagedQuantities.value[menuItemId]
+  const item = tableCart.value.find(i => i.menuItemId === menuItemId)
+  return item?.quantity ?? 0
+}
+
+function increaseItem(item: { menuItemId: number }) {
   if (!selectedTable.value) return
-  const inKitchen = ordersStore.isInKitchen(selectedTable.value.id)
-  if (inKitchen) {
-    pendingRemoval.value = { menuItemId: item.menuItemId, name: item.name, action: 'decrease' }
-    cancelReason.value = ''
+  // Si el item tiene un staged decremento, revertirlo antes de tocar el store
+  if (item.menuItemId in stagedQuantities.value) {
+    const real = tableCart.value.find(i => i.menuItemId === item.menuItemId)
+    if (!real) return
+    const newQty = stagedQuantities.value[item.menuItemId] + 1
+    if (newQty >= real.quantity) {
+      // Restaurado a la cantidad original → quitar del staged
+      const { [item.menuItemId]: _, ...rest } = stagedQuantities.value
+      stagedQuantities.value = rest
+    } else {
+      stagedQuantities.value = { ...stagedQuantities.value, [item.menuItemId]: newQty }
+    }
+    return
+  }
+  ordersStore.updateQuantity(selectedTable.value.id, item.menuItemId, 1)
+}
+
+function decreaseItem(item: { menuItemId: number }) {
+  if (!selectedTable.value) return
+  if (ordersStore.isInKitchen(selectedTable.value.id)) {
+    const real = tableCart.value.find(i => i.menuItemId === item.menuItemId)
+    if (!real) return
+    const currentQty = stagedQuantities.value[item.menuItemId] ?? real.quantity
+    const newQty = Math.max(0, currentQty - 1)
+    stagedQuantities.value = { ...stagedQuantities.value, [item.menuItemId]: newQty }
   } else {
     ordersStore.updateQuantity(selectedTable.value.id, item.menuItemId, -1)
   }
 }
 
-function tryRemove(item: { menuItemId: number; name: string }) {
+function removeItem(item: { menuItemId: number }) {
   if (!selectedTable.value) return
-  const inKitchen = ordersStore.isInKitchen(selectedTable.value.id)
-  if (inKitchen) {
-    pendingRemoval.value = { menuItemId: item.menuItemId, name: item.name, action: 'remove' }
-    cancelReason.value = ''
+  if (ordersStore.isInKitchen(selectedTable.value.id)) {
+    stagedQuantities.value = { ...stagedQuantities.value, [item.menuItemId]: 0 }
   } else {
     ordersStore.removeItem(selectedTable.value.id, item.menuItemId)
   }
 }
 
-function confirmCancel() {
-  if (!pendingRemoval.value || !cancelReasonValid.value || !selectedTable.value) return
-  if (pendingRemoval.value.action === 'remove') {
-    ordersStore.removeItem(selectedTable.value.id, pendingRemoval.value.menuItemId)
+function onSendButtonClick() {
+  if (!selectedTable.value || displayCart.value.length === 0) return
+  if (needsReason.value) {
+    cancelReason.value = ''
+    showCancelModal.value = true
   } else {
-    ordersStore.updateQuantity(selectedTable.value.id, pendingRemoval.value.menuItemId, -1)
+    handleSendToKitchen()
   }
-  pendingRemoval.value = null
-  cancelReason.value = ''
+}
+
+function confirmCancel() {
+  if (!cancelReasonValid.value || !selectedTable.value) return
+  const tableId = selectedTable.value.id
+  // Aplicar los cambios staged al store real
+  Object.entries(stagedQuantities.value).forEach(([id, newQty]) => {
+    const menuItemId = Number(id)
+    const real = tableCart.value.find(i => i.menuItemId === menuItemId)
+    if (!real) return
+    if (newQty <= 0) {
+      ordersStore.removeItem(tableId, menuItemId)
+    } else {
+      const delta = newQty - real.quantity
+      if (delta !== 0) ordersStore.updateQuantity(tableId, menuItemId, delta)
+    }
+  })
+  stagedQuantities.value = {}
+  showCancelModal.value = false
+  handleSendToKitchen()
 }
 
 function dismissCancel() {
-  pendingRemoval.value = null
+  showCancelModal.value = false
   cancelReason.value = ''
 }
+
+function resetOrderState() {
+  // Descarta staged sin tocar el store → el carrito original queda intacto
+  stagedQuantities.value = {}
+  showCancelModal.value = false
+  cancelReason.value = ''
+}
+
+// Descartar staged al volver al step 1, sea cual sea la causa
+// (goBack, closeTable, handleSendToKitchen, botón atrás del navegador)
+watch(currentStep, (step) => {
+  if (step === 1) resetOrderState()
+})
 
 const handleScroll = () => {}
 onMounted(() => window.addEventListener('scroll', handleScroll))
@@ -213,8 +304,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <p class="text-sm text-gray-500 mt-2">{{ t('orders.subtitle') }}</p>
       </div>
 
-      <!-- Mesa activa: el usuario volvió desde el step 2 (aún no enviada a cocina) -->
-      <div v-if="selectedTable" class="mb-10">
+      <!-- Mesa seleccionada pero aún no abierta (pendiente de confirmar) -->
+      <div v-if="pendingTable" class="mb-10">
         <div class="flex items-center justify-between px-4 py-3 bg-orange-50 border border-orange-200 rounded-xl mb-4">
           <div class="flex items-center gap-3">
             <svg class="w-5 h-5 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -222,11 +313,11 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
               <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
             </svg>
             <span class="text-sm font-medium text-orange-700">
-              {{ t('orders.tableLabel') }} {{ selectedTable.number }} · {{ selectedTable.seats }} {{ t('orders.seats') }}
+              {{ t('orders.tableLabel') }} {{ pendingTable.number }} · {{ pendingTable.seats }} {{ t('orders.seats') }}
             </span>
           </div>
           <button
-            @click="closeTable"
+            @click="clearPendingTable"
             class="text-xs text-orange-400 hover:text-orange-600 transition-colors cursor-pointer"
           >
             {{ t('orders.closeTable') }}
@@ -244,7 +335,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
             </svg>
             {{ t('orders.generating') }}
           </span>
-          <span v-else>{{ t('orders.continueTable') }} {{ selectedTable.number }}</span>
+          <span v-else>{{ t('orders.continueTable') }} {{ pendingTable.number }}</span>
         </button>
       </div>
 
@@ -449,7 +540,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       <div class="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
 
         <!-- Estado vacío -->
-        <div v-if="tableCart.length === 0" class="flex flex-col items-center justify-center h-full py-12 text-center gap-3">
+        <div v-if="displayCart.length === 0" class="flex flex-col items-center justify-center h-full py-12 text-center gap-3">
           <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
           </svg>
@@ -459,7 +550,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
         <!-- Items -->
         <div
-          v-for="item in tableCart"
+          v-for="item in displayCart"
           :key="item.menuItemId"
           class="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0"
         >
@@ -470,12 +561,12 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <button
-              @click="tryDecrease(item)"
+              @click="decreaseItem(item)"
               class="w-6 h-6 rounded-full border border-gray-200 text-gray-600 flex items-center justify-center text-sm hover:bg-gray-50 cursor-pointer transition-colors"
             >−</button>
             <span class="text-sm font-semibold text-gray-800 w-4 text-center">{{ item.quantity }}</span>
             <button
-              @click="ordersStore.updateQuantity(selectedTable!.id, item.menuItemId, 1)"
+              @click="increaseItem(item)"
               class="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm hover:bg-orange-600 cursor-pointer transition-colors"
             >+</button>
           </div>
@@ -483,7 +574,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
             {{ (item.price * item.quantity).toFixed(2) }}€
           </span>
           <button
-            @click="tryRemove(item)"
+            @click="removeItem(item)"
             class="text-gray-300 hover:text-red-400 transition-colors cursor-pointer shrink-0"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -497,18 +588,14 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       <div class="px-5 py-4 border-t border-gray-100 flex flex-col gap-3">
         <div class="flex items-center justify-between text-sm">
           <span class="text-gray-500">{{ t('orders.total') }}</span>
-          <span class="text-xl font-bold text-gray-900">{{ tableTotal.toFixed(2) }}€</span>
+          <span class="text-xl font-bold text-gray-900">{{ displayTotal.toFixed(2) }}€</span>
         </div>
-        <!-- Aviso: motivo pendiente -->
-        <p v-if="pendingRemoval" class="text-xs text-amber-600 text-center">
-          {{ t('orders.pendingReasonWarning') }}
-        </p>
         <button
-          @click="handleSendToKitchen"
-          :disabled="tableCart.length === 0 || !!pendingRemoval"
+          @click="onSendButtonClick"
+          :disabled="displayCart.length === 0"
           :class="[
             'w-full py-3.5 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2',
-            tableCart.length > 0 && !pendingRemoval
+            displayCart.length > 0
               ? 'bg-orange-500 hover:bg-orange-600 text-white cursor-pointer'
               : 'bg-gray-100 text-gray-400 cursor-not-allowed'
           ]"
@@ -516,7 +603,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
-          {{ t('orders.sendToKitchen') }}
+          {{ needsReason ? t('orders.continueToKitchen') : t('orders.sendToKitchen') }}
         </button>
       </div>
     </div>
@@ -526,7 +613,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   <!-- ── Modal: motivo de cancelación ──────────────────────────────────────── -->
   <Teleport to="body">
     <div
-      v-if="pendingRemoval"
+      v-if="showCancelModal"
       class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
       @click.self="dismissCancel"
     >
@@ -539,14 +626,6 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
             <h3 class="font-semibold text-gray-900 text-base">{{ t('orders.cancelReasonTitle') }}</h3>
             <p class="text-sm text-gray-500 mt-0.5">{{ t('orders.cancelReasonSubtitle') }}</p>
           </div>
-        </div>
-
-        <!-- Item afectado -->
-        <div class="bg-gray-50 rounded-xl px-4 py-3 flex items-center gap-3">
-          <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-          <span class="text-sm font-medium text-gray-800 truncate">{{ pendingRemoval.name }}</span>
         </div>
 
         <!-- Input motivo -->

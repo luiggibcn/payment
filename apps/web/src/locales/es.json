@@ -101,13 +101,13 @@
     "emptyOrderHint": "Pulsa un producto para añadirlo",
     "total": "Total",
     "sendToKitchen": "Enviar a cocina",
-    "pendingReasonWarning": "Añade un motivo antes de reenviar",
+    "continueToKitchen": "Continuar",
     "cancelReasonTitle": "Motivo de cancelación",
-    "cancelReasonSubtitle": "Este pedido ya está en cocina. Indica por qué eliminas este artículo.",
+    "cancelReasonSubtitle": "Se han eliminado artículos de un pedido ya en cocina. Indica el motivo para que el equipo de cocina esté informado.",
     "cancelReasonLabel": "Motivo",
     "cancelReasonPlaceholder": "Ej. El cliente cambió de opinión...",
     "cancelReasonMinChars": "caract. mín.",
-    "cancelReasonConfirm": "Eliminar artículo"
+    "cancelReasonConfirm": "Confirmar y enviar"
   },
   "sidebar": {
     "dashboard": "Tablero",
