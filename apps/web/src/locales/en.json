@@ -101,13 +101,13 @@
     "emptyOrderHint": "Tap a product to add it",
     "total": "Total",
     "sendToKitchen": "Send to kitchen",
-    "pendingReasonWarning": "Provide a reason before resending",
+    "continueToKitchen": "Continue",
     "cancelReasonTitle": "Cancellation reason",
-    "cancelReasonSubtitle": "This order is already in the kitchen. Explain why you are removing this item.",
+    "cancelReasonSubtitle": "Some items were removed from an order already in the kitchen. Explain why so the kitchen team is informed.",
     "cancelReasonLabel": "Reason",
     "cancelReasonPlaceholder": "e.g. Customer changed their mind...",
     "cancelReasonMinChars": "min. chars",
-    "cancelReasonConfirm": "Remove item"
+    "cancelReasonConfirm": "Confirm and send"
   },
   "sidebar": {
     "dashboard": "Dashboard",
