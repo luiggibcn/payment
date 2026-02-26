@@ -92,7 +92,22 @@
     "selectTableFirst": "Select a table to continue",
     "generating": "Generating...",
     "continueTable": "Continue with table",
-    "closeTable": "Close table"
+    "closeTable": "Close table",
+    "activeTables": "Active tables",
+    "availableTables": "Available tables",
+    "cookingStatus": "In kitchen",
+    "currentOrder": "Current order",
+    "emptyOrder": "No items yet",
+    "emptyOrderHint": "Tap a product to add it",
+    "total": "Total",
+    "sendToKitchen": "Send to kitchen",
+    "pendingReasonWarning": "Provide a reason before resending",
+    "cancelReasonTitle": "Cancellation reason",
+    "cancelReasonSubtitle": "This order is already in the kitchen. Explain why you are removing this item.",
+    "cancelReasonLabel": "Reason",
+    "cancelReasonPlaceholder": "e.g. Customer changed their mind...",
+    "cancelReasonMinChars": "min. chars",
+    "cancelReasonConfirm": "Remove item"
   },
   "sidebar": {
     "dashboard": "Dashboard",

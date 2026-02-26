@@ -92,7 +92,22 @@
     "selectTableFirst": "Selecciona una taula per continuar",
     "generating": "Generant...",
     "continueTable": "Continuar amb taula",
-    "closeTable": "Tancar taula"
+    "closeTable": "Tancar taula",
+    "activeTables": "Taules actives",
+    "availableTables": "Taules disponibles",
+    "cookingStatus": "A la cuina",
+    "currentOrder": "Comanda actual",
+    "emptyOrder": "Sense productes encara",
+    "emptyOrderHint": "Toca un producte per afegir-lo",
+    "total": "Total",
+    "sendToKitchen": "Enviar a la cuina",
+    "pendingReasonWarning": "Afegeix un motiu abans de reenviar",
+    "cancelReasonTitle": "Motiu de cancel·lació",
+    "cancelReasonSubtitle": "Aquesta comanda ja és a la cuina. Indica per què elimines aquest article.",
+    "cancelReasonLabel": "Motiu",
+    "cancelReasonPlaceholder": "Ex. El client ha canviat d'opinió...",
+    "cancelReasonMinChars": "caràct. mín.",
+    "cancelReasonConfirm": "Eliminar article"
   },
   "sidebar": {
     "dashboard": "Taulell",

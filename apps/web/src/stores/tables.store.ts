@@ -15,8 +15,8 @@ const DEFAULT_TABLES: RestaurantTable[] = [
   { id: 't7',  number: 7, zone: 'saloon', status: 'reserved',  seats: 8, occupants: 10, size: 'large', gridCol: 1, gridRow: 3, colSpan: 2, rowSpan: 1, rotation: 0 },
   { id: 't8',  number: 8, zone: 'saloon', status: 'on-dine',   seats: 4, occupants: 2,  size: 'small', gridCol: 3, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
   { id: 't9',  number: 9, zone: 'saloon', status: 'on-dine',   seats: 4, occupants: 4,  size: 'small', gridCol: 4, gridRow: 3, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 'tt1', number: 1, zone: 'terrace', status: 'available', seats: 4, occupants: 0, size: 'small', gridCol: 1, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
-  { id: 'tt2', number: 2, zone: 'terrace', status: 'on-dine',   seats: 4, occupants: 3, size: 'small', gridCol: 2, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 'tt100', number: 1, zone: 'terrace', status: 'available', seats: 4, occupants: 0, size: 'small', gridCol: 1, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
+  { id: 'tt200', number: 2, zone: 'terrace', status: 'on-dine',   seats: 4, occupants: 3, size: 'small', gridCol: 2, gridRow: 1, colSpan: 1, rowSpan: 1, rotation: 0 },
 ]
 
 const STORAGE_KEY = 'billsplit:tables'
