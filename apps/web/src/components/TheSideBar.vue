@@ -10,7 +10,7 @@
       <div class="flex items-center h-16 px-3 border-b border-gray-100 shrink-0"
         :class="sidebarOpen ? 'justify-between' : 'justify-center'">
         <div v-if="sidebarOpen" class="flex items-center gap-2 overflow-hidden">
-          <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shrink-0">
+          <div class="w-8 h-8 bg-linear-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shrink-0">
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />

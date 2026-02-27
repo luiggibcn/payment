@@ -5,12 +5,19 @@ import { useAuthStore } from '@/stores/auth.store'
 import { setLocale } from '@/plugins/i18n'
 import { mainLanguages, type Locale } from '@/locales'
 import { useNavItems } from '@/composables/useNavItems'
+import { useIsMobile } from '@/composables/isMobile.composable'
 
 const { t, locale } = useI18n()
 const authStore = useAuthStore()
-const { navItems, isActive, navigate } = useNavItems()
+const { navItems, isActive, navigate: baseNavigate } = useNavItems()
+const { isMobile } = useIsMobile()
 
-const collapsed = ref(false)
+const collapsed = ref(isMobile.value)
+
+const navigate = (routeName: Parameters<typeof baseNavigate>[0]) => {
+  baseNavigate(routeName)
+  if (isMobile.value) collapsed.value = true
+}
 const settingsOpen = ref(false)
 const languageOpen = ref(false)
 
