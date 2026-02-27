@@ -109,6 +109,23 @@
     "cancelReasonMinChars": "min. chars",
     "cancelReasonConfirm": "Confirm and send"
   },
+  "toast": {
+    "orderSentToKitchen": "Order sent to kitchen",
+    "orderSentToKitchenDesc": "Table {table} — items sent to kitchen",
+    "tableClosed": "Table closed",
+    "tableClosedDesc": "Table {table} has been cleared",
+    "tableOpened": "Table opened",
+    "tableOpenedDesc": "Table {table} is now active",
+    "orderReceived": "New order received",
+    "orderReceivedDesc": "Table {table} placed a new order",
+    "orderReady": "Order ready",
+    "orderReadyDesc": "Table {table} order is ready to serve",
+    "changesSaved": "Changes saved",
+    "genericError": "Something went wrong",
+    "genericErrorDesc": "Please try again",
+    "cancelConfirmed": "Cancellation confirmed",
+    "cancelConfirmedDesc": "Kitchen has been notified"
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "menu": "Menu",

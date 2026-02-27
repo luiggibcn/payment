@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { AppRoute } from '@/interfaces/routes.interfaces'
+import { AppRoute } from '@billsplit/types'
+import { setActivePinia, createPinia } from 'pinia'
 
 const mockPush = vi.fn()
 let currentRouteName: string = AppRoute.TABLES
@@ -11,21 +12,24 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({ push: mockPush }),
 }))
 
-import { useNavItems, navItems } from './useNavItems'
+import { useNavItems } from './useNavItems'
 
 describe('useNavItems', () => {
   beforeEach(() => {
+    setActivePinia(createPinia())
     currentRouteName = AppRoute.TABLES
     vi.clearAllMocks()
   })
 
   describe('navItems', () => {
-    it('should export 4 nav items', () => {
-      expect(navItems).toHaveLength(4)
+    it('should return 4 nav items', () => {
+      const { navItems } = useNavItems()
+      expect(navItems.value).toHaveLength(4)
     })
 
     it('should contain tables, menu, orders and history items', () => {
-      const keys = navItems.map(i => i.key)
+      const { navItems } = useNavItems()
+      const keys = navItems.value.map(i => i.key)
       expect(keys).toContain('tables')
       expect(keys).toContain('menu')
       expect(keys).toContain('orders')
@@ -33,7 +37,8 @@ describe('useNavItems', () => {
     })
 
     it('each item should have required fields', () => {
-      for (const item of navItems) {
+      const { navItems } = useNavItems()
+      for (const item of navItems.value) {
         expect(item.key).toBeTruthy()
         expect(item.labelKey).toBeTruthy()
         expect(item.routeName).toBeTruthy()
@@ -42,15 +47,17 @@ describe('useNavItems', () => {
     })
 
     it('should map to correct AppRoutes', () => {
-      const routeMap = Object.fromEntries(navItems.map(i => [i.key, i.routeName]))
+      const { navItems } = useNavItems()
+      const routeMap = Object.fromEntries(navItems.value.map(i => [i.key, i.routeName]))
       expect(routeMap.tables).toBe(AppRoute.TABLES)
       expect(routeMap.menu).toBe(AppRoute.PRODUCTS)
       expect(routeMap.orders).toBe(AppRoute.ORDERS)
       expect(routeMap.history).toBe(AppRoute.QR)
     })
 
-    it('badge should be optional and undefined by default', () => {
-      for (const item of navItems) {
+    it('badge should be undefined when there are no unread notifications', () => {
+      const { navItems } = useNavItems()
+      for (const item of navItems.value) {
         expect(item.badge).toBeUndefined()
       }
     })
