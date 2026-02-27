@@ -1,15 +1,14 @@
 {
   "name": "web",
   "private": true,
-  "version": "0.0.3",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "release": "bumpp"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@billsplit/types":  "workspace:*",

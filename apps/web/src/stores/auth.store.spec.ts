@@ -167,6 +167,30 @@ describe('auth.store', () => {
       await store.initialize()
       expect(store.initialized).toBe(true)
     })
+
+    it('should clear localStorage when an unexpected error occurs during parsing (lines 130-132)', async () => {
+      // Store valid JSON so isValid() passes, then make the outer JSON.parse throw
+      localStorage.setItem('session', JSON.stringify(mockSession))
+      localStorage.setItem('user', JSON.stringify(mockUser))
+
+      const originalParse = JSON.parse
+      let callCount = 0
+      vi.spyOn(JSON, 'parse').mockImplementation((text: string) => {
+        callCount++
+        // isValid calls JSON.parse twice (once per key) — let those pass
+        // Then throw on the next call (the outer parsedSession parse)
+        if (callCount > 2) throw new Error('Unexpected parse error')
+        return originalParse(text)
+      })
+
+      await store.initialize()
+
+      expect(localStorage.getItem('session')).toBeNull()
+      expect(localStorage.getItem('user')).toBeNull()
+      expect(store.initialized).toBe(true)
+
+      vi.mocked(JSON.parse).mockRestore()
+    })
   })
 
   describe('signIn', () => {

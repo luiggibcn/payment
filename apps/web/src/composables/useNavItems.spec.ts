@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AppRoute } from '@billsplit/types'
 import { setActivePinia, createPinia } from 'pinia'
+import { useNotificationsStore } from '@/stores/notifications.store'
 
 const mockPush = vi.fn()
 let currentRouteName: string = AppRoute.TABLES
@@ -60,6 +61,38 @@ describe('useNavItems', () => {
       for (const item of navItems.value) {
         expect(item.badge).toBeUndefined()
       }
+    })
+
+    it('orders item should have badge when there are unread notifications', () => {
+      const notificationsStore = useNotificationsStore()
+      notificationsStore.addNotification({ type: 'order_received', titleKey: 'test.a' })
+      notificationsStore.addNotification({ type: 'order_ready', titleKey: 'test.b' })
+
+      const { navItems } = useNavItems()
+      const ordersItem = navItems.value.find(i => i.key === 'orders')!
+      expect(ordersItem.badge).toBe(2)
+    })
+
+    it('non-orders items should not have badge even with unread notifications', () => {
+      const notificationsStore = useNotificationsStore()
+      notificationsStore.addNotification({ type: 'order_received', titleKey: 'test.a' })
+
+      const { navItems } = useNavItems()
+      const nonOrders = navItems.value.filter(i => i.key !== 'orders')
+      for (const item of nonOrders) {
+        expect(item.badge).toBeUndefined()
+      }
+    })
+
+    it('badge disappears after marking all notifications as read', () => {
+      const notificationsStore = useNotificationsStore()
+      notificationsStore.addNotification({ type: 'order_received', titleKey: 'test.a' })
+      const { navItems } = useNavItems()
+
+      expect(navItems.value.find(i => i.key === 'orders')!.badge).toBeGreaterThan(0)
+
+      notificationsStore.markAllAsRead()
+      expect(navItems.value.find(i => i.key === 'orders')!.badge).toBeUndefined()
     })
   })
 

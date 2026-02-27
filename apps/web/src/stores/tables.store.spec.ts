@@ -440,6 +440,91 @@ describe('tables.store', () => {
     })
   })
 
+  // ── saveToStorage error (line 73) ─────────────────────────────────────────
+  describe('saveToStorage error handling', () => {
+    it('logs a warning when localStorage.setItem throws', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const originalSetItem = Storage.prototype.setItem
+      Storage.prototype.setItem = vi.fn(() => { throw new Error('QuotaExceeded') })
+
+      // addTable calls saveToStorage internally
+      store.addTable(makeTable({ number: 50 }))
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[tables.store] Error saving to localStorage',
+        expect.any(Error),
+      )
+
+      Storage.prototype.setItem = originalSetItem
+      warnSpy.mockRestore()
+    })
+  })
+
+  // ── storage event: invalid JSON (line 97) ────────────────────────────────
+  describe('storage event with invalid JSON', () => {
+    it('resets to defaults when another tab writes invalid JSON', () => {
+      window.dispatchEvent(new StorageEvent('storage', {
+        key:      'billsplit:tables',
+        newValue: 'not-valid-json',
+        oldValue: null,
+      }))
+
+      expect(store.tables.length).toBeGreaterThan(0)
+    })
+  })
+
+  // ── syncWithBackend (lines 117-128) ──────────────────────────────────────
+  describe('syncWithBackend', () => {
+    it('posts tables to /api/tables/layout and updates lastSaved', async () => {
+      const mockFetch = vi.fn().mockResolvedValue({ ok: true })
+      vi.stubGlobal('fetch', mockFetch)
+
+      await store.syncWithBackend()
+
+      expect(mockFetch).toHaveBeenCalledWith('/api/tables/layout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(store.tables),
+      })
+      expect(store.lastSaved).toBeInstanceOf(Date)
+      expect(store.isSaving).toBe(false)
+
+      vi.unstubAllGlobals()
+    })
+
+    it('sets isSaving to true during the request', async () => {
+      let capturedIsSaving = false
+      const mockFetch = vi.fn().mockImplementation(() => {
+        capturedIsSaving = store.isSaving
+        return Promise.resolve({ ok: true })
+      })
+      vi.stubGlobal('fetch', mockFetch)
+
+      await store.syncWithBackend()
+
+      expect(capturedIsSaving).toBe(true)
+      expect(store.isSaving).toBe(false)
+
+      vi.unstubAllGlobals()
+    })
+
+    it('handles fetch failure gracefully', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')))
+
+      await store.syncWithBackend()
+
+      expect(store.isSaving).toBe(false)
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[tables.store] Error syncing with backend',
+        expect.any(Error),
+      )
+
+      vi.unstubAllGlobals()
+      warnSpy.mockRestore()
+    })
+  })
+
   // ── resetToDefaults ────────────────────────────────────────────────────────
   describe('resetToDefaults', () => {
     it('restores the default tables', () => {

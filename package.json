@@ -11,12 +11,7 @@
     "build": "pnpm --filter web build",
     "build:web": "pnpm --filter web build",
     "test": "pnpm --filter web test",
-    "test:web": "pnpm --filter web test",
-    "release:web": "bumpp --filter web",
-    "release": "pnpm release:web"
-  },
-  "devDependencies": {
-    "bumpp": "^10.4.1"
+    "test:web": "pnpm --filter web test"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm release"
