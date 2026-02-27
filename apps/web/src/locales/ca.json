@@ -109,6 +109,23 @@
     "cancelReasonMinChars": "caràct. mín.",
     "cancelReasonConfirm": "Confirmar i enviar"
   },
+  "toast": {
+    "orderSentToKitchen": "Comanda enviada a la cuina",
+    "orderSentToKitchenDesc": "Taula {table} — articles enviats a la cuina",
+    "tableClosed": "Taula tancada",
+    "tableClosedDesc": "La taula {table} ha estat alliberada",
+    "tableOpened": "Taula oberta",
+    "tableOpenedDesc": "La taula {table} està activa",
+    "orderReceived": "Nova comanda rebuda",
+    "orderReceivedDesc": "La taula {table} ha fet una comanda",
+    "orderReady": "Comanda llesta",
+    "orderReadyDesc": "La comanda de la taula {table} està llesta per servir",
+    "changesSaved": "Canvis desats",
+    "genericError": "Alguna cosa ha anat malament",
+    "genericErrorDesc": "Si us plau, torna-ho a intentar",
+    "cancelConfirmed": "Cancel·lació confirmada",
+    "cancelConfirmedDesc": "La cuina ha estat notificada"
+  },
   "sidebar": {
     "dashboard": "Taulell",
     "menu": "Menú",

@@ -2,10 +2,11 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { AppRoute } from '@billsplit/types'
 import type { NavItem } from '@billsplit/types'
+import { useNotificationsStore } from '@/stores/notifications.store'
 
 export type { NavItem }
 
-export const navItems: NavItem[] = [
+const baseNavItems: NavItem[] = [
   {
     key: 'tables',
     labelKey: 'sidebar.table',
@@ -32,13 +33,25 @@ export const navItems: NavItem[] = [
   },
 ]
 
+/** @deprecated Use useNavItems().navItems (computed) instead */
+export const navItems = baseNavItems
+
 export function useNavItems() {
   const route = useRoute()
   const router = useRouter()
+  const notificationsStore = useNotificationsStore()
+
+  const navItemsComputed = computed<NavItem[]>(() =>
+    baseNavItems.map(item =>
+      item.key === 'orders' && notificationsStore.unreadCount > 0
+        ? { ...item, badge: notificationsStore.unreadCount }
+        : item
+    )
+  )
 
   const activeRoute = computed(() => route.name as AppRoute)
   const isActive = (routeName: AppRoute) => activeRoute.value === routeName
   const navigate = (routeName: AppRoute) => router.push({ name: routeName })
 
-  return { navItems, activeRoute, isActive, navigate }
+  return { navItems: navItemsComputed, activeRoute, isActive, navigate }
 }

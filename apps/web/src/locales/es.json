@@ -109,6 +109,23 @@
     "cancelReasonMinChars": "caract. mín.",
     "cancelReasonConfirm": "Confirmar y enviar"
   },
+  "toast": {
+    "orderSentToKitchen": "Pedido enviado a cocina",
+    "orderSentToKitchenDesc": "Mesa {table} — artículos enviados a cocina",
+    "tableClosed": "Mesa cerrada",
+    "tableClosedDesc": "La mesa {table} ha sido liberada",
+    "tableOpened": "Mesa abierta",
+    "tableOpenedDesc": "La mesa {table} está activa",
+    "orderReceived": "Nuevo pedido recibido",
+    "orderReceivedDesc": "La mesa {table} ha realizado un pedido",
+    "orderReady": "Pedido listo",
+    "orderReadyDesc": "El pedido de la mesa {table} está listo para servir",
+    "changesSaved": "Cambios guardados",
+    "genericError": "Algo salió mal",
+    "genericErrorDesc": "Por favor, inténtalo de nuevo",
+    "cancelConfirmed": "Cancelación confirmada",
+    "cancelConfirmedDesc": "La cocina ha sido notificada"
+  },
   "sidebar": {
     "dashboard": "Tablero",
     "menu": "Menú",

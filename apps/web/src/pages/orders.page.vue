@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useTablesStore, type RestaurantTable } from '@/stores/tables.store'
 import { useOrdersStore } from '@/stores/orders.store'
+import { useToast } from '@/composables/useToast'
 import CategoriesSlider from '@/components/products/CategoriesSlider.vue'
 import OrderPanel from '@/components/orders/OrderPanel.vue'
 import BaseModal from '@/components/ui/BaseModal.vue'
@@ -24,6 +25,7 @@ const route = useRoute()
 const router = useRouter()
 const tablesStore = useTablesStore()
 const ordersStore = useOrdersStore()
+const { success, warning } = useToast()
 
 // ── Navegación basada en URL (?table=<id>) ─────────────────────────────────────
 // /dashboard/orders          → step 1
@@ -65,6 +67,7 @@ async function generateTable() {
   try {
     await new Promise(resolve => setTimeout(resolve, 600))
     tablesStore.updateTable(pendingTable.value.id, { status: 'on-dine' })
+    success('toast.tableOpened', { table: pendingTable.value.number })
     router.push({ query: { table: pendingTable.value.id } })
     pendingTable.value = null
   } finally {
@@ -86,8 +89,10 @@ function goBack() {
 // Libera la mesa activa y vuelve al step 1
 function closeTable() {
   if (selectedTable.value) {
+    const tableNumber = selectedTable.value.number
     tablesStore.updateTable(selectedTable.value.id, { status: 'available' })
     ordersStore.clearTable(selectedTable.value.id)
+    success('toast.tableClosed', { table: tableNumber })
   }
   resetOrderState()
   router.push({ query: {} })
@@ -156,7 +161,9 @@ function addToOrder(item: MenuItem) {
 
 function handleSendToKitchen() {
   if (!selectedTable.value || tableCart.value.length === 0) return
+  const tableNumber = selectedTable.value.number
   ordersStore.sendToKitchen(selectedTable.value.id)
+  success('toast.orderSentToKitchen', { table: tableNumber })
   router.push({ query: {} })
 }
 
@@ -283,6 +290,7 @@ function confirmCancel() {
   })
   stagedQuantities.value = {}
   showCancelModal.value = false
+  warning('toast.cancelConfirmed')
   // Si el carrito quedó vacío (todos los ítems eliminados), no hay nada que
   // re-enviar a cocina — solo volvemos al paso 1
   if (tableCart.value.length === 0) {
