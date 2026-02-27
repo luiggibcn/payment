@@ -169,7 +169,7 @@ const tableNumber = ref('04')
         </div>
 
         <!-- Right Section - Order Details -->
-        <aside class="w-full xl:w-96 2xl:w-[420px] shrink-0">
+        <aside class="w-full xl:w-96 2xl:w-105 shrink-0">
           <div class="bg-white rounded-2xl p-6 xl:sticky xl:top-20 xl:max-h-[calc(100vh-5rem)] xl:overflow-y-auto">
             <h2 class="text-xl font-semibold text-gray-900 mb-6">{{ t('products.orderDetails') }}</h2>
 
