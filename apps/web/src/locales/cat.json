@@ -1,0 +1,47 @@
+{
+  "common": {
+    "save": "Desa",
+    "cancel": "Cancel·la",
+    "delete": "Elimina",
+    "edit": "Edita",
+    "loading": "Carregant..."
+  },
+  "auth": {
+    "login": {
+      "title": "Inicia sessió al teu compte",
+      "email_label": "Adreça electrònica",
+      "submit": "Inicia sessió",
+      "forgot_password": "Has oblidat la contrasenya?",
+      "name_label": "Nom complert"
+    },
+    "register": {
+      "title": "Crea un compte",
+      "submit": "Crear compte",
+      "password_label": "Contrasenya"
+    }
+  },
+  "nav": {
+    "home": "Inici",
+    "settings": "Configuració",
+    "logout": "Tanca la sessió"
+  },
+  "errors": {
+    "not_found": "Pàgina no trobada",
+    "server_error": "S'ha produït un error inesperat",
+    "unauthorized": "No tens permís per veure aquesta pàgina"
+  },
+  "dashboard": {
+    "welcome": "Benvingut de nou!"
+  },
+  "license": {
+    "message": {
+      "ok": "Llicència autoritzada",
+      "ko": "Llicència caducada"
+    }
+  },
+  "ad": {
+    "result": {
+      "ok": "M'agrada"
+    }
+  }
+}
