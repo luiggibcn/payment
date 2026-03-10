@@ -1,181 +1,47 @@
 {
   "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "cancel": "Cancel",
     "save": "Save",
-    "back": "Back",
-    "continue": "Continue",
-    "or": "or",
-    "emptyCart": "Your order is empty",
-    "add": "Add"
-  },
-  "languages": {
-    "select": "Select your language",
-    "en": "English",
-    "es": "Spanish",
-    "ca": "Catalan"
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading..."
   },
   "auth": {
-    "signIn": "Sign In",
-    "signUp": "Sign Up",
-    "signOut": "Sign Out",
-    "login": "Login",
-    "loggingIn": "Logging in...",
-    "signInAccount": "Creating account...",
-    "register": "Register",
-    "email": "Email",
-    "password": "Password",
-    "yourName": "Username",
-    "yourNamePlaceholder": "Enter your full name",
-    "yourEmail": "Your email",
-    "yourPassword": "Your password",
-    "enterEmail": "Enter your email",
-    "enterPassword": "Enter your password",
-    "enterPasswordChars": "Enter your password (min {chars} characters)",
-    "forgotPassword": "Forget Password?",
-    "resetPassword": "Reset Password",
-    "welcomeTitle": "Welcome to Payment4You",
-    "welcomeSubtitle": "Order together, pay your way.",
-    "continueWithEmail": "Continue with Email",
-    "continueWithGoogle": "Google",
-    "continueWithApple": "Apple",
-    "dontHaveAccount": "Don't have an account?",
-    "alreadyHaveAccount": "Already have an account?",
-    "byAgreeing": "By continuing, you agree to Payment4You's",
-    "termsAndConditions": "Terms and Conditions",
-    "privacyPolicy": "Privacy Policy",
-    "and": "and"
-  },
-  "errors": {
-    "invalidUsername": "Username must be at least 3 characters long",
-    "invalidEmail": "Invalid email format",
-    "invalidPassword": "Password must be at least 6 characters",
-    "invalidCredentials": "Invalid email or password. Please try again.",
-    "emailNotConfirmed": "Please confirm your email before signing in.",
-    "emailAlreadyRegistered": "This email is already registered. Please sign in instead.",
-    "genericError": "An error occurred. Please try again.",
-    "enterEmailFirst": "Please enter your email first",
-    "passwordResetSent": "Password reset email sent! Check your inbox."
-  },
-  "messages": {
-    "success": {
-      "register": "Account created! Please check your email to confirm your account if it's needed."
+    "login": {
+      "title": "Sign in to your account",
+      "email_label": "Email address",
+      "submit": "Sign in",
+      "forgot_password": "Forgot your password?",
+      "name_label": "Full name"
+    },
+    "register": {
+      "title": "Create an account",
+      "submit": "Create account",
+      "password_label": "Password"
     }
   },
-  "products": {
-    "currentOrder": "Current order",
-    "categories": "Categories",
-    "searchMenuPlaceholder": "Search menu...",
-    "bestSeller": "Best Seller",
-    "orderDetails": "Order details",
-    "dineIn": "Dine in",
-    "takeAway": "Take away",
-    "delivery": "Delivery",
-    "customerName": "Customer name",
-    "tableNumber": "Table number",
-    "paymentDetails": "Payment details",
-    "subtotal": "Subtotal",
-    "taxes": "Taxes",
-    "additionalFee": "Additional fee",
-    "total": "Total",
-    "confirmButton": "Confirm"
-  },
-  "orders": {
-    "title": "Open / Create Table",
-    "subtitle": "Select an available table to continue",
-    "tableLabel": "Table",
-    "seats": "seats",
-    "noTablesAvailable": "No tables available at the moment",
-    "openTable": "Open table",
-    "selectTableFirst": "Select a table to continue",
-    "generating": "Generating...",
-    "continueTable": "Continue with table",
-    "closeTable": "Close table",
-    "activeTables": "Active tables",
-    "availableTables": "Available tables",
-    "cookingStatus": "In kitchen",
-    "currentOrder": "Current order",
-    "emptyOrder": "No items yet",
-    "emptyOrderHint": "Tap a product to add it",
-    "total": "Total",
-    "sendToKitchen": "Send to kitchen",
-    "continueToKitchen": "Continue",
-    "cancelReasonTitle": "Cancellation reason",
-    "cancelReasonSubtitle": "Some items were removed from an order already in the kitchen. Explain why so the kitchen team is informed.",
-    "cancelReasonLabel": "Reason",
-    "cancelReasonPlaceholder": "e.g. Customer changed their mind...",
-    "cancelReasonMinChars": "min. chars",
-    "cancelReasonConfirm": "Confirm and send"
-  },
-  "toast": {
-    "orderSentToKitchen": "Order sent to kitchen",
-    "orderSentToKitchenDesc": "Table {table} — items sent to kitchen",
-    "tableClosed": "Table closed",
-    "tableClosedDesc": "Table {table} has been cleared",
-    "tableOpened": "Table opened",
-    "tableOpenedDesc": "Table {table} is now active",
-    "orderReceived": "New order received",
-    "orderReceivedDesc": "Table {table} placed a new order",
-    "orderReady": "Order ready",
-    "orderReadyDesc": "Table {table} order is ready to serve",
-    "changesSaved": "Changes saved",
-    "genericError": "Something went wrong",
-    "genericErrorDesc": "Please try again",
-    "cancelConfirmed": "Cancellation confirmed",
-    "cancelConfirmedDesc": "Kitchen has been notified"
-  },
-  "sidebar": {
-    "dashboard": "Dashboard",
-    "menu": "Menu",
-    "stock": "Stock",
-    "table": "Tables",
-    "orders": "Orders",
-    "history": "History",
+  "nav": {
+    "home": "Home",
     "settings": "Settings",
-    "signOut": "Sign Out",
-    "language": "Language"
+    "logout": "Log out"
   },
-  "tables": {
-    "title": "Manage Tables",
-    "saloon": "Saloon",
-    "terrace": "Terrace",
-    "outdoor": "Outside",
-    "available": "Available",
-    "reserved": "Reserved",
-    "on-dine": "Eating",
-    "newTable": "New Table",
-    "editTable": "Edit mesa",
-    "editLayout": "Edit layout",
-    "saveLayout": "Save layout",
-    "number": "Number",
-    "splitTable": "Split table",
-    "tableOccupantsMsg": "This table has",
-    "seat": "seat",
-    "seats": "seats",
-    "splitMsg": "Indicate how many tables you want to divide into.",
-    "labelTotalTables": "Number of resulting tables",
-    "result": "Result",
-    "table": "Table",
-    "split": "Split",
-    "join": "Join",
-    "totalSeats": "Total seats",
-    "currentOccupants": "Current occupants",
-    "occupied": "occupied",
-    "preview": "Preview",
-    "state": "State",
-    "banner": "Edit mode: Drag the tables to reposition them. Use the buttons on each table to rotate or resize it.",
-    "normal": "Normal (1x1)",
-    "big": "Big (2x1)",
-    "modal": {
-      "title": "New table",
-      "numberTable": "Table number",
-      "seats": "Seats",
-      "sizeTable": "Table size (visual)",
-      "previewText": "Preview seats",
-      "addButton": "Create table",
-      "cancelButton": "Cancel"
+  "errors": {
+    "not_found": "Page not found",
+    "server_error": "An unexpected error occurred",
+    "unauthorized": "You are not authorized to view this page"
+  },
+  "dashboard": {
+    "welcome": "Welcome back!"
+  },
+  "license": {
+    "message": {
+      "ok": "License authorized",
+      "ko": "Expired license"
+    }
+  },
+  "ad": {
+    "result": {
+      "ok": "I like it"
     }
   }
 }
