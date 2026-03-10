@@ -1,181 +1,47 @@
 {
   "common": {
-    "loading": "Cargando...",
-    "error": "Error",
-    "success": "Éxito",
-    "cancel": "Cancelar",
     "save": "Guardar",
-    "back": "Atrás",
-    "continue": "Continuar",
-    "or": "o",
-    "emptyCart": "Tu pedido esta vacío",
-    "add": "Añadir"
-  },
-  "languages": {
-    "select": "Selecciona tu idioma",
-    "en": "Inglés",
-    "es": "Español",
-    "ca": "Catalán"
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "loading": "Cargando..."
   },
   "auth": {
-    "signIn": "Iniciar Sesión",
-    "signUp": "Registrarse",
-    "signOut": "Cerrar Sesión",
-    "login": "Entrar",
-    "loggingIn": "Iniciando sesión...",
-    "signInAccount": "Creando cuenta...",
-    "register": "Registrarse",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
-    "yourName": "Usuario",
-    "yourNamePlaceholder": "Tu nombre de usuario",
-    "yourEmail": "Tu correo electrónico",
-    "yourPassword": "Tu contraseña",
-    "enterEmail": "Introduce tu correo electrónico",
-    "enterPassword": "Introduce tu contraseña",
-    "enterPasswordChars": "Introduce tu contraseña (mínimo {chars} caracteres)",
-    "forgotPassword": "¿Olvidaste tu contraseña?",
-    "resetPassword": "Restablecer Contraseña",
-    "welcomeTitle": "Bienvenido a Payment4You",
-    "welcomeSubtitle": "Pide, comparte y divide la cuenta sin complicaciones.",
-    "continueWithEmail": "Continuar con correo",
-    "continueWithGoogle": "Google",
-    "continueWithApple": "Apple",
-    "dontHaveAccount": "¿No tienes una cuenta?",
-    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-    "byAgreeing": "Al continuar, aceptas los",
-    "termsAndConditions": "Términos y Condiciones",
-    "privacyPolicy": "Política de Privacidad",
-    "and": "y"
-  },
-  "errors": {
-    "invalidUsername": "El nombre de usuario debe tener 3 caracteres como mínimo",
-    "invalidEmail": "Formato de correo inválido",
-    "invalidPassword": "La contraseña debe tener al menos 6 caracteres",
-    "invalidCredentials": "Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.",
-    "emailNotConfirmed": "Por favor, confirma tu correo antes de iniciar sesión.",
-    "emailAlreadyRegistered": "Este correo ya está registrado. Por favor, inicia sesión.",
-    "genericError": "Ocurrió un error. Por favor, inténtalo de nuevo.",
-    "enterEmailFirst": "Por favor, introduce tu correo primero",
-    "passwordResetSent": "¡Correo de restablecimiento enviado! Revisa tu bandeja de entrada."
-  },
-  "messages": {
-    "success": {
-      "register": "¡Cuenta creada! Por favor, revisa tu correo electrónico para confirmar tu cuenta si es necesario."
+    "login": {
+      "title": "Inicia sesión en tu cuenta",
+      "email_label": "Correo electrónico",
+      "submit": "Iniciar sesión",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "name_label": "Nombre completo"
+    },
+    "register": {
+      "title": "Crea una cuenta",
+      "submit": "Crear cuenta",
+      "password_label": "Contraseña"
     }
   },
-  "products": {
-    "currentOrder": "Pedido actual",
-    "categories": "Categorías",
-    "searchMenuPlaceholder": "Buscar en el menú...",
-    "bestSeller": "Los más vendidos",
-    "orderDetails": "Detalles del pedido",
-    "dineIn": "Para comer en el restaurante",
-    "takeAway": "Para llevar",
-    "delivery": "Entrega a domicilio",
-    "customerName": "Nombre del cliente",
-    "tableNumber": "Número de mesa",
-    "paymentDetails": "Detalles del pago",
-    "subtotal": "Subtotal",
-    "taxes": "Impuestos",
-    "additionalFee": "Cargo adicional",
-    "total": "Total",
-    "confirmButton": "Confirmar"
-  },
-  "orders": {
-    "title": "Abrir / Crear mesa",
-    "subtitle": "Selecciona una mesa disponible para continuar",
-    "tableLabel": "Mesa",
-    "seats": "asientos",
-    "noTablesAvailable": "No hay mesas disponibles en este momento",
-    "openTable": "Abrir mesa",
-    "selectTableFirst": "Selecciona una mesa para continuar",
-    "generating": "Generando...",
-    "continueTable": "Continuar con mesa",
-    "closeTable": "Cerrar mesa",
-    "activeTables": "Mesas activas",
-    "availableTables": "Mesas disponibles",
-    "cookingStatus": "En cocina",
-    "currentOrder": "Pedido actual",
-    "emptyOrder": "Sin productos todavía",
-    "emptyOrderHint": "Pulsa un producto para añadirlo",
-    "total": "Total",
-    "sendToKitchen": "Enviar a cocina",
-    "continueToKitchen": "Continuar",
-    "cancelReasonTitle": "Motivo de cancelación",
-    "cancelReasonSubtitle": "Se han eliminado artículos de un pedido ya en cocina. Indica el motivo para que el equipo de cocina esté informado.",
-    "cancelReasonLabel": "Motivo",
-    "cancelReasonPlaceholder": "Ej. El cliente cambió de opinión...",
-    "cancelReasonMinChars": "caract. mín.",
-    "cancelReasonConfirm": "Confirmar y enviar"
-  },
-  "toast": {
-    "orderSentToKitchen": "Pedido enviado a cocina",
-    "orderSentToKitchenDesc": "Mesa {table} — artículos enviados a cocina",
-    "tableClosed": "Mesa cerrada",
-    "tableClosedDesc": "La mesa {table} ha sido liberada",
-    "tableOpened": "Mesa abierta",
-    "tableOpenedDesc": "La mesa {table} está activa",
-    "orderReceived": "Nuevo pedido recibido",
-    "orderReceivedDesc": "La mesa {table} ha realizado un pedido",
-    "orderReady": "Pedido listo",
-    "orderReadyDesc": "El pedido de la mesa {table} está listo para servir",
-    "changesSaved": "Cambios guardados",
-    "genericError": "Algo salió mal",
-    "genericErrorDesc": "Por favor, inténtalo de nuevo",
-    "cancelConfirmed": "Cancelación confirmada",
-    "cancelConfirmedDesc": "La cocina ha sido notificada"
-  },
-  "sidebar": {
-    "dashboard": "Tablero",
-    "menu": "Menú",
-    "stock": "Inventario",
-    "table": "Mesas",
-    "orders": "Pedidos",
-    "history": "Historial",
+  "nav": {
+    "home": "Inicio",
     "settings": "Configuración",
-    "signOut": "Cerrar sesión",
-    "language": "Idioma"
+    "logout": "Cerrar sesión"
   },
-  "tables": {
-    "title": "Gestionar mesas",
-    "saloon": "Sala",
-    "terrace": "Terraza",
-    "outdoor": "Exterior",
-    "available": "Disponible",
-    "reserved": "Reservado",
-    "on-dine": "Comiendo",
-    "newTable": "Mesa nueva",
-    "editTable": "Editar layout",
-    "editLayout": "Editar layout",
-    "saveLayout": "Guardar layout",
-    "number": "Número",
-    "splitTable": "Dividir mesa",
-    "tableOccupantsMsg": "Esta mesa tiene",
-    "seat": "asiento",
-    "seats": "asientos",
-    "splitMsg": "Indica en cuántas mesas quieres dividirla",
-    "labelTotalTables": "Número de mesas resultantes",
-    "result": "Resultado",
-    "table": "Mesa",
-    "split": "Dividir",
-    "join": "Unir",
-    "totalSeats": "Asientos totales",
-    "currentOccupants": "Ocupantes actuales",
-    "occupied": "ocupados",
-    "preview": "Vista previa",
-    "state": "Estado",
-    "banner": "Modo edición: arrastra las mesas para reposicionarlas. Usa los botones de cada mesa para rotar o redimensionar.",
-    "normal": "Normal (1x1)",
-    "big": "Grande (2x1)",
-    "modal": {
-      "title": "Mesa nueva",
-      "numberTable": "Número de mesa",
-      "seats": "Asientos",
-      "sizeTable": "Tamaño de la mesa (visual)",
-      "previewText": "Vista previa de los asientos",
-      "addButton": "Crear mesa",
-      "cancelButton": "Cancelar"
+  "errors": {
+    "not_found": "Página no encontrada",
+    "server_error": "Se ha producido un error inesperado",
+    "unauthorized": "No tienes permiso para ver esta página"
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido de nuevo!"
+  },
+  "license": {
+    "message": {
+      "ok": "Licencia autorizada",
+      "ko": "Licencia caducada"
+    }
+  },
+  "ad": {
+    "result": {
+      "ok": "Me gusta"
     }
   }
 }
